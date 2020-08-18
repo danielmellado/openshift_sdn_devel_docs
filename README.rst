@@ -1,19 +1,10 @@
-===============================
-openshift_devel_docs
-===============================
+=========================
+OpenShift SDN devel docs
+=========================
 
 Developer documentation for OpenShift SDN team
 
-Please fill here a long description which must be at least 3 lines wrapped on
-80 cols, so that distribution package maintainers can use it in their packages.
-Note that this is a hard requirement.
+This document intends to be a quick devref and guide for new developers. It'll
+be a WIP covering details such as how to build, run, configure and test features.
 
 * Free software: Apache license
-* Documentation: https://docs.openstack.org/openshift_devel_docs/latest
-* Source: https://opendev.org/openshift-sdn/openshift_devel_docs
-* Bugs: https://bugs.launchpad.net/openshift_devel_docs
-
-Features
---------
-
-* TODO

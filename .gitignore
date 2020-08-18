@@ -19,7 +19,7 @@
 *.egg*
 *.egg-info
 dist
-build
+# build ignore due to build
 eggs
 parts
 bin
@@ -34,21 +34,11 @@ lib64
 pip-log.txt
 
 # Unit test / coverage reports
-cover/
-.coverage*
-!.coveragerc
 .tox
-nosetests.xml
-.testrepository
-.stestr
 .venv
 
 # Translations
 *.mo
-
-# Complexity
-output/*.html
-output/*/index.html
 
 # Sphinx
 doc/build

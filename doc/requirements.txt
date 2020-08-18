@@ -1,4 +1,5 @@
 sphinx>=2.0.0,!=2.1.0 # BSD
-openstackdocstheme>=2.2.1 # Apache-2.0
+recommonmark>=0.6.0 # MIT
+sphinx-rtd-theme>=0.5.0 # MIT
 # releasenotes
 reno>=3.1.0 # Apache-2.0

@@ -1,6 +1,0 @@
-[run]
-branch = True
-source = openshift_devel_docs
-
-[report]
-ignore_errors = True
