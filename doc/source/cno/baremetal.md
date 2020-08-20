@@ -1,6 +1,7 @@
 # Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN
 
 ## Deploying Kubernetes on bare metal.
+
 ### Standing up a simulated bare metal cluster using dev-scripts
 
 dev-scripts is a collection of bash scripts and ansible code on github to deploy a kubernetes simulated bare metal cluster. The cluster is deployed on a bare metal server. the cluster is deployed

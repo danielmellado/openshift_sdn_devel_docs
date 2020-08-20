@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,16 +16,16 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath("../.."))
 # -- General configuration ----------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.githubpages',
-    'sphinx_tabs.tabs',
-    'recommonmark',
-    'sphinx_rtd_theme'
+    "sphinx.ext.githubpages",
+    "sphinx_tabs.tabs",
+    "recommonmark",
+    "sphinx_rtd_theme",
 ]
 
 # autodoc generation is a bit aggressive and a nuisance when doing heavy
@@ -32,17 +33,17 @@ extensions = [
 # execute "export SPHINX_DEBUG=1" in your terminal to disable
 
 # The suffix of source filenames.
-source_suffix = ['.rst', '.md']
+source_suffix = [".rst", ".md"]
 source_parsers = {
-        '.md': 'recommonmark.parser.CommonMarkParser',
+    ".md": "recommonmark.parser.CommonMarkParser",
 }
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = u'OpenShift SDN Docs'
-copyright = u'2020, OpenShift SDN Team'
+project = u"OpenShift SDN Docs"
+copyright = u"2020, OpenShift SDN Team"
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True
@@ -52,7 +53,7 @@ add_function_parentheses = True
 add_module_names = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'native'
+pygments_style = "native"
 
 # -- Options for HTML output --------------------------------------------------
 
@@ -63,19 +64,24 @@ pygments_style = 'native'
 # html_static_path = ['static']
 # html_baseurl = "openshift_sdn_devel_docs"
 html_theme = "sphinx_rtd_theme"
-html_theme_path = ["_themes", ]
+html_theme_path = [
+    "_themes",
+]
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'OpenShift SDN doc'
+htmlhelp_basename = "OpenShift SDN doc"
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-    ('index',
-     'openshift_sdn.tex',
-     u'OpenShidt SDN Documentation',
-     u'OpenShift SDN Developers', 'manual'),
+    (
+        "index",
+        "openshift_sdn.tex",
+        u"OpenShidt SDN Documentation",
+        u"OpenShift SDN Developers",
+        "manual",
+    ),
 ]
 
 # Example configuration for intersphinx: refer to the Python standard library.
-#intersphinx_mapping = {'http://docs.python.org/': None}
+# intersphinx_mapping = {'http://docs.python.org/': None}

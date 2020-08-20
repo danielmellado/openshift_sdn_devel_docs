@@ -6,4 +6,3 @@
    :maxdepth: 2
 
    contributing
-
