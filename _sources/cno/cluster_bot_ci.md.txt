@@ -3,9 +3,7 @@
 When issues arise in the CI testing it is difficult to get additional debug information from the system because it is not easy to do so basic debug operations.
 
 ## Cluster-bot
-
 cluster-bot is a slack app that can create interactive clusters and run CI tests. At the time of writing this this is the help text from cluster-bot
-
 ```
 help - help
 launch image_or_version_or_pr options - Launch an OpenShift cluster using a known image, version, or PR. You may omit both arguments. Use nightly for the latest OCP build, ci for the the latest CI build, provide a version directly from any listed on https://openshift-release.svc.ci.openshift.org, a stream name (4.1.0-0.ci, 4.1.0-0.nightly, etc), a major/minor X.Y to load the latest stable version for that version (4.1), <org>/<repo>#<pr> to launch from a PR, or an image for the first argument. Options is a comma-delimited list of variations including platform (aws, gcp, azure, vsphere, metal) and variant (ovn, proxy, compact, fips, mirror, shared-vpc, large, xlarge, ipv6, preserve-bootstrap, test).
@@ -22,7 +20,6 @@ version - Report the version of the bot
 ```
 
 for the purposes of this information we are most interested in
-
 ```
 test name image_or_version_or_pr options - Run the requested test suite from an image or release or built PRs. Supported test suites are e2e, e2e-serial, e2e-all, e2e-disruptive, e2e-disruptive-all, e2e-builds, e2e-image-ecosystem, e2e-image-registry, e2e-network-stress. The from argument may be a pull spec of a release image or tags from https://openshift-release.svc.ci.openshift.org.
 ```

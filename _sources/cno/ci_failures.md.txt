@@ -9,19 +9,15 @@ This sort of failure requires some debugging. Because the network is integral to
 These can be broadly categorized in to
 
 ### Cloud-provider issues
-
 These are usually pretty obvious. You'll see some kind of Terraform issue and an error message complaining about the infrastructure provider. Retest and move on.
 
 ### CNO failures
-
 A CNO failure will often be reflected in the ClusterOperator. It may also be printed to you in the CI failure. To diagnose this further, go to the test artifacts and view the cluster-network-operator pod logs.
 
 ### Networking issues
-
 If your PR has broken networking, then the bootstrap failure will be more subtle. If it blocks pod creation, then basically every operator will be reporting failure. If pod creation works, but the network is down, then things will be a bit stranger. You'll see no worker nodes, because the machine-api-operator has failed. The console will fail to start. DNS will be broken, but the DNS operator probably won't detect this.
 
 ### Other flakes
-
 It's a moving target. Flakes happen. But generally openshift-installer is reliable. You shouldn't dismiss bootstrap failures as a flake unless you're sure.
 
 ## Test failures
