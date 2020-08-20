@@ -21,7 +21,8 @@ sys.path.insert(0, os.path.abspath('../..'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.autodoc',
+    'sphinx.ext.githubpages',
+    'sphinx_tabs.tabs',
     'recommonmark',
     'sphinx_rtd_theme'
 ]
@@ -31,13 +32,16 @@ extensions = [
 # execute "export SPHINX_DEBUG=1" in your terminal to disable
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
+source_parsers = {
+        '.md': 'recommonmark.parser.CommonMarkParser',
+}
 
 # The master toctree document.
 master_doc = 'index'
 
 # General information about the project.
-project = u'openshift_devel_docs'
+project = u'OpenShift SDN Docs'
 copyright = u'2020, OpenShift SDN Team'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
@@ -57,19 +61,20 @@ pygments_style = 'native'
 # html_theme_path = ["."]
 # html_theme = '_theme'
 # html_static_path = ['static']
-html_baseurl = "openshift_sdn_devel_docs"
+# html_baseurl = "openshift_sdn_devel_docs"
 html_theme = "sphinx_rtd_theme"
 html_theme_path = ["_themes", ]
+html_favicon = "favicon.png"
 # Output file base name for HTML help builder.
-htmlhelp_basename = '%sdoc' % project
+htmlhelp_basename = 'OpenShift SDN doc'
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
     ('index',
-     '%s.tex' % project,
-     u'%s Documentation' % project,
+     'openshift_sdn.tex',
+     u'OpenShidt SDN Documentation',
      u'OpenShift SDN Developers', 'manual'),
 ]
 

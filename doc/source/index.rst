@@ -3,9 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-====================================================
-Welcome to the documentation of openshift_devel_docs
-====================================================
+============================================
+Welcome to the OpenShift SDN Developer Docs
+============================================
 
 Contents:
 
@@ -13,14 +13,6 @@ Contents:
    :maxdepth: 2
 
    readme
-   contributor/index
    cno/index
-   configuration/index
-   user/index
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   openshift_sdn/index
+   ovn_kubernetes/index
