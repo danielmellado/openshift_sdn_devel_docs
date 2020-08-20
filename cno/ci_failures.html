@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Looking in to CI Failures &mdash; openshift_devel_docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using cluster bot to grab new debug information from CI testing" href="cluster_bot_ci.html" />
+    <link rel="prev" title="Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN" href="baremetal.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> openshift_devel_docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor/index.html">Contributor Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cluster Network Operator</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_logs.html">Getting logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_sdn_ovn_openshift.html">How to test SDN OVN development on a Openshift cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html">Running a local cluster network operator for plugin development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="baremetal.html">Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Looking in to CI Failures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#failure-to-bootstrap">Failure to bootstrap</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cloud-provider-issues">Cloud-provider issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cno-failures">CNO failures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#networking-issues">Networking issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-flakes">Other flakes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#test-failures">Test failures</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_bot_ci.html">Using cluster bot to grab new debug information from CI testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html">HOWTO run the e2e test suite locally</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openshift_devel_docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Cluster Network Operator</a> &raquo;</li>
+        
+      <li>Looking in to CI Failures</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/cno/ci_failures.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="looking-in-to-ci-failures">
+<h1>Looking in to CI Failures<a class="headerlink" href="#looking-in-to-ci-failures" title="Permalink to this headline">¶</a></h1>
+<p>Diagnosing CI failures can be tricky. Here are some quick tips and hints for how to diagnose things.</p>
+<div class="section" id="failure-to-bootstrap">
+<h2>Failure to bootstrap<a class="headerlink" href="#failure-to-bootstrap" title="Permalink to this headline">¶</a></h2>
+<p>This sort of failure requires some debugging. Because the network is integral to the bootstrap process, you can’t just assume that bootstrap failure is a flake. Retest-bot will constantly <code class="docutils literal notranslate"><span class="pre">/retest</span></code>, because it’s programmed to do so on bootstrap failure.</p>
+<p>These can be broadly categorized in to</p>
+<div class="section" id="cloud-provider-issues">
+<h3>Cloud-provider issues<a class="headerlink" href="#cloud-provider-issues" title="Permalink to this headline">¶</a></h3>
+<p>These are usually pretty obvious. You’ll see some kind of Terraform issue and an error message complaining about the infrastructure provider. Retest and move on.</p>
+</div>
+<div class="section" id="cno-failures">
+<h3>CNO failures<a class="headerlink" href="#cno-failures" title="Permalink to this headline">¶</a></h3>
+<p>A CNO failure will often be reflected in the ClusterOperator. It may also be printed to you in the CI failure. To diagnose this further, go to the test artifacts and view the cluster-network-operator pod logs.</p>
+</div>
+<div class="section" id="networking-issues">
+<h3>Networking issues<a class="headerlink" href="#networking-issues" title="Permalink to this headline">¶</a></h3>
+<p>If your PR has broken networking, then the bootstrap failure will be more subtle. If it blocks pod creation, then basically every operator will be reporting failure. If pod creation works, but the network is down, then things will be a bit stranger. You’ll see no worker nodes, because the machine-api-operator has failed. The console will fail to start. DNS will be broken, but the DNS operator probably won’t detect this.</p>
+</div>
+<div class="section" id="other-flakes">
+<h3>Other flakes<a class="headerlink" href="#other-flakes" title="Permalink to this headline">¶</a></h3>
+<p>It’s a moving target. Flakes happen. But generally openshift-installer is reliable. You shouldn’t dismiss bootstrap failures as a flake unless you’re sure.</p>
+</div>
+</div>
+<div class="section" id="test-failures">
+<h2>Test failures<a class="headerlink" href="#test-failures" title="Permalink to this headline">¶</a></h2>
+<p>The test suite is, as a whole, flakier. However, there is a daily build-cop who’s job it is to watch over tests and identify flakes, so they don’t tend to last too long.</p>
+<p>The challenge here is to differentiate flakes from bugs. The risk is that we <code class="docutils literal notranslate"><span class="pre">/retest</span></code> our way to a merge, even though we’ve introduced a bug. So, don’t just <code class="docutils literal notranslate"><span class="pre">/retest</span></code> - identify the problem!</p>
+<ol class="simple">
+<li><p>search over previous CI runs to see if the error message is common: <a class="reference external" href="https://search.svc.ci.openshift.org/?search=your+error+message+here&amp;maxAge=336h&amp;context=2&amp;type=junit">https://search.svc.ci.openshift.org/?search=your+error+message+here&amp;maxAge=336h&amp;context=2&amp;type=junit</a></p></li>
+<li><p>If you see a lot of other recent failures, search Bugzilla to see if there is a bug for that error message</p></li>
+<li><p>If you don’t find a bug, ask the buildcop if it’s a known flake.</p></li>
+<li><p>If you don’t see many hits, then you probably broke something. Go on over to <a class="reference internal" href="run_local_e2e.html"><span class="doc">running the tests locally</span></a> and try to reproduce it yourself. Tail the logs of the networking components as you do. Good luck!</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cluster_bot_ci.html" class="btn btn-neutral float-right" title="Using cluster bot to grab new debug information from CI testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="baremetal.html" class="btn btn-neutral float-left" title="Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

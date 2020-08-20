@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Contributor Documentation &mdash; openshift_devel_docs  documentation</title>
+  <title>Getting logs &mdash; openshift_devel_docs  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="So You Want to Contribute…" href="contributing.html" />
-    <link rel="prev" title="OpenShift SDN devel docs" href="../readme.html" /> 
+    <link rel="next" title="How to test SDN OVN development on a Openshift cluster" href="test_sdn_ovn_openshift.html" />
+    <link rel="prev" title="Cluster Network Operator" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,11 +84,17 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributor Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html">So You Want to Contribute…</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor/index.html">Contributor Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cluster Network Operator</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_sdn_ovn_openshift.html">How to test SDN OVN development on a Openshift cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html">Running a local cluster network operator for plugin development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="baremetal.html">Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci_failures.html">Looking in to CI Failures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_bot_ci.html">Using cluster bot to grab new debug information from CI testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html">HOWTO run the e2e test suite locally</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../cno/index.html">Cluster Network Operator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
 </ul>
@@ -137,13 +143,15 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Contributor Documentation</li>
+          <li><a href="index.html">Cluster Network Operator</a> &raquo;</li>
+        
+      <li>Getting logs</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/contributor/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/cno/getting_logs.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -156,21 +164,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="contributor-documentation">
-<h1>Contributor Documentation<a class="headerlink" href="#contributor-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">So You Want to Contribute…</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#communication">Communication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#contacting-the-team">Contacting the Team</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#new-feature-planning">New Feature Planning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#task-tracking">Task Tracking</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#reporting-a-bug">Reporting a Bug</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#getting-your-patch-merged">Getting Your Patch Merged</a></li>
-</ul>
-</li>
-</ul>
-</div>
+  <div class="section" id="getting-logs">
+<h1>Getting logs<a class="headerlink" href="#getting-logs" title="Permalink to this headline">¶</a></h1>
+<ol class="simple">
+<li><p>You create a debug pod with a fedora image on that node <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">debug</span> <span class="pre">--image</span> <span class="pre">fedora:31</span> <span class="pre">node/&lt;node</span> <span class="pre">name&gt;</span></code></p></li>
+<li><p>In a separate terminal session you do: <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">rsync</span> <span class="pre">$DEBUG_POD:/host/$LOCATION_ON_NODE</span> <span class="pre">$LOCATION_ON_YOUR_LOCAL_MACHINE</span></code></p></li>
+</ol>
 </div>
 
 
@@ -181,10 +180,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="contributing.html" class="btn btn-neutral float-right" title="So You Want to Contribute…" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="test_sdn_ovn_openshift.html" class="btn btn-neutral float-right" title="How to test SDN OVN development on a Openshift cluster" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../readme.html" class="btn btn-neutral float-left" title="OpenShift SDN devel docs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Cluster Network Operator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

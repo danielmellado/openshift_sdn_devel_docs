@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Running a local cluster network operator for plugin development &mdash; openshift_devel_docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN" href="baremetal.html" />
+    <link rel="prev" title="How to test SDN OVN development on a Openshift cluster" href="test_sdn_ovn_openshift.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> openshift_devel_docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor/index.html">Contributor Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cluster Network Operator</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_logs.html">Getting logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_sdn_ovn_openshift.html">How to test SDN OVN development on a Openshift cluster</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Running a local cluster network operator for plugin development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-custom-image">Creating a Custom Image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-an-image-repository">Create an image repository</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-custom-ovn-kubernetes-image">Creating a Custom ovn-kubernetes Image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#clone-ovn-kubernetes">Clone ovn-kubernetes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-and-push-the-custom-ovn-kubernetes-image">Build and push the custom ovn-kubernetes image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-downstream-openshift-ovn-kubernetes-with-podman">Using Downstream/OpenShift ovn-kubernetes with podman</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-downstream-openshift-ovn-kubernetes-with-docker">Using Downstream/OpenShift ovn-kubernetes with docker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#download-the-openshift-installer">Download the OpenShift Installer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-your-pull-secrets">Get your Pull Secrets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-the-generic-openshift-pull-secrets">Get the Generic OpenShift pull secrets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-the-openshift-ci-pull-secret">Get the OpenShift CI pull secret</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-the-combined-pull-secret">Using the combined pull secret</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#clone-and-build-the-cluster-network-operator">Clone and build the Cluster Network Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-an-aws-account">Get an AWS account</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-a-gce-account">Get a GCE account</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-hack-run-locally-sh-to-start-a-cluster-with-your-custom-image">Run hack/run-locally.sh to start a cluster with your custom image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#poking-around-your-cluster">Poking around your cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#destroying-your-cluster">Destroying your cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subsequent-cluster-starts">Subsequent cluster starts</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="baremetal.html">Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci_failures.html">Looking in to CI Failures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_bot_ci.html">Using cluster bot to grab new debug information from CI testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html">HOWTO run the e2e test suite locally</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openshift_devel_docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Cluster Network Operator</a> &raquo;</li>
+        
+      <li>Running a local cluster network operator for plugin development</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/cno/cno.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="running-a-local-cluster-network-operator-for-plugin-development">
+<h1>Running a local cluster network operator for plugin development<a class="headerlink" href="#running-a-local-cluster-network-operator-for-plugin-development" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creating-a-custom-image">
+<h2>Creating a Custom Image<a class="headerlink" href="#creating-a-custom-image" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-an-image-repository">
+<h3>Create an image repository<a class="headerlink" href="#create-an-image-repository" title="Permalink to this headline">¶</a></h3>
+<p>You need somewhere to store your custom image that the AWS cluster instance can pull it from. The easiest options are <a class="reference external" href="https://hub.docker.com/">Docker Hub</a> or <a class="reference external" href="https://quay.io/signin/">Quay.io</a>. Create an account. Now create a repository called “ovn-kubernetes”.</p>
+<p>The typical development cni images are for ovn-kubernetes and sdn. ovn upstream is at git&#64;github.com:ovn-org/ovn-kubernetes.git. Downstream is git&#64;github.com:openshift/ovn-kubernetes.git The installer includes images built in downstream. sdn is git&#64;github.com:openshift/sdn</p>
+</div>
+</div>
+<div class="section" id="creating-a-custom-ovn-kubernetes-image">
+<h2>Creating a Custom ovn-kubernetes Image<a class="headerlink" href="#creating-a-custom-ovn-kubernetes-image" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone-ovn-kubernetes">
+<h3>Clone ovn-kubernetes<a class="headerlink" href="#clone-ovn-kubernetes" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">git&#64;github.com:ovn-org/ovn-kubernetes.git</span></code></p></li>
+<li><p>make your changes to the source tree</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">ovn-kubernetes/go-controller</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="build-and-push-the-custom-ovn-kubernetes-image">
+<h3>Build and push the custom ovn-kubernetes image<a class="headerlink" href="#build-and-push-the-custom-ovn-kubernetes-image" title="Permalink to this headline">¶</a></h3>
+<p>Assuming you are working with the <a class="reference external" href="https://github.com/ovn-org/ovn-kubernetes">upstream ovn-kubernetes git repo</a> and using Docker Hub, you can build an image from your ovn-kubernetes changes using the following steps:</p>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">dist/images/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">fedora</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">tag</span> <span class="pre">ovn-kube-f:latest</span> <span class="pre">docker.io/(docker</span> <span class="pre">hub</span> <span class="pre">username)/ovn-kubernetes:latest</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">push</span> <span class="pre">docker.io/(docker</span> <span class="pre">hub</span> <span class="pre">username)/ovn-kubernetes:latest</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="using-downstream-openshift-ovn-kubernetes-with-podman">
+<h3>Using Downstream/OpenShift ovn-kubernetes with podman<a class="headerlink" href="#using-downstream-openshift-ovn-kubernetes-with-podman" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>Create your combined pull secrets as described below</p></li>
+<li><p>Make your changes to your local openshift/ovn-kubernetes repo</p></li>
+<li><p>Push your changes to a new PR</p></li>
+<li><p>Click the ‘details’ link on the prow/images CI job in your PR</p></li>
+<li><p>Refresh until the build log appears, and look for the line <code class="docutils literal notranslate"><span class="pre">Tagged</span> <span class="pre">shared</span> <span class="pre">images</span> <span class="pre">from</span> <span class="pre">ocp/4.4:${component},</span> <span class="pre">images</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">pullable</span> <span class="pre">from</span> <span class="pre">registry.svc.ci.openshift.org/XXXXXXX/stable:${component}</span></code></p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">podman</span> <span class="pre">pull</span> <span class="pre">--authfile</span> <span class="pre">/path/to/combined-pull-secrets</span> <span class="pre">registry.svc.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes</span></code> substituting the right <code class="docutils literal notranslate"><span class="pre">ci-op-xxxx</span></code> namespace from step 5.</p></li>
+<li><p>Push the image to dockerhub with <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">podman</span> <span class="pre">push</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="using-downstream-openshift-ovn-kubernetes-with-docker">
+<h3>Using Downstream/OpenShift ovn-kubernetes with docker<a class="headerlink" href="#using-downstream-openshift-ovn-kubernetes-with-docker" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>Create your combined pull secrets as described below</p></li>
+<li><p>Make your changes to your local openshift/ovn-kubernetes repo</p></li>
+<li><p>Push your changes to a new PR</p></li>
+<li><p>Click the ‘details’ link on the prow/images CI job in your PR</p></li>
+<li><p>Refresh until the build log appears, and look for the line <code class="docutils literal notranslate"><span class="pre">Tagged</span> <span class="pre">shared</span> <span class="pre">images</span> <span class="pre">from</span> <span class="pre">ocp/4.4:${component},</span> <span class="pre">images</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">pullable</span> <span class="pre">from</span> <span class="pre">registry.svc.ci.openshift.org/XXXXXXX/stable:${component}</span></code></p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">registry</span> <span class="pre">login</span></code></p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">login</span> <span class="pre">--username</span> <span class="pre">$(oc</span> <span class="pre">whoami)</span> <span class="pre">--password</span> <span class="pre">$(oc</span> <span class="pre">whoami</span> <span class="pre">-t)</span> <span class="pre">registry.svc.ci.openshift.org</span></code></p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">registry.svc.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes</span></code> substituting the right <code class="docutils literal notranslate"><span class="pre">ci-op-xxxx</span></code> namespace from step 5.</p></li>
+<li><p>Push the image to dockerhub with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">push</span></code></p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="download-the-openshift-installer">
+<h2>Download the OpenShift Installer<a class="headerlink" href="#download-the-openshift-installer" title="Permalink to this headline">¶</a></h2>
+<p>The installer handles cluster creation in AWS, gcp, Azure and more.</p>
+<ol class="simple">
+<li><p>Go to <a class="reference external" href="https://openshift-release.svc.ci.openshift.org/">https://openshift-release.svc.ci.openshift.org/</a> and find an installer in the “4.6” stream that is shown in green (eg, has passed CI).</p></li>
+</ol>
+<p>The selected installer includes installer and client images for Linux and Mac. Always grab both an installer and the related client tools. You will frequently need to upgrade the installer and tools so put them in a convenient directory and add the directory to your $PATH (in ~/.baserc).</p>
+<p>The nightly installers are built with the official OCP images and the ci builds are built with the images that are used in ci testing. Aside from the cluster-network-operator which we will be building and testing, all the images are part of the chosen installer. So if you need a specific image you need an installer that has it.</p>
+<ol class="simple">
+<li><p>Click the “Download the installer” link at the top of the page</p></li>
+<li><p>Wait a while</p></li>
+<li><p>Click the link for the “openshift-install-linux” tarball (eg “openshift-install-linux-4.2.0-0.ci-2019-06-25-135202.tar.gz”) to download it</p></li>
+<li><p>Extract the tarball somewhere for later, like /tmp</p></li>
+</ol>
+</div>
+<div class="section" id="get-your-pull-secrets">
+<h2>Get your Pull Secrets<a class="headerlink" href="#get-your-pull-secrets" title="Permalink to this headline">¶</a></h2>
+<p>Pull Secrets are specific to your user and allow your cluster to download the container images for all the OpenShift components. There are two pull secrets to get: the internal-only OpenShift CI ones (used by some installer bootstrap images) and the general OpenShift Developer secrets. The pull-secrets do change periodically. It’s best to make sure you have the latest pull-secrets before attempting to spawn the cluster if it’s been a few days since you got your pull-secrets updated.</p>
+<div class="section" id="get-the-generic-openshift-pull-secrets">
+<h3>Get the Generic OpenShift pull secrets<a class="headerlink" href="#get-the-generic-openshift-pull-secrets" title="Permalink to this headline">¶</a></h3>
+<p>The generic pull secrets are the same for all clusters. The “AWS” choice is a good as any other.</p>
+<ol class="simple">
+<li><p>go to the <a class="reference external" href="https://cloud.openshift.com/clusters/install#pull-secret">OpenShift portal secrets</a> page</p></li>
+<li><p>Click the big “AWS” box</p></li>
+<li><p>Click the “Installer Provisioned Infrastructure” box</p></li>
+<li><p>Click the “Download Pull Secret” box and save the pull secret to <code class="docutils literal notranslate"><span class="pre">/tmp/pull-secret</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="get-the-openshift-ci-pull-secret">
+<h3>Get the OpenShift CI pull secret<a class="headerlink" href="#get-the-openshift-ci-pull-secret" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>go to <a class="reference external" href="https://api.ci.openshift.org/console/">https://api.ci.openshift.org/console/</a></p></li>
+<li><p>Click the (?) in the upper right</p></li>
+<li><p>click on “Command Line Tools” in the menu that drops down</p></li>
+<li><p>Click the Clipboard icon at the end of the “oc login https://…” box</p></li>
+<li><p>Paste that command from the clipboard into a terminal and run it</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">registry</span> <span class="pre">login</span> <span class="pre">--to=/tmp/pull-secret</span></code> to dump the pull secret to the same file as before</p></li>
+</ol>
+<p>Your CI pull secret is also now in <code class="docutils literal notranslate"><span class="pre">/tmp/pull-secret</span></code> combined with the generic OpenShift pull secrets that we’ll feed to the installer.</p>
+</div>
+<div class="section" id="using-the-combined-pull-secret">
+<h3>Using the combined pull secret<a class="headerlink" href="#using-the-combined-pull-secret" title="Permalink to this headline">¶</a></h3>
+<p>Once we’ve combined the pull secret file you can pass them to the installer when it asks for them.
+simply by copying the output of <code class="docutils literal notranslate"><span class="pre">jq</span> <span class="pre">-c</span> <span class="pre">&lt;</span> <span class="pre">/tmp/pull-secret</span></code></p>
+</div>
+</div>
+<div class="section" id="clone-and-build-the-cluster-network-operator">
+<h2>Clone and build the Cluster Network Operator<a class="headerlink" href="#clone-and-build-the-cluster-network-operator" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">git&#64;github.com:openshift/cluster-network-operator.git</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">cluster-network-operator</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hack/build-go.sh</span></code></p></li>
+</ol>
+<p>Whenever you make changes in the Cluster Network Operator you must <code class="docutils literal notranslate"><span class="pre">hack/build-go.sh</span></code> to include the changes in testing.</p>
+</div>
+<div class="section" id="get-an-aws-account">
+<h2>Get an AWS account<a class="headerlink" href="#get-an-aws-account" title="Permalink to this headline">¶</a></h2>
+<p>https://mojo.redhat.com/docs/DOC-1081313#jive_content_id_Amazon_AWS</p>
+</div>
+<div class="section" id="get-a-gce-account">
+<h2>Get a GCE account<a class="headerlink" href="#get-a-gce-account" title="Permalink to this headline">¶</a></h2>
+<p>https://mojo.redhat.com/docs/DOC-1081313#jive_content_id_GCE
+The Service Account is required the first time you create a GCP cluster. It is cached for subsequent use.</p>
+</div>
+<div class="section" id="run-hack-run-locally-sh-to-start-a-cluster-with-your-custom-image">
+<h2>Run hack/run-locally.sh to start a cluster with your custom image<a class="headerlink" href="#run-hack-run-locally-sh-to-start-a-cluster-with-your-custom-image" title="Permalink to this headline">¶</a></h2>
+<p>The first time you run the installer it will ask a series of questions. One of the questions is the cluster host. When it is done there will be an ‘install-config.yaml.bak.XXXXXX’ file in the cluster temporary directory that you give to hack/run-locally.sh. You can copy this ‘install-config.yaml.bak.XXXXX’ file and pass it to hack/run-locally.sh to save steps next time.</p>
+<p>The installer puts its work files in a supplied directory (which it will create if not present). Otherwise, it puts them in the current directory.</p>
+<p>The default cni plugin is sdn. The -n option can be used to select ovn.</p>
+<ol class="simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">hack/run-locally.sh</span> <span class="pre">-c</span> <span class="pre">(cluster</span> <span class="pre">temp</span> <span class="pre">dir)</span> <span class="pre">-n</span> <span class="pre">ovn</span> <span class="pre">-m</span> <span class="pre">docker.io/(docker</span> <span class="pre">hub</span> <span class="pre">username)/ovn-kubernetes:latest</span></code> and substitute as necessary.</p></li>
+<li><p>hack/run-locally.sh runs the openshift-installer for you, so now you get to answer some questions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SSH</span> <span class="pre">Public</span> <span class="pre">Key</span></code> - this allows you to SSH to the bootstrap node for debugging; pick one.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Platform</span></code> - pick AWS or gcp</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Region</span></code> - pick something close to you (the default selection tends to get oversubscribed)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Base</span> <span class="pre">Domain</span></code> - pick devcluster.openshift.com</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cluster</span> <span class="pre">Name</span></code> - pick something unique like “dcbw-ovntest”. (It should start with your redhat username).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Pull</span> <span class="pre">Secret</span></code> - Paste the contents of <code class="docutils literal notranslate"><span class="pre">/tmp/combined-pull-secrets</span></code> that we created earlier</p></li>
+<li><p>Your install-config.yaml.bak.XXXXX file will now be in your (cluster temp dir). Copy this file somewhere for future use.</p></li>
+</ol>
+<p>It is convenient to put the kubeconfig into the KUBECONFIG environment variable. This eliminates the need for the –config option. <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">KUBECONFIG=/(cluster</span> <span class="pre">temp</span> <span class="pre">dir)/auth/kubeconfig</span></code></p>
+</div>
+<div class="section" id="poking-around-your-cluster">
+<h2>Poking around your cluster<a class="headerlink" href="#poking-around-your-cluster" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>You can <code class="docutils literal notranslate"><span class="pre">tail</span> <span class="pre">-f</span> <span class="pre">/(cluster</span> <span class="pre">temp</span> <span class="pre">dir)/.openshift-install.log</span></code> to watch progress. After it says “</p></li>
+<li><p>List pods: <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">--all-namespaces</span></code> and look for ovn-kubernetes related pods. You should see them running.</p></li>
+<li><p>Get logs from ovn-kubernetes: <code class="docutils literal notranslate"><span class="pre">/path/to/oc</span> <span class="pre">--config</span> <span class="pre">/(cluster</span> <span class="pre">temp</span> <span class="pre">dir)/auth/kubeconfig</span> <span class="pre">logs</span> <span class="pre">-n</span> <span class="pre">openshift-ovn-kubernetes</span> <span class="pre">(ovn-kubernetes</span> <span class="pre">pod</span> <span class="pre">name)</span></code> and it will yell at you to pick a container. Pick one and repeat the previous command but add <code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">(container</span> <span class="pre">name)</span></code> to the end to get the logs.</p></li>
+</ol>
+<p>AWS cluster:
+You can SSH to the bootstrap node if things don’t seem to be coming up after a while. Look in <code class="docutils literal notranslate"><span class="pre">/(cluster</span> <span class="pre">temp</span> <span class="pre">dir)/terraform.tfstate</span></code> for the <code class="docutils literal notranslate"><span class="pre">aws_instance</span></code> type with the name “bootstrap”. About 20 lines below you’ll see “public_ip”; copy that IP and <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-i</span> <span class="pre">/path/to/openshift-dev.pem</span> <span class="pre">core&#64;(public</span> <span class="pre">IP)</span></code>. You get <code class="docutils literal notranslate"><span class="pre">openshift-dev.pem</span></code> from the <a class="reference external" href="https://github.com/openshift/shared-secrets">shared secrets</a> repository. Then <code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">-b</span> <span class="pre">-f</span> <span class="pre">-u</span> <span class="pre">bootkube.service</span></code> and take a look at the errors.</p>
+<p>GCP cluster:
+You can SSH to the bootstrap node if things don’t seem to be coming up after a while. Look in <code class="docutils literal notranslate"><span class="pre">/(cluster</span> <span class="pre">temp</span> <span class="pre">dir)/terraform.tfstate</span></code> for the first <code class="docutils literal notranslate"><span class="pre">&quot;access_config&quot;:</span></code> a few lines below is <code class="docutils literal notranslate"><span class="pre">&quot;nat_ip&quot;:</span> <span class="pre">&quot;35.221.35.206&quot;</span> <span class="pre">which</span> <span class="pre">is</span> <span class="pre">the</span> <span class="pre">public</span> <span class="pre">IP</span> <span class="pre">address</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">bootstrap</span> <span class="pre">node.</span> </code>ssh -i ~/.ssh/(rsa key)/ core&#64;(public IP)`</p>
+<p>On the bootstrap node, <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">get</span> <span class="pre">nodes</span> <span class="pre">-o</span> <span class="pre">wide</span></code> shows the internal IP of the nodes. Copy the rsa key you selected in the cluster create into <code class="docutils literal notranslate"><span class="pre">~/.ssh</span></code>
+From the bootstrap node you can ssh into the master nodes <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-i</span> <span class="pre">\(rsa</span> <span class="pre">key)\</span> <span class="pre">core&#64;\(internal</span> <span class="pre">node</span> <span class="pre">ip)\</span></code></p>
+</div>
+<div class="section" id="destroying-your-cluster">
+<h2>Destroying your cluster<a class="headerlink" href="#destroying-your-cluster" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Ctrl+C hack/run-locally.sh</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">/path/to/openshift-install</span> <span class="pre">--dir</span> <span class="pre">(cluster</span> <span class="pre">temp</span> <span class="pre">dir)</span> <span class="pre">destroy</span> <span class="pre">cluster</span></code></p></li>
+<li><p>Wait a long time</p></li>
+</ol>
+</div>
+<div class="section" id="subsequent-cluster-starts">
+<h2>Subsequent cluster starts<a class="headerlink" href="#subsequent-cluster-starts" title="Permalink to this headline">¶</a></h2>
+<p>Since you cached the install-config you can save yourself a lot of time. Now all you need to do is:</p>
+<ol class="simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">PATH=/path/to/oc:$PATH</span> <span class="pre">hack/run-locally.sh</span> <span class="pre">-c</span> <span class="pre">(cluster</span> <span class="pre">temp</span> <span class="pre">dir)</span> <span class="pre">-i</span> <span class="pre">/path/to/openshift-install</span> <span class="pre">-n</span> <span class="pre">ovn</span> <span class="pre">-m</span> <span class="pre">docker.io/(docker</span> <span class="pre">hub</span> <span class="pre">username)/ovn-kubernetes:latest</span> <span class="pre">-f</span> <span class="pre">/path/to/install-config.yaml</span></code> and substitute as necessary.</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="baremetal.html" class="btn btn-neutral float-right" title="Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="test_sdn_ovn_openshift.html" class="btn btn-neutral float-left" title="How to test SDN OVN development on a Openshift cluster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

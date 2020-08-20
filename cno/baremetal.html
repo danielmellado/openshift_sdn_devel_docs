@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN &mdash; openshift_devel_docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Looking in to CI Failures" href="ci_failures.html" />
+    <link rel="prev" title="Running a local cluster network operator for plugin development" href="cno.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> openshift_devel_docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor/index.html">Contributor Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cluster Network Operator</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_logs.html">Getting logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_sdn_ovn_openshift.html">How to test SDN OVN development on a Openshift cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html">Running a local cluster network operator for plugin development</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deploying-kubernetes-on-bare-metal">Deploying Kubernetes on bare metal.</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#standing-up-a-simulated-bare-metal-cluster-using-dev-scripts">Standing up a simulated bare metal cluster using dev-scripts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#red-hat-document-about-manually-standing-up-open-shift-on-bare-metal">Red Hat document about manually standing up Open Shift on bare metal.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deploying-openshift-on-bare-metal-on-user-provisioned-infrastructure-upi-introduced-in-ocp-4-0">Deploying OpenShift on Bare Metal on User Provisioned Infrastructure (UPI) introduced in OCP 4.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ci_failures.html">Looking in to CI Failures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_bot_ci.html">Using cluster bot to grab new debug information from CI testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html">HOWTO run the e2e test suite locally</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openshift_devel_docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Cluster Network Operator</a> &raquo;</li>
+        
+      <li>Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/cno/baremetal.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="information-about-deploying-bare-metal-clusters-for-kubernetes-open-shift-and-k-ovn">
+<h1>Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN<a class="headerlink" href="#information-about-deploying-bare-metal-clusters-for-kubernetes-open-shift-and-k-ovn" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="deploying-kubernetes-on-bare-metal">
+<h2>Deploying Kubernetes on bare metal.<a class="headerlink" href="#deploying-kubernetes-on-bare-metal" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="standing-up-a-simulated-bare-metal-cluster-using-dev-scripts">
+<h3>Standing up a simulated bare metal cluster using dev-scripts<a class="headerlink" href="#standing-up-a-simulated-bare-metal-cluster-using-dev-scripts" title="Permalink to this headline">¶</a></h3>
+<p>dev-scripts is a collection of bash scripts and ansible code on github to deploy a kubernetes simulated bare metal cluster. The cluster is deployed on a bare metal server. the cluster is deployed
+with k-OVN.
+Each of the master and worker nodes are actually VMs each of which is running on the BM host.</p>
+<p><a class="reference external" href="https://github.com/openshift-metal3/dev-scripts">Dev Scripts on git hub.</a></p>
+<p><a class="reference external" href="https://docs.google.com/document/d/1F2Uh0lq-iAt0Qh9edmB3zyWnQBncYeNGpurq3YM31jc/edit#">Google doc on using dev-scripts to deploy cluster.</a></p>
+</div>
+<div class="section" id="red-hat-document-about-manually-standing-up-open-shift-on-bare-metal">
+<h3>Red Hat document about manually standing up Open Shift on bare metal.<a class="headerlink" href="#red-hat-document-about-manually-standing-up-open-shift-on-bare-metal" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="deploying-openshift-on-bare-metal-on-user-provisioned-infrastructure-upi-introduced-in-ocp-4-0">
+<h3>Deploying OpenShift on Bare Metal on User Provisioned Infrastructure (UPI) introduced in OCP 4.0<a class="headerlink" href="#deploying-openshift-on-bare-metal-on-user-provisioned-infrastructure-upi-introduced-in-ocp-4-0" title="Permalink to this headline">¶</a></h3>
+<p>This method provisions a cluster including both bare metal nodes and VM nodes.
+It is a Red Hat document on how to providion Open Shift 4 on UPI (User Provisioned Infrastructure)</p>
+<p><a class="reference external" href="https://blog.openshift.com/deploying-a-upi-environment-for-openshift-4-1-on-vms-and-bare-metal/">Deploying a UPI Environment for Openshift 4.1 on VMS and Bare Meta.</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ci_failures.html" class="btn btn-neutral float-right" title="Looking in to CI Failures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cno.html" class="btn btn-neutral float-left" title="Running a local cluster network operator for plugin development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

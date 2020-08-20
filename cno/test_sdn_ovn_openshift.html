@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How to test SDN OVN development on a Openshift cluster &mdash; openshift_devel_docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running a local cluster network operator for plugin development" href="cno.html" />
+    <link rel="prev" title="Getting logs" href="getting_logs.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> openshift_devel_docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor/index.html">Contributor Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cluster Network Operator</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_logs.html">Getting logs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to test SDN OVN development on a Openshift cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html">Running a local cluster network operator for plugin development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="baremetal.html">Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci_failures.html">Looking in to CI Failures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_bot_ci.html">Using cluster bot to grab new debug information from CI testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html">HOWTO run the e2e test suite locally</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openshift_devel_docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Cluster Network Operator</a> &raquo;</li>
+        
+      <li>How to test SDN OVN development on a Openshift cluster</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/cno/test_sdn_ovn_openshift.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-to-test-sdn-ovn-development-on-a-openshift-cluster">
+<h1>How to test SDN OVN development on a Openshift cluster<a class="headerlink" href="#how-to-test-sdn-ovn-development-on-a-openshift-cluster" title="Permalink to this headline">¶</a></h1>
+<p>Here you’ll find resources for creating a DEV version of any OVN image and subsequently using that with <code class="docutils literal notranslate"><span class="pre">hack/run-locally.sh</span></code> to deploy your DEV image on a running OCP cluster. This document details the procedure for OVN, but the changes needed to make this work with SDN should be quite small.</p>
+<p>You will need the following script to build a custom DEV image with any on-going work in either <code class="docutils literal notranslate"><span class="pre">openshift/ovn-kubernetes</span></code> or <code class="docutils literal notranslate"><span class="pre">ovn-org/ovn-kubernetes</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">hack.sh</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+
+set -ex
+
+serial=$(uuidgen)
+
+cd go-controller
+make
+cd ../local
+cp -r ../go-controller/_output/go/bin/* ./
+
+buildah build-using-dockerfile -t &quot;quay.io/${QUAY_USER_NAME}/${QUAY_PUBLIC_PROJECT}:${serial}&quot; -f Dockerfile.hack .
+buildah push &quot;quay.io/${QUAY_USER_NAME}/${QUAY_PUBLIC_PROJECT}:${serial}&quot;
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Dockerfile.hack</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">quay</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">openshift</span><span class="o">/</span><span class="n">origin</span><span class="o">-</span><span class="n">ovn</span><span class="o">-</span><span class="n">kubernetes</span><span class="p">:</span><span class="mf">4.5</span>
+
+<span class="n">COPY</span> <span class="n">ovnkube</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span>
+<span class="n">COPY</span> <span class="n">ovn</span><span class="o">-</span><span class="n">k8s</span><span class="o">-</span><span class="n">cni</span><span class="o">-</span><span class="n">overlay</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">libexec</span><span class="o">/</span><span class="n">cni</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">k8s</span><span class="o">-</span><span class="n">cni</span><span class="o">-</span><span class="n">overlay</span>
+</pre></div>
+</div>
+<p>Remember to swap out the <code class="docutils literal notranslate"><span class="pre">quay.io/openshift/origin-ovn-kubernetes:4.5</span></code> with the release version your DEV work corresponds to.</p>
+<p>Once you’ve created a DEV version of your code and pushed that image to the image repository of your choosing, you can execute the following in the CNO to have them run on your OCP cluster:</p>
+<p><code class="docutils literal notranslate"><span class="pre">./hack/run-locally.sh</span> <span class="pre">-e</span></code></p>
+<p>That will write a file on your file system containing the environment variables the CNO uses to deploy the networking stack on the OCP cluster you’ve created.</p>
+<p>Change the <code class="docutils literal notranslate"><span class="pre">OVN_IMAGE</span></code> or <code class="docutils literal notranslate"><span class="pre">SDN_IMAGE</span></code> to your DEV image name, then run:</p>
+<p><code class="docutils literal notranslate"><span class="pre">./hack/run-locally.sh</span></code></p>
+<p>The CNO should now be rolling out the DEV version on your cluster</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cno.html" class="btn btn-neutral float-right" title="Running a local cluster network operator for plugin development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_logs.html" class="btn btn-neutral float-left" title="Getting logs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

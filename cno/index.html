@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cluster Network Operator &mdash; openshift_devel_docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Getting logs" href="getting_logs.html" />
+    <link rel="prev" title="So You Want to Contribute…" href="../contributor/contributing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> openshift_devel_docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor/index.html">Contributor Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Cluster Network Operator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_logs.html">Getting logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_sdn_ovn_openshift.html">How to test SDN OVN development on a Openshift cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html">Running a local cluster network operator for plugin development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="baremetal.html">Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci_failures.html">Looking in to CI Failures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_bot_ci.html">Using cluster bot to grab new debug information from CI testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html">HOWTO run the e2e test suite locally</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openshift_devel_docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Cluster Network Operator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/cno/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cluster-network-operator">
+<h1>Cluster Network Operator<a class="headerlink" href="#cluster-network-operator" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_logs.html">Getting logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_sdn_ovn_openshift.html">How to test SDN OVN development on a Openshift cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cno.html">Running a local cluster network operator for plugin development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#creating-a-custom-image">Creating a Custom Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#creating-a-custom-ovn-kubernetes-image">Creating a Custom ovn-kubernetes Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#download-the-openshift-installer">Download the OpenShift Installer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#get-your-pull-secrets">Get your Pull Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#clone-and-build-the-cluster-network-operator">Clone and build the Cluster Network Operator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#get-an-aws-account">Get an AWS account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#get-a-gce-account">Get a GCE account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#run-hack-run-locally-sh-to-start-a-cluster-with-your-custom-image">Run hack/run-locally.sh to start a cluster with your custom image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#poking-around-your-cluster">Poking around your cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#destroying-your-cluster">Destroying your cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cno.html#subsequent-cluster-starts">Subsequent cluster starts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="baremetal.html">Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="baremetal.html#deploying-kubernetes-on-bare-metal">Deploying Kubernetes on bare metal.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ci_failures.html">Looking in to CI Failures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ci_failures.html#failure-to-bootstrap">Failure to bootstrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci_failures.html#test-failures">Test failures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cluster_bot_ci.html">Using cluster bot to grab new debug information from CI testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cluster_bot_ci.html#cluster-bot">Cluster-bot</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="run_local_e2e.html">HOWTO run the e2e test suite locally</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html#running-a-single-test">Running a single test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html#gcp-credentials">GCP credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_local_e2e.html#running-a-test-suite">Running a test suite</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getting_logs.html" class="btn btn-neutral float-right" title="Getting logs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../contributor/contributing.html" class="btn btn-neutral float-left" title="So You Want to Contribute…" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
