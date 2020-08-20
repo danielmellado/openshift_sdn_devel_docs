@@ -1,27 +1,33 @@
-Running a local cluster network operator for plugin development
-===============================================================
+# Running a local cluster network operator for plugin development
 
 ## Creating a Custom Image
+
 ### Create an image repository
+
 You need somewhere to store your custom image that the AWS cluster instance can pull it from. The easiest options are [Docker Hub](https://hub.docker.com/) or [Quay.io](https://quay.io/signin/). Create an account. Now create a repository called "ovn-kubernetes".
 
 The typical development cni images are for ovn-kubernetes and sdn. ovn upstream is at git@github.com:ovn-org/ovn-kubernetes.git. Downstream is git@github.com:openshift/ovn-kubernetes.git The installer includes images built in downstream. sdn is git@github.com:openshift/sdn
 
 ## Creating a Custom ovn-kubernetes Image
+
 ### Clone ovn-kubernetes
+
 1. `git clone git@github.com:ovn-org/ovn-kubernetes.git`
 2. make your changes to the source tree
 3. `cd ovn-kubernetes/go-controller`
 4. `make`
 
 ### Build and push the custom ovn-kubernetes image
+
 Assuming you are working with the [upstream ovn-kubernetes git repo](https://github.com/ovn-org/ovn-kubernetes) and using Docker Hub, you can build an image from your ovn-kubernetes changes using the following steps:
+
 1. `cd dist/images/`
 2. `make fedora`
 3. `docker tag ovn-kube-f:latest docker.io/(docker hub username)/ovn-kubernetes:latest`
 4. `docker push docker.io/(docker hub username)/ovn-kubernetes:latest`
 
 ### Using Downstream/OpenShift ovn-kubernetes with podman
+
 1. Create your combined pull secrets as described below
 2. Make your changes to your local openshift/ovn-kubernetes repo
 3. Push your changes to a new PR
@@ -31,6 +37,7 @@ Assuming you are working with the [upstream ovn-kubernetes git repo](https://git
 7. Push the image to dockerhub with `sudo podman push`
 
 ### Using Downstream/OpenShift ovn-kubernetes with docker
+
 1. Create your combined pull secrets as described below
 2. Make your changes to your local openshift/ovn-kubernetes repo
 3. Push your changes to a new PR
@@ -38,14 +45,16 @@ Assuming you are working with the [upstream ovn-kubernetes git repo](https://git
 5. Refresh until the build log appears, and look for the line `Tagged shared images from ocp/4.4:${component}, images will be pullable from registry.svc.ci.openshift.org/XXXXXXX/stable:${component}`
 6. Run `oc registry login`
 7. Run `docker login --username $(oc whoami) --password $(oc whoami -t) registry.svc.ci.openshift.org`
-6. Run `docker pull registry.svc.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes` substituting the right `ci-op-xxxx` namespace from step 5.
-7. Push the image to dockerhub with `docker push`
+8. Run `docker pull registry.svc.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes` substituting the right `ci-op-xxxx` namespace from step 5.
+9. Push the image to dockerhub with `docker push`
 
 ## Download the OpenShift Installer
+
 The installer handles cluster creation in AWS, gcp, Azure and more.
+
 1. Go to [https://openshift-release.svc.ci.openshift.org/](https://openshift-release.svc.ci.openshift.org/) and find an installer in the "4.6" stream that is shown in green (eg, has passed CI).
 
-The selected installer includes installer and client images for Linux and Mac. Always grab both an installer and the related client tools. You will frequently need to upgrade the installer and tools so put them in a convenient directory and add the directory to your $PATH (in ~/.baserc).
+The selected installer includes installer and client images for Linux and Mac. Always grab both an installer and the related client tools. You will frequently need to upgrade the installer and tools so put them in a convenient directory and add the directory to your \$PATH (in ~/.baserc).
 
 The nightly installers are built with the official OCP images and the ci builds are built with the images that are used in ci testing. Aside from the cluster-network-operator which we will be building and testing, all the images are part of the chosen installer. So if you need a specific image you need an installer that has it.
 
@@ -55,30 +64,36 @@ The nightly installers are built with the official OCP images and the ci builds 
 5. Extract the tarball somewhere for later, like /tmp
 
 ## Get your Pull Secrets
+
 Pull Secrets are specific to your user and allow your cluster to download the container images for all the OpenShift components. There are two pull secrets to get: the internal-only OpenShift CI ones (used by some installer bootstrap images) and the general OpenShift Developer secrets. The pull-secrets do change periodically. It's best to make sure you have the latest pull-secrets before attempting to spawn the cluster if it's been a few days since you got your pull-secrets updated.
 
 ### Get the Generic OpenShift pull secrets
+
 The generic pull secrets are the same for all clusters. The "AWS" choice is a good as any other.
+
 1. go to the [OpenShift portal secrets](https://cloud.openshift.com/clusters/install#pull-secret) page
 2. Click the big "AWS" box
 3. Click the "Installer Provisioned Infrastructure" box
 4. Click the "Download Pull Secret" box and save the pull secret to `/tmp/pull-secret`
 
 ### Get the OpenShift CI pull secret
+
 1. go to [https://api.ci.openshift.org/console/](https://api.ci.openshift.org/console/)
 2. Click the (?) in the upper right
 3. click on "Command Line Tools" in the menu that drops down
 4. Click the Clipboard icon at the end of the "oc login https://..." box
 5. Paste that command from the clipboard into a terminal and run it
-5. Run `oc registry login --to=/tmp/pull-secret` to dump the pull secret to the same file as before
+6. Run `oc registry login --to=/tmp/pull-secret` to dump the pull secret to the same file as before
 
 Your CI pull secret is also now in `/tmp/pull-secret` combined with the generic OpenShift pull secrets that we'll feed to the installer.
 
 ### Using the combined pull secret
+
 Once we've combined the pull secret file you can pass them to the installer when it asks for them.
 simply by copying the output of `jq -c < /tmp/pull-secret`
 
 ## Clone and build the Cluster Network Operator
+
 1. `git clone git@github.com:openshift/cluster-network-operator.git`
 2. `cd cluster-network-operator`
 3. `hack/build-go.sh`
@@ -86,13 +101,16 @@ simply by copying the output of `jq -c < /tmp/pull-secret`
 Whenever you make changes in the Cluster Network Operator you must `hack/build-go.sh` to include the changes in testing.
 
 ## Get an AWS account
+
 https://mojo.redhat.com/docs/DOC-1081313#jive_content_id_Amazon_AWS
 
 ## Get a GCE account
+
 https://mojo.redhat.com/docs/DOC-1081313#jive_content_id_GCE
 The Service Account is required the first time you create a GCP cluster. It is cached for subsequent use.
 
 ## Run hack/run-locally.sh to start a cluster with your custom image
+
 The first time you run the installer it will ask a series of questions. One of the questions is the cluster host. When it is done there will be an 'install-config.yaml.bak.XXXXXX' file in the cluster temporary directory that you give to hack/run-locally.sh. You can copy this 'install-config.yaml.bak.XXXXX' file and pass it to hack/run-locally.sh to save steps next time.
 
 The installer puts its work files in a supplied directory (which it will create if not present). Otherwise, it puts them in the current directory.
@@ -112,6 +130,7 @@ The default cni plugin is sdn. The -n option can be used to select ovn.
 It is convenient to put the kubeconfig into the KUBECONFIG environment variable. This eliminates the need for the --config option. `export KUBECONFIG=/(cluster temp dir)/auth/kubeconfig`
 
 ## Poking around your cluster
+
 1. You can `tail -f /(cluster temp dir)/.openshift-install.log` to watch progress. After it says "
 2. List pods: `oc get pods --all-namespaces` and look for ovn-kubernetes related pods. You should see them running.
 3. Get logs from ovn-kubernetes: `/path/to/oc --config /(cluster temp dir)/auth/kubeconfig logs -n openshift-ovn-kubernetes (ovn-kubernetes pod name)` and it will yell at you to pick a container. Pick one and repeat the previous command but add `-c (container name)` to the end to get the logs.
@@ -120,16 +139,19 @@ AWS cluster:
 You can SSH to the bootstrap node if things don't seem to be coming up after a while. Look in `/(cluster temp dir)/terraform.tfstate` for the `aws_instance` type with the name "bootstrap". About 20 lines below you'll see "public_ip"; copy that IP and `ssh -i /path/to/openshift-dev.pem core@(public IP)`. You get `openshift-dev.pem` from the [shared secrets](https://github.com/openshift/shared-secrets) repository. Then `journalctl -b -f -u bootkube.service` and take a look at the errors.
 
 GCP cluster:
-You can SSH to the bootstrap node if things don't seem to be coming up after a while. Look in `/(cluster temp dir)/terraform.tfstate` for the first `"access_config":` a few lines below is `"nat_ip": "35.221.35.206" which is the public IP address of the bootstrap node. `ssh -i ~/.ssh/\(rsa key)/ core@(public IP)`
+You can SSH to the bootstrap node if things don't seem to be coming up after a while. Look in `/(cluster temp dir)/terraform.tfstate` for the first `"access_config":` a few lines below is `"nat_ip": "35.221.35.206" which is the public IP address of the bootstrap node.`ssh -i ~/.ssh/\(rsa key)/ core@(public IP)`
 
 On the bootstrap node, `oc get nodes -o wide` shows the internal IP of the nodes. Copy the rsa key you selected in the cluster create into `~/.ssh`
 From the bootstrap node you can ssh into the master nodes `ssh -i \(rsa key)\ core@\(internal node ip)\`
 
 ## Destroying your cluster
+
 1. Ctrl+C hack/run-locally.sh
 2. Run `/path/to/openshift-install --dir (cluster temp dir) destroy cluster`
 3. Wait a long time
 
 ## Subsequent cluster starts
+
 Since you cached the install-config you can save yourself a lot of time. Now all you need to do is:
+
 1. Run `PATH=/path/to/oc:$PATH hack/run-locally.sh -c (cluster temp dir) -i /path/to/openshift-install -n ovn -m docker.io/(docker hub username)/ovn-kubernetes:latest -f /path/to/install-config.yaml` and substitute as necessary.
