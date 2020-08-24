@@ -18,7 +18,7 @@ Create the image
 
 .. code-block:: shell-session
 
-  $make build-image-sdn-test
+  $ make build-image-sdn-test
 
 This will call podman under the hood and it'll create an image with your
 changes for openshift/sdn
