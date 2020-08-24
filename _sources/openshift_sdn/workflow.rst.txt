@@ -28,7 +28,7 @@ Push your image to quay.io
 
 .. code-block:: shell-session
 
-  [dmellado@fedora  sdn(fix_nodeinformer)]$ podman push sdn-test quay.io/<your_quay_user>/sdn-test:latest
+  $ podman push sdn-test quay.io/<your_quay_user>/sdn-test:latest
   Getting image source signatures
   Copying blob 5d372c8d2def done
   Copying blob f8c626b0e778 done
