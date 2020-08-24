@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Development Workflow &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cluster Network Operator" href="../cno/index.html" />
+    <link rel="prev" title="OpenShift SDN" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor/index.html">Contributor Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">OpenShift SDN</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Development Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get-the-code">Get the code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#do-your-changes">Do your changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-image">Create the image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#push-your-image-to-quay-io">Push your image to quay.io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deploy-a-cluster-with-your-changes">Deploy a cluster with your changes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-cluster-network-operator">Using Cluster Network Operator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-cluster-bot">Using Cluster-Bot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">OpenShift SDN</a> &raquo;</li>
+        
+      <li>Development Workflow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/openshift_sdn/workflow.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="development-workflow">
+<h1>Development Workflow<a class="headerlink" href="#development-workflow" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="get-the-code">
+<h2>Get the code<a class="headerlink" href="#get-the-code" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span>git clone https://github.com/openshift/openshift-sdn.git
+<span class="gp">$</span>git clone https://github.com/openshift/cluster-network-operator.git
+</pre></div>
+</div>
+</div>
+<div class="section" id="do-your-changes">
+<h2>Do your changes<a class="headerlink" href="#do-your-changes" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="create-the-image">
+<h2>Create the image<a class="headerlink" href="#create-the-image" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span>make build-image-sdn-test
+</pre></div>
+</div>
+<p>This will call podman under the hood and it’ll create an image with your
+changes for openshift/sdn</p>
+</div>
+<div class="section" id="push-your-image-to-quay-io">
+<h2>Push your image to quay.io<a class="headerlink" href="#push-your-image-to-quay-io" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">[dmellado@fedora  sdn(fix_nodeinformer)]$</span> podman push sdn-test quay.io/&lt;your_quay_user&gt;/sdn-test:latest
+<span class="go">Getting image source signatures</span>
+<span class="go">Copying blob 5d372c8d2def done</span>
+<span class="go">Copying blob f8c626b0e778 done</span>
+<span class="go">Copying blob 660ab9198463 done</span>
+<span class="go">Copying blob 9ed8d791092a done</span>
+<span class="go">Copying blob b174dfe5972b done</span>
+<span class="go">Copying blob 0ccfac04663b skipped: already exists</span>
+<span class="go">Copying blob 577bed1928c2 done</span>
+<span class="go">Copying blob d2af519c9d8e done</span>
+<span class="go">Copying blob 25cd2a8f7dec done</span>
+<span class="go">Copying blob 08fc1691d013 done</span>
+<span class="go">Copying blob 95b8292eb455 done</span>
+<span class="go">Copying config cff2b47201 done</span>
+<span class="go">Writing manifest to image destination</span>
+<span class="go">Copying config cff2b47201 [--------------------------------------] 0.0b / 4.5KiB</span>
+<span class="go">Writing manifest to image destination</span>
+<span class="go">Writing manifest to image destination</span>
+<span class="go">Storing signatures</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deploy-a-cluster-with-your-changes">
+<h2>Deploy a cluster with your changes<a class="headerlink" href="#deploy-a-cluster-with-your-changes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-cluster-network-operator">
+<h3>Using Cluster Network Operator<a class="headerlink" href="#using-cluster-network-operator" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Create a directory for your deployment</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span>mkdir /tmp/deployment
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Get your openshift-install binary and your pull-secrets</p></li>
+<li><p>Go to your Cluster Network Operator (CNO) Directory</p></li>
+<li><p>Run hack/run-locally</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">hack/run-locally.sh -i &lt;your_openshift_install_path&gt; -c &lt;your_install_directory&gt; -n &lt;sdn|ovn&gt; -m &lt;your_quay_image_path&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="using-cluster-bot">
+<h3>Using Cluster-Bot<a class="headerlink" href="#using-cluster-bot" title="Permalink to this headline">¶</a></h3>
+<p>This assumes you already have a PR around, and access to cluster-bot under the
+CoreOS Slack channel.</p>
+<p>Just query cluster-bot and send him a message with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">launch</span> <span class="n">openshift</span><span class="o">/</span><span class="n">sdn</span><span class="c1">#&lt;PR_NUMBER&gt; aws</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cno/index.html" class="btn btn-neutral float-right" title="Cluster Network Operator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="OpenShift SDN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
