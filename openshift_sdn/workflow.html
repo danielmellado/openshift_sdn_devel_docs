@@ -180,8 +180,8 @@
 <h1>Development Workflow<a class="headerlink" href="#development-workflow" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="get-the-code">
 <h2>Get the code<a class="headerlink" href="#get-the-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span>git clone https://github.com/openshift/openshift-sdn.git
-<span class="gp">$</span>git clone https://github.com/openshift/cluster-network-operator.git
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/openshift/openshift-sdn.git
+<span class="gp">$</span> git clone https://github.com/openshift/cluster-network-operator.git
 </pre></div>
 </div>
 </div>
@@ -229,7 +229,7 @@ changes for openshift/sdn</p>
 <li><p>Create a directory for your deployment</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span>mkdir /tmp/deployment
+<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir /tmp/deployment
 </pre></div>
 </div>
 </div></blockquote>
@@ -239,7 +239,7 @@ changes for openshift/sdn</p>
 <li><p>Run hack/run-locally</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">hack/run-locally.sh -i &lt;your_openshift_install_path&gt; -c &lt;your_install_directory&gt; -n &lt;sdn|ovn&gt; -m &lt;your_quay_image_path&gt;</span>
+<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> hack/run-locally.sh -i &lt;your_openshift_install_path&gt; -c &lt;your_install_directory&gt; -n &lt;sdn<span class="p">|</span>ovn&gt; -m &lt;your_quay_image_path&gt;
 </pre></div>
 </div>
 </div></blockquote>
@@ -275,7 +275,7 @@ CoreOS Slack channel.</p>
 <h2>Destroying your cluster once you’re done<a class="headerlink" href="#destroying-your-cluster-once-you-re-done" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="using-openshift-installer">
 <h3>Using Openshift Installer<a class="headerlink" href="#using-openshift-installer" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">./openshift-install destroy cluster --dir &lt;your_install_directory&gt;</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> openshift-install destroy cluster --dir &lt;your_install_directory&gt;
 </pre></div>
 </div>
 </div>

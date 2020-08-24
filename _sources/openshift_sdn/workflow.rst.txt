@@ -7,8 +7,8 @@ Get the code
 
 .. code-block:: shell-session
 
-  $git clone https://github.com/openshift/openshift-sdn.git
-  $git clone https://github.com/openshift/cluster-network-operator.git
+  $ git clone https://github.com/openshift/openshift-sdn.git
+  $ git clone https://github.com/openshift/cluster-network-operator.git
 
 Do your changes
 ---------------
@@ -58,7 +58,7 @@ Using Cluster Network Operator
 
   .. code-block:: shell-session
 
-    $mkdir /tmp/deployment
+    $ mkdir /tmp/deployment
 
 
  2. Get your openshift-install binary and your pull-secrets
@@ -69,7 +69,7 @@ Using Cluster Network Operator
 
   .. code-block:: shell-session
 
-    hack/run-locally.sh -i <your_openshift_install_path> -c <your_install_directory> -n <sdn|ovn> -m <your_quay_image_path>
+    $ hack/run-locally.sh -i <your_openshift_install_path> -c <your_install_directory> -n <sdn|ovn> -m <your_quay_image_path>
 
 Using Cluster-Bot
 ~~~~~~~~~~~~~~~~~
@@ -106,7 +106,7 @@ Using Openshift Installer
 
 .. code-block:: shell-session
 
-  ./openshift-install destroy cluster --dir <your_install_directory>
+  $ openshift-install destroy cluster --dir <your_install_directory>
 
 Using Cluster-Bot
 ~~~~~~~~~~~~~~~~~
