@@ -96,6 +96,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#using-cluster-bot">Using Cluster-Bot</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#update-your-cno-image-without-deleting-your-cluster">Update your CNO image without deleting your cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#destroying-your-cluster-once-you-re-done">Destroying your cluster once you’re done</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-openshift-installer">Using Openshift Installer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Using Cluster-Bot</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -245,6 +251,37 @@ changes for openshift/sdn</p>
 CoreOS Slack channel.</p>
 <p>Just query cluster-bot and send him a message with the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">launch</span> <span class="n">openshift</span><span class="o">/</span><span class="n">sdn</span><span class="c1">#&lt;PR_NUMBER&gt; aws</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="update-your-cno-image-without-deleting-your-cluster">
+<h2>Update your CNO image without deleting your cluster<a class="headerlink" href="#update-your-cno-image-without-deleting-your-cluster" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">update_cno ()</span>
+<span class="go">{</span>
+<span class="go">    oc patch clusterversion version --type json -p &#39;[{&quot;op&quot;:&quot;add&quot;,&quot;path&quot;:&quot;/spec/overrides&quot;,&quot;value&quot;:[{&quot;kind&quot;:&quot;Deployment&quot;,&quot;group&quot;:&quot;apps&quot;,&quot;name&quot;:&quot;network-operator&quot;,&quot;namespace&quot;:&quot;openshift-network-operator&quot;,&quot;unmanaged&quot;:true}]}]&#39;</span>
+<span class="go">}</span>
+
+<span class="go">custom_sdn ()</span>
+<span class="go">{</span>
+<span class="go">    update_cno;</span>
+<span class="go">    oc -n openshift-network-operator delete deployment network-operator;</span>
+<span class="go">    oc -n openshift-sdn set image ds/sdn sdn=quay.io/&lt;your_quay_user&gt;/sdn-test</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="destroying-your-cluster-once-you-re-done">
+<h2>Destroying your cluster once you’re done<a class="headerlink" href="#destroying-your-cluster-once-you-re-done" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-openshift-installer">
+<h3>Using Openshift Installer<a class="headerlink" href="#using-openshift-installer" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">./openshift-install destroy cluster --dir &lt;your_install_directory&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>Using Cluster-Bot<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">done</span>
 </pre></div>
 </div>
 </div>

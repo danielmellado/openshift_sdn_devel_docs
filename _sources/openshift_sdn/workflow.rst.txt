@@ -80,3 +80,36 @@ CoreOS Slack channel.
 Just query cluster-bot and send him a message with the following::
 
   launch openshift/sdn#<PR_NUMBER> aws
+
+Update your CNO image without deleting your cluster
+---------------------------------------------------
+
+.. code-block:: shell-session
+
+  update_cno ()
+  {
+      oc patch clusterversion version --type json -p '[{"op":"add","path":"/spec/overrides","value":[{"kind":"Deployment","group":"apps","name":"network-operator","namespace":"openshift-network-operator","unmanaged":true}]}]'
+  }
+
+  custom_sdn ()
+  {
+      update_cno;
+      oc -n openshift-network-operator delete deployment network-operator;
+      oc -n openshift-sdn set image ds/sdn sdn=quay.io/<your_quay_user>/sdn-test
+  }
+
+Destroying your cluster once you're done
+----------------------------------------
+
+Using Openshift Installer
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: shell-session
+
+  ./openshift-install destroy cluster --dir <your_install_directory>
+
+Using Cluster-Bot
+~~~~~~~~~~~~~~~~~
+::
+
+  done
