@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>OVN central database High-availability &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hybrid Overlay" href="hybrid-overlay.html" />
+    <link rel="prev" title="EgressFirewall" href="egress-firewall.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../openshift_sdn/index.html">OpenShift SDN</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">OVN-Kubernetes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../README.html">How to use Open Virtual Networking with Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#installing-kubernetes">Installing Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kind.html">Fedora 32 setup for KIND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.UBUNTU.html">Installing OVS and OVN on Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html">Generating certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html">CI Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Initial setup issues.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html#runtime-issues">Runtime issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="egress-firewall.html">EgressFirewall</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">OVN central database High-availability</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#master1-initialization">Master1 initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#master2-master3-initialization">Master2, Master3… initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-ovn-kube-init-master">Start ‘ovn-kube -init-master’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-ovn-northd">start ovn-northd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-ovn-kube-init-node">Start ‘ovn-kube -init-node’</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid-overlay.html">Hybrid Overlay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kind.html">OVN kubernetes KIND Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ovs_offload.html">OVS Hardware Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">OVN-Kubernetes</a> &raquo;</li>
+        
+      <li>OVN central database High-availability</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/ovn_kubernetes/docs/ha.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ovn-central-database-high-availability">
+<h1>OVN central database High-availability<a class="headerlink" href="#ovn-central-database-high-availability" title="Permalink to this headline">¶</a></h1>
+<p>OVN architecture has two central databases that can be clustered.
+The databases are OVN_Northbound and OVN_Southbound.  This document
+explains how to cluster them and start various daemons for the
+ovn-kubernetes integration.  You will ideally need at least 3 masters
+for a HA cluster. (You will need a miniumum of OVS/OVN 2.9.2
+for clustering.)</p>
+<div class="section" id="master1-initialization">
+<h2>Master1 initialization<a class="headerlink" href="#master1-initialization" title="Permalink to this headline">¶</a></h2>
+<p>To bootstrap your cluster, you need to start on one master.
+For a lack of better name, let’s call it MASTER1 with an IP
+address of $MASTER1</p>
+<p>On MASTER1, delete any stale OVN databases and stop any
+ovn-northd running. e.g:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">stop_nb_ovsdb</span>
+<span class="n">sudo</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">stop_sb_ovsdb</span>
+<span class="n">sudo</span> <span class="n">rm</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovn</span><span class="o">*.</span><span class="n">db</span>
+<span class="n">sudo</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">stop_northd</span>
+</pre></div>
+</div>
+<p>Start the two databases on that host with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LOCAL_IP=$MASTER1
+sudo /usr/share/openvswitch/scripts/ovn-ctl \
+    --db-nb-cluster-local-addr=$LOCAL_IP start_nb_ovsdb
+
+sudo /usr/share/openvswitch/scripts/ovn-ctl \
+    --db-sb-cluster-local-addr=$LOCAL_IP start_sb_ovsdb
+</pre></div>
+</div>
+</div>
+<div class="section" id="master2-master3-initialization">
+<h2>Master2, Master3… initialization<a class="headerlink" href="#master2-master3-initialization" title="Permalink to this headline">¶</a></h2>
+<p>Delete any stale databases and stop any running ovn-northd
+daemons. e.g:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">stop_nb_ovsdb</span>
+<span class="n">sudo</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">stop_sb_ovsdb</span>
+<span class="n">sudo</span> <span class="n">rm</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovn</span><span class="o">*.</span><span class="n">db</span>
+<span class="n">sudo</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">stop_northd</span>
+</pre></div>
+</div>
+<p>On master with a IP of $LOCAL_IP, start the databases and ask it to
+join $MASTER1</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LOCAL_IP=$LOCAL_IP
+MASTER_IP=$MASTER1
+
+sudo /usr/share/openvswitch/scripts/ovn-ctl  \
+    --db-nb-cluster-local-addr=$LOCAL_IP \
+    --db-nb-cluster-remote-addr=$MASTER_IP start_nb_ovsdb
+
+sudo /usr/share/openvswitch/scripts/ovn-ctl  \
+    --db-sb-cluster-local-addr=$LOCAL_IP \
+    --db-sb-cluster-remote-addr=$MASTER_IP start_sb_ovsdb
+</pre></div>
+</div>
+<p>This should get your cluster up and running. You can verify the
+status of your cluster with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">ovs</span><span class="o">-</span><span class="n">appctl</span> <span class="o">-</span><span class="n">t</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovnnb_db</span><span class="o">.</span><span class="n">ctl</span> \
+    <span class="n">cluster</span><span class="o">/</span><span class="n">status</span> <span class="n">OVN_Northbound</span>
+
+<span class="n">sudo</span> <span class="n">ovs</span><span class="o">-</span><span class="n">appctl</span> <span class="o">-</span><span class="n">t</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovnsb_db</span><span class="o">.</span><span class="n">ctl</span> \
+    <span class="n">cluster</span><span class="o">/</span><span class="n">status</span> <span class="n">OVN_Southbound</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-ovn-kube-init-master">
+<h2>Start ‘ovn-kube -init-master’<a class="headerlink" href="#start-ovn-kube-init-master" title="Permalink to this headline">¶</a></h2>
+<p>On any one of the masters, we need to start ‘ovnkube -init-master’.
+(This should ideally be a daemonset with replica count of 1.)</p>
+<p>IP1=”$MASTER1”
+IP2=”$MASTER2”
+IP3=”$MASTER3”</p>
+<p>ovn_nb=”tcp:$IP1:6641,tcp:$IP2:6641,tcp:$IP3:6641”
+ovn_sb=”tcp:$IP1:6642,tcp:$IP2:6642,tcp:$IP3:6642”</p>
+<p>nohup sudo ovnkube -k8s-kubeconfig kubeconfig.yaml <br />-loglevel=4 <br />-k8s-apiserver=”http://$K8S_APISERVER_IP:8080” <br />-logfile=”/var/log/openvswitch/ovnkube.log” <br />-init-master=”$NODENAME” -cluster-subnets=”$CLUSTER_IP_SUBNET” <br />-init-node=”$NODENAME” <br />-k8s-service-cidr=”$SERVICE_IP_SUBNET” <br />-k8s-token=”$TOKEN” <br />-nodeport <br />-nb-address=”${ovn_nb}” <br />-sb-address=”${ovn_sb}”  2&gt;&amp;1 &amp;</p>
+</div>
+<div class="section" id="start-ovn-northd">
+<h2>start ovn-northd<a class="headerlink" href="#start-ovn-northd" title="Permalink to this headline">¶</a></h2>
+<p>On any one of the masters (ideally via a daemonset with replica count as 1),
+start ovn-northd. Let the 3 master IPs be $IP1, $IP2 and $IP3.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IP1</span><span class="o">=</span><span class="s2">&quot;$MASTER1&quot;</span>
+<span class="n">IP2</span><span class="o">=</span><span class="s2">&quot;$MASTER2&quot;</span>
+<span class="n">IP3</span><span class="o">=</span><span class="s2">&quot;$MASTER3&quot;</span>
+
+<span class="n">export</span> <span class="n">ovn_nb</span><span class="o">=</span><span class="s2">&quot;tcp:$IP1:6641,tcp:$IP2:6641,tcp:$IP3:6641&quot;</span>
+<span class="n">export</span> <span class="n">ovn_sb</span><span class="o">=</span><span class="s2">&quot;tcp:$IP1:6642,tcp:$IP2:6642,tcp:$IP3:6642&quot;</span>
+
+<span class="n">sudo</span> <span class="n">ovn</span><span class="o">-</span><span class="n">northd</span> <span class="o">-</span><span class="n">vconsole</span><span class="p">:</span><span class="n">emer</span> <span class="o">-</span><span class="n">vsyslog</span><span class="p">:</span><span class="n">err</span> <span class="o">-</span><span class="n">vfile</span><span class="p">:</span><span class="n">info</span> \
+    <span class="o">--</span><span class="n">ovnnb</span><span class="o">-</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;$ovn_nb&quot;</span> <span class="o">--</span><span class="n">ovnsb</span><span class="o">-</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;$ovn_sb&quot;</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">chdir</span> \
+    <span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">northd</span><span class="o">.</span><span class="n">log</span> \
+    <span class="o">--</span><span class="n">pidfile</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">northd</span><span class="o">.</span><span class="n">pid</span> <span class="o">--</span><span class="n">detach</span> <span class="o">--</span><span class="n">monitor</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-ovn-kube-init-node">
+<h2>Start ‘ovn-kube -init-node’<a class="headerlink" href="#start-ovn-kube-init-node" title="Permalink to this headline">¶</a></h2>
+<p>On all nodes (and if needed on other masters), start ovnkube with
+‘-init-node’. For e.g:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>IP1=&quot;$MASTER1&quot;
+IP2=&quot;$MASTER2&quot;
+IP3=&quot;$MASTER3&quot;
+
+ovn_nb=&quot;tcp:$IP1:6641,tcp:$IP2:6641,tcp:$IP3:6641&quot;
+ovn_sb=&quot;tcp:$IP1:6642,tcp:$IP2:6642,tcp:$IP3:6642&quot;
+
+nohup sudo ovnkube -k8s-kubeconfig $HOME/kubeconfig.yaml -loglevel=4 \
+    -logfile=&quot;/var/log/openvswitch/ovnkube.log&quot; \
+    -k8s-apiserver=&quot;http://$K8S_APISERVER_IP:8080&quot; \
+    -init-node=&quot;$NODE_NAME&quot;  \
+    -nb-address=&quot;${ovn_nb}&quot; \
+    -sb-address=&quot;${ovn_sb}&quot; \
+    -k8s-token=&quot;$TOKEN&quot; \
+    -init-gateways \
+    -k8s-service-cidr= \
+    -cluster-subnets=&quot;$SERVICE_IP_SUBNET&quot; 2&gt;&amp;1 &amp;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hybrid-overlay.html" class="btn btn-neutral float-right" title="Hybrid Overlay" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="egress-firewall.html" class="btn btn-neutral float-left" title="EgressFirewall" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

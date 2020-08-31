@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>OpenShift SDN &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development Workflow" href="workflow.html" />
+    <link rel="prev" title="OpenShift SDN" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">OpenShift SDN</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">OpenShift SDN</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#openshift-sdn-types">OpenShift SDN Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-openshift-sdn-controller">The OpenShift SDN Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#openshift-sdn-nodes">OpenShift SDN Nodes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workflow.html">Development Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ovn_kubernetes/index.html">OVN-Kubernetes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">OpenShift SDN</a> &raquo;</li>
+        
+      <li>OpenShift SDN</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/openshift_sdn/README.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="openshift-sdn">
+<h1>OpenShift SDN<a class="headerlink" href="#openshift-sdn" title="Permalink to this headline">¶</a></h1>
+<p>This is openshift-sdn, the default network plugin for OpenShift (both
+OKD and OCP). It uses Open vSwitch to connect pods locally, with VXLAN
+tunnels to connect different nodes.</p>
+<p>OpenShift SDN is designed to be installed by the <a class="reference external" href="https://github.com/openshift/cluster-network-operator">OpenShift Network
+Operator</a>, and
+certain components of it (such as the Deployment and DaemonSet
+objects) are found there.</p>
+<p>This module defines two images: the sdn image, which contains OpenShift SDN
+(both controller and node components) and the kube-proxy image, which is
+deployed by the Network Operator for third-party network plugins that need it.
+(Kube-proxy is built from here rather than from the origin repo so
+that we only have to maintain kube-proxy bugfix/security backports in
+one place.)</p>
+<div class="section" id="openshift-sdn-types">
+<h2>OpenShift SDN Types<a class="headerlink" href="#openshift-sdn-types" title="Permalink to this headline">¶</a></h2>
+<p>For historical reasons, OpenShift SDN’s types are defined in the
+<code class="docutils literal notranslate"><span class="pre">network.openshift.io</span></code> namespace and are part of the
+<a class="reference external" href="https://github.com/openshift/api"><code class="docutils literal notranslate"><span class="pre">openshift/api</span></code></a> module, despite
+being used only when OpenShift SDN is the configured network plugin.</p>
+<p>Because the OpenShift aggregated apiserver runs in the pod network,
+not on the host network, OpenShift SDN cannot depend on it. Therefore,
+although the types are defined in <code class="docutils literal notranslate"><span class="pre">openshift/api</span></code>, they are actually
+implemented as <code class="docutils literal notranslate"><span class="pre">CustomResourceDefinition</span></code>s in the main apiserver. The
+Network Operator creates the CRD definitions.</p>
+</div>
+<div class="section" id="the-openshift-sdn-controller">
+<h2>The OpenShift SDN Controller<a class="headerlink" href="#the-openshift-sdn-controller" title="Permalink to this headline">¶</a></h2>
+<p>The network controller is run on
+the masters to handle cluster-level processing:</p>
+<ul class="simple">
+<li><p>Creating <code class="docutils literal notranslate"><span class="pre">NetNamespace</span></code> objects corresponding to <code class="docutils literal notranslate"><span class="pre">Namespace</span></code>s</p></li>
+<li><p>Creating <code class="docutils literal notranslate"><span class="pre">HostSubnet</span></code> objects corresponding to <code class="docutils literal notranslate"><span class="pre">Node</span></code>s</p></li>
+<li><p>Implementing high availability for egress IPs</p></li>
+</ul>
+<p>In older releases, the controller was also responsible for reading the
+cluster master configuration and creating the <code class="docutils literal notranslate"><span class="pre">ClusterNetwork</span></code> object
+containing configuration information to be used by the nodes. As of
+OpenShift 4.2, the <code class="docutils literal notranslate"><span class="pre">ClusterNetwork</span></code> is created by the Network
+Operator.</p>
+</div>
+<div class="section" id="openshift-sdn-nodes">
+<h2>OpenShift SDN Nodes<a class="headerlink" href="#openshift-sdn-nodes" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">openshift-sdn</span></code> daemon runs on every node,
+reads the <code class="docutils literal notranslate"><span class="pre">ClusterNetwork</span></code> object and the <code class="docutils literal notranslate"><span class="pre">HostSubnet</span></code> object for the
+node it is running on, and uses that information to configure the node
+as part of the cluster. This includes:</p>
+<ul class="simple">
+<li><p>Providing networking to Pods, as requested by the <code class="docutils literal notranslate"><span class="pre">openshift-sdn</span></code>
+CNI plugin  (which is a small shim that just talks to the daemon).</p></li>
+<li><p>Setting up the OVS bridge, and managing OVS flows as needed for
+Pods, Services, NetworkPolicy, and EgressNetworkPolicy; and adding
+and removing flows as needed for communicating with other nodes.</p></li>
+<li><p>Setting up iptables rules for masquerading outbound traffic, and
+ensure that OpenShift’s own traffic does not get firewalled.</p></li>
+<li><p>Updating OVS flows and iptables rules for static egress IPs.</p></li>
+<li><p>Implementing the Service proxy via a built-in copy of kube-proxy,
+in either the “userspace” mode, “iptables” mode, or the hybrid
+“unidling” mode.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="workflow.html" class="btn btn-neutral float-right" title="Development Workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="OpenShift SDN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

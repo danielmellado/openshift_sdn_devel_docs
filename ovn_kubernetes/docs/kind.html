@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>OVN kubernetes KIND Setup &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="OVS Hardware Offload" href="ovs_offload.html" />
+    <link rel="prev" title="Hybrid Overlay" href="hybrid-overlay.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../openshift_sdn/index.html">OpenShift SDN</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">OVN-Kubernetes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../README.html">How to use Open Virtual Networking with Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#installing-kubernetes">Installing Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kind.html">Fedora 32 setup for KIND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.UBUNTU.html">Installing OVS and OVN on Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html">Generating certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html">CI Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Initial setup issues.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html#runtime-issues">Runtime issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="egress-firewall.html">EgressFirewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ha.html">OVN central database High-availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid-overlay.html">Hybrid Overlay</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">OVN kubernetes KIND Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-the-kind-deployment">Run the KIND deployment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-notes">Usage Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-ovn-kubernetes-with-ipv6-or-dual-stack-in-kind">Running OVN-Kubernetes with IPv6 or Dual-stack In KIND</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kind-with-ipv6">KIND with IPv6</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#docker-changes-for-ipv6">Docker Changes For IPv6</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#disable-firewalld">Disable firewalld</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ovn-kubernetes-with-ipv6">OVN-Kubernetes With IPv6</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#kind-with-dual-stack">KIND with Dual-stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#kubernetes-and-docker-with-ip-dual-stack">Kubernetes And Docker With IP Dual-stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#docker-changes-for-dual-stack">Docker Changes For Dual-stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kind-with-ip-dual-stack">KIND With IP Dual-stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ovn-kubernetes-with-ip-dual-stack">OVN-Kubernetes With IP Dual-stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#current-status">Current Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#known-issues">Known issues</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ovs_offload.html">OVS Hardware Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">OVN-Kubernetes</a> &raquo;</li>
+        
+      <li>OVN kubernetes KIND Setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/ovn_kubernetes/docs/kind.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ovn-kubernetes-kind-setup">
+<h1>OVN kubernetes KIND Setup<a class="headerlink" href="#ovn-kubernetes-kind-setup" title="Permalink to this headline">¶</a></h1>
+<p>KIND (Kubernetes in Docker) deployment of OVN kubernetes is a fast and easy means to quickly install and test kubernetes with OVN kubernetes CNI.  The value proposition is really for developers who want to reproduce an issue or test a fix in an environment that can be brought up locally and within a few minutes.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>20 GB of free space in root file system</p></li>
+<li><p>Docker run time</p></li>
+<li><p><a class="reference external" href="https://kubernetes.io/docs/setup/learning-environment/kind/">KIND</a></p>
+<ul>
+<li><p>Installation instructions can be found at https://github.com/kubernetes-sigs/kind#installation-and-usage.</p></li>
+<li><p>NOTE: The OVN-Kubernetes <a class="reference external" href="https://github.com/ovn-org/ovn-kubernetes/blob/master/contrib/kind.sh">ovn-kubernetes/contrib/kind.sh</a> and <a class="reference external" href="https://github.com/ovn-org/ovn-kubernetes/blob/master/contrib/kind.yaml">ovn-kubernetes/contrib/kind.yaml</a> files provision port 11337. If firewalld is enabled, this port will need to be unblocked:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">permanent</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">port</span><span class="o">=</span><span class="mi">11337</span><span class="o">/</span><span class="n">tcp</span><span class="p">;</span> <span class="n">sudo</span> <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">reload</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">kubectl</a></p></li>
+<li><p>Python and pip</p></li>
+</ul>
+<p><strong>NOTE :</strong>  In certain operating systems such as CentOS 8.x, pip2 and pip3 binaries are installed instead of pip. In such situations create a softlink for “pip” that points to “pip2”.</p>
+</div>
+<div class="section" id="run-the-kind-deployment">
+<h2>Run the KIND deployment<a class="headerlink" href="#run-the-kind-deployment" title="Permalink to this headline">¶</a></h2>
+<p>For OVN kubernetes KIND deployment, use the <code class="docutils literal notranslate"><span class="pre">kind.sh</span></code> script.</p>
+<p>First Download and build the OVN-Kubernetes repo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ go get github.com/ovn-org/ovn-kubernetes; cd GOPATH/src/github.com/ovn-org/ovn-kubernetes
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">kind.sh</span></code> script builds OVN-Kubernetes into a container image. To verify
+local changes before building in KIND, run the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pushd go-controller
+$ make
+$ popd
+
+$ pushd dist/images
+$ make fedora
+$ popd
+</pre></div>
+</div>
+<p>Launch the KIND Deployment.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pushd contrib
+$ KUBECONFIG=${HOME}/admin.conf
+$ ./kind.sh
+$ popd
+</pre></div>
+</div>
+<p>This will launch a KIND deployment. By default the cluster is named <code class="docutils literal notranslate"><span class="pre">ovn</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ kubectl get nodes
+NAME                STATUS   ROLES    AGE     VERSION
+ovn-control-plane   Ready    master   5h13m   v1.16.4
+ovn-worker          Ready    &lt;none&gt;   5h12m   v1.16.4
+ovn-worker2         Ready    &lt;none&gt;   5h12m   v1.16.4
+
+$ kubectl get pods --all-namespaces
+NAMESPACE            NAME                                        READY   STATUS    RESTARTS   AGE
+kube-system          coredns-5644d7b6d9-kw2xc                    1/1     Running   0          5h13m
+kube-system          coredns-5644d7b6d9-sd9wh                    1/1     Running   0          5h13m
+kube-system          etcd-ovn-control-plane                      1/1     Running   0          5h11m
+kube-system          kube-apiserver-ovn-control-plane            1/1     Running   0          5h12m
+kube-system          kube-controller-manager-ovn-control-plane   1/1     Running   0          5h12m
+kube-system          kube-scheduler-ovn-control-plane            1/1     Running   0          5h11m
+local-path-storage   local-path-provisioner-7745554f7f-9r8dz     1/1     Running   0          5h13m
+ovn-kubernetes       ovnkube-db-5588bd699c-kb8h7                 2/2     Running   0          5h11m
+ovn-kubernetes       ovnkube-master-6f44d456df-bv2x8             3/3     Running   0          5h11m
+ovn-kubernetes       ovnkube-node-2t6m2                          3/3     Running   0          5h11m
+ovn-kubernetes       ovnkube-node-hhsmk                          3/3     Running   0          5h11m
+ovn-kubernetes       ovnkube-node-xvqh4                          3/3     Running   0          5h11m
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">kind.sh</span></code> script defaults the cluster to HA. There are numerous
+configuration when deploying. Use <code class="docutils literal notranslate"><span class="pre">./kind.sh</span> <span class="pre">-h</span></code> to see the latest options.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">kind</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">help</span>
+
+<span class="n">usage</span><span class="p">:</span> <span class="n">kind</span><span class="o">.</span><span class="n">sh</span> <span class="p">[[[</span><span class="o">-</span><span class="n">cf</span><span class="o">|--</span><span class="n">config</span><span class="o">-</span><span class="n">file</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">kt</span><span class="o">|</span><span class="n">keep</span><span class="o">-</span><span class="n">taint</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ha</span><span class="o">|--</span><span class="n">ha</span><span class="o">-</span><span class="n">enabled</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">-</span><span class="n">ii</span><span class="o">|--</span><span class="n">install</span><span class="o">-</span><span class="n">ingress</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n4</span><span class="o">|--</span><span class="n">no</span><span class="o">-</span><span class="n">ipv4</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">i6</span><span class="o">|--</span><span class="n">ipv6</span><span class="p">]]</span> <span class="o">|</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]]</span>
+
+<span class="o">-</span><span class="n">cf</span> <span class="o">|</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">file</span>          <span class="n">Name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">KIND</span> <span class="n">J2</span> <span class="n">configuration</span> <span class="n">file</span><span class="o">.</span>
+                             <span class="n">DEFAULT</span><span class="p">:</span> <span class="o">./</span><span class="n">kind</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">j2</span>
+<span class="o">-</span><span class="n">kt</span> <span class="o">|</span> <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">taint</span>           <span class="n">Do</span> <span class="ow">not</span> <span class="n">remove</span> <span class="n">taint</span> <span class="n">components</span><span class="o">.</span>
+                             <span class="n">DEFAULT</span><span class="p">:</span> <span class="n">Remove</span> <span class="n">taint</span> <span class="n">components</span><span class="o">.</span>
+<span class="o">-</span><span class="n">ha</span> <span class="o">|</span> <span class="o">--</span><span class="n">ha</span><span class="o">-</span><span class="n">enabled</span>           <span class="n">Enable</span> <span class="n">high</span> <span class="n">availability</span><span class="o">.</span> <span class="n">DEFAULT</span><span class="p">:</span> <span class="n">HA</span> <span class="n">Disabled</span><span class="o">.</span>
+<span class="o">-</span><span class="n">ii</span> <span class="o">|</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">ingress</span>      <span class="n">Flag</span> <span class="n">to</span> <span class="n">install</span> <span class="n">Ingress</span> <span class="n">Components</span><span class="o">.</span>
+                             <span class="n">DEFAULT</span><span class="p">:</span> <span class="n">Don</span><span class="s1">&#39;t install ingress components.</span>
+<span class="o">-</span><span class="n">n4</span> <span class="o">|</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">ipv4</span>              <span class="n">Disable</span> <span class="n">IPv4</span><span class="o">.</span> <span class="n">DEFAULT</span><span class="p">:</span> <span class="n">IPv4</span> <span class="n">Enabled</span><span class="o">.</span>
+<span class="o">-</span><span class="n">i6</span> <span class="o">|</span> <span class="o">--</span><span class="n">ipv6</span>                 <span class="n">Enable</span> <span class="n">IPv6</span><span class="o">.</span> <span class="n">DEFAULT</span><span class="p">:</span> <span class="n">IPv6</span> <span class="n">Disabled</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>As seen above if you do not specify any options script will assume the default values.</p>
+</div>
+<div class="section" id="usage-notes">
+<h2>Usage Notes<a class="headerlink" href="#usage-notes" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>You can create your own KIND J2 configuration file if the default one is not sufficient</p></li>
+<li><p>You can also specify these values as environment variables. Command line parameters will override the environment variables.</p></li>
+<li><p>To tear down the KIND cluster when finished simply run</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./kind.sh --delete
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="running-ovn-kubernetes-with-ipv6-or-dual-stack-in-kind">
+<h2>Running OVN-Kubernetes with IPv6 or Dual-stack In KIND<a class="headerlink" href="#running-ovn-kubernetes-with-ipv6-or-dual-stack-in-kind" title="Permalink to this headline">¶</a></h2>
+<p>This section describes the configuration needed for IPv6 and dual-stack environments.</p>
+</div>
+<div class="section" id="kind-with-ipv6">
+<h2>KIND with IPv6<a class="headerlink" href="#kind-with-ipv6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="docker-changes-for-ipv6">
+<h3>Docker Changes For IPv6<a class="headerlink" href="#docker-changes-for-ipv6" title="Permalink to this headline">¶</a></h3>
+<p>For KIND clusters using KIND v0.7.0 or older (CI currently is using v0.8.1), to
+use IPv6, IPv6 needs to be enable in Docker on the host:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo vi /etc/docker/daemon.json
+{
+  &quot;ipv6&quot;: true
+}
+
+$ sudo systemctl reload docker
+</pre></div>
+</div>
+<p>On a CentOS host running Docker version 19.03.6, the above configuration worked.
+After the host was rebooted, Docker failed to start. To fix, change
+<code class="docutils literal notranslate"><span class="pre">daemon.json</span></code> as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo vi /etc/docker/daemon.json
+{
+  &quot;ipv6&quot;: true,
+  &quot;fixed-cidr-v6&quot;: &quot;2001:db8:1::/64&quot;
+}
+
+$ sudo systemctl reload docker
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/docker/docker.github.io/blob/c0eb65aabe4de94d56bbc20249179f626df5e8c3/engine/userguide/networking/default_network/ipv6">IPv6</a>
+from Docker repo provided the fix. Newer documentation does not include this
+change, so change may be dependent on Docker version.</p>
+<p>To verify IPv6 is enabled in Docker, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run --rm busybox ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+341: eth0@if342: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue
+    link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 2001:db8:1::242:ac11:2/64 scope global flags 02
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:2/64 scope link tentative
+       valid_lft forever preferred_lft forever
+</pre></div>
+</div>
+<p>For the eth0 vEth-pair, there should be the two IPv6 entries (global and link
+addresses).</p>
+</div>
+<div class="section" id="disable-firewalld">
+<h3>Disable firewalld<a class="headerlink" href="#disable-firewalld" title="Permalink to this headline">¶</a></h3>
+<p>Currently, to run OVN-Kubernetes with IPv6 only in a KIND deployment, firewalld
+needs to be disabled. To disable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">stop</span> <span class="n">firewalld</span>
+</pre></div>
+</div>
+<p>NOTE: To run with IPv4, firewalld needs to be enabled, so to reenable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">firewalld</span>
+</pre></div>
+</div>
+<p>If firewalld is enabled during a IPv6 deployment, additional nodes fail to join
+the cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>:
+Creating cluster &quot;ovn&quot; ...
+ ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
+ ✓ Preparing nodes 📦 📦 📦
+ ✓ Writing configuration 📜
+ ✓ Starting control-plane 🕹️
+ ✓ Installing StorageClass 💾
+ ✗ Joining worker nodes 🚜
+ERROR: failed to create cluster: failed to join node with kubeadm: command &quot;docker exec --privileged ovn-worker kubeadm join --config /kind/kubeadm.conf --ignore-preflight-errors=all --v=6&quot; failed with error: exit status 1
+</pre></div>
+</div>
+<p>And logs show:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>I0430 16:40:44.590181     579 token.go:215] [discovery] Failed to request cluster-info, will try again: Get https://[2001:db8:1::242:ac11:3]:6443/api/v1/namespaces/kube-public/configmaps/cluster-info?timeout=10s: dial tcp [2001:db8:1::242:ac11:3]:6443: connect: permission denied
+Get https://[2001:db8:1::242:ac11:3]:6443/api/v1/namespaces/kube-public/configmaps/cluster-info?timeout=10s: dial tcp [2001:db8:1::242:ac11:3]:6443: connect: permission denied
+</pre></div>
+</div>
+<p>This issue was reported upstream in KIND
+<a class="reference external" href="https://github.com/kubernetes-sigs/kind/issues/1257#issuecomment-575984987">1257</a>
+and blamed on firewalld.</p>
+</div>
+<div class="section" id="ovn-kubernetes-with-ipv6">
+<h3>OVN-Kubernetes With IPv6<a class="headerlink" href="#ovn-kubernetes-with-ipv6" title="Permalink to this headline">¶</a></h3>
+<p>To run OVN-Kubernetes with IPv6 in a KIND deployment, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ go get github.com/ovn-org/ovn-kubernetes; cd $GOPATH/src/github.com/ovn-org/ovn-kubernetes
+
+$ cd go-controller/
+$ make
+
+$ cd ../dist/images/
+$ make fedora
+
+$ cd ../../contrib/
+$ KIND_IPV4_SUPPORT=false KIND_IPV6_SUPPORT=true ./kind.sh
+</pre></div>
+</div>
+<p>Once <code class="docutils literal notranslate"><span class="pre">kind.sh</span></code> completes, setup kube config file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cp ~/admin.conf ~/.kube/config
+-- OR --
+$ KUBECONFIG=~/admin.conf
+</pre></div>
+</div>
+<p>Once testing is complete, to tear down the KIND deployment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ kind delete cluster --name ovn
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="kind-with-dual-stack">
+<h2>KIND with Dual-stack<a class="headerlink" href="#kind-with-dual-stack" title="Permalink to this headline">¶</a></h2>
+<p>Currently, IP dual-stack is not fully supported in:</p>
+<ul class="simple">
+<li><p>Kubernetes</p></li>
+<li><p>KIND</p></li>
+<li><p>OVN-Kubernetes</p></li>
+</ul>
+<div class="section" id="kubernetes-and-docker-with-ip-dual-stack">
+<h3>Kubernetes And Docker With IP Dual-stack<a class="headerlink" href="#kubernetes-and-docker-with-ip-dual-stack" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="update-kubectl">
+<h4>Update kubectl<a class="headerlink" href="#update-kubectl" title="Permalink to this headline">¶</a></h4>
+<p>Kubernetes has some IP dual-stack support but the feature is not complete.
+Additional changes are constantly being added. This setup is using the latest
+Kubernetes release to test against. Kubernetes is being installed below using
+OVN-Kubernetes KIND script, however to test, an equivalent version of <code class="docutils literal notranslate"><span class="pre">kubectl</span></code>
+needs to be installed.</p>
+<p>First determine what version of <code class="docutils literal notranslate"><span class="pre">kubectl</span></code> is currently being used and save it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ which kubectl
+/usr/bin/kubectl
+$ kubectl version --client
+Client Version: version.Info{Major:&quot;1&quot;, Minor:&quot;17&quot;, GitVersion:&quot;v1.17.3&quot;, GitCommit:&quot;06ad960bfd03b39c8310aaf92d1e7c12ce618213&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2020-02-11T18:14:22Z&quot;, GoVersion:&quot;go1.13.6&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
+sudo mv /usr/bin/kubectl /usr/bin/kubectl-v1.17.3
+sudo ln -s /usr/bin/kubectl-v1.17.3 /usr/bin/kubectl
+</pre></div>
+</div>
+<p>Download and install latest version of <code class="docutils literal notranslate"><span class="pre">kubectl</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ K8S_VERSION=v1.18.0
+$ curl -LO https://storage.googleapis.com/kubernetes-release/release/$K8S_VERSION/bin/linux/amd64/kubectl
+$ chmod +x kubectl
+$ sudo mv kubectl /usr/bin/kubectl-v1.18.0
+$ sudo rm /usr/bin/kubectl
+$ sudo ln -s /usr/bin/kubectl-v1.18.0 /usr/bin/kubectl
+$ kubectl version --client
+Client Version: version.Info{Major:&quot;1&quot;, Minor:&quot;18&quot;, GitVersion:&quot;v1.18.0&quot;, GitCommit:&quot;9e991415386e4cf155a24b1da15becaa390438d8&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2020-03-25T14:58:59Z&quot;, GoVersion:&quot;go1.13.8&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="docker-changes-for-dual-stack">
+<h3>Docker Changes For Dual-stack<a class="headerlink" href="#docker-changes-for-dual-stack" title="Permalink to this headline">¶</a></h3>
+<p>For dual-stack, IPv6 needs to be enable in Docker on the host same as
+for IPv6 only. See above: <a class="reference external" href="#docker-changes-for-ipv6">Docker Changes For IPv6</a></p>
+</div>
+<div class="section" id="kind-with-ip-dual-stack">
+<h3>KIND With IP Dual-stack<a class="headerlink" href="#kind-with-ip-dual-stack" title="Permalink to this headline">¶</a></h3>
+<p>IP dual-stack is not currently supported in KIND. There is a PR
+(<a class="reference external" href="https://github.com/kubernetes-sigs/kind/pull/692">692</a>)
+with IP dual-stack changes. Currently using this to test with.</p>
+<p>Optionally, save previous version of KIND (if it exists):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cp $GOPATH/bin/kind $GOPATH/bin/kind.orig
+</pre></div>
+</div>
+<div class="section" id="build-kind-with-dual-stack-locally">
+<h4>Build KIND With Dual-stack Locally<a class="headerlink" href="#build-kind-with-dual-stack-locally" title="Permalink to this headline">¶</a></h4>
+<p>To build locally (if additional needed):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>go get github.com/kubernetes-sigs/kind; cd $GOPATH/src/github.com/kubernetes-sigs/kind
+git pull --no-edit --strategy=ours origin pull/692/head
+make clean
+make install INSTALL_DIR=$GOPATH/bin
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="ovn-kubernetes-with-ip-dual-stack">
+<h3>OVN-Kubernetes With IP Dual-stack<a class="headerlink" href="#ovn-kubernetes-with-ip-dual-stack" title="Permalink to this headline">¶</a></h3>
+<p>For status of IP dual-stack in OVN-Kubernetes, see
+<a class="reference external" href="https://github.com/ovn-org/ovn-kubernetes/issues/1142">1142</a>.</p>
+<p>To run OVN-Kubernetes with IP dual-stack in a KIND deployment, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ go get github.com/ovn-org/ovn-kubernetes; cd $GOPATH/src/github.com/ovn-org/ovn-kubernetes
+
+$ cd go-controller/
+$ make
+
+$ cd ../dist/images/
+$ make fedora
+
+$ cd ../../contrib/
+$ KIND_IPV4_SUPPORT=true KIND_IPV6_SUPPORT=true K8S_VERSION=v1.18.0 ./kind.sh
+</pre></div>
+</div>
+<p>Once <code class="docutils literal notranslate"><span class="pre">kind.sh</span></code> completes, setup kube config file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cp ~/admin.conf ~/.kube/config
+-- OR --
+$ KUBECONFIG=~/admin.conf
+</pre></div>
+</div>
+<p>Once testing is complete, to tear down the KIND deployment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ kind delete cluster --name ovn
+</pre></div>
+</div>
+</div>
+<div class="section" id="current-status">
+<h3>Current Status<a class="headerlink" href="#current-status" title="Permalink to this headline">¶</a></h3>
+<p>This is subject to change because code is being updated constantly. But this is
+more a cautionary note that this feature is not completely working at the
+moment.</p>
+<p>The nodes do not go to ready because the OVN-Kubernetes hasn’t setup the network
+completely:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ kubectl get nodes
+NAME                STATUS     ROLES    AGE   VERSION
+ovn-control-plane   NotReady   master   94s   v1.18.0
+ovn-worker          NotReady   &lt;none&gt;   61s   v1.18.0
+ovn-worker2         NotReady   &lt;none&gt;   62s   v1.18.0
+
+$ kubectl get pods -o wide --all-namespaces
+NAMESPACE          NAME                                      READY STATUS   RESTARTS AGE    IP          NODE
+kube-system        coredns-66bff467f8-hh4c9                  0/1   Pending  0        2m45s  &lt;none&gt;      &lt;none&gt;
+kube-system        coredns-66bff467f8-vwbcj                  0/1   Pending  0        2m45s  &lt;none&gt;      &lt;none&gt;
+kube-system        etcd-ovn-control-plane                    1/1   Running  0        2m56s  172.17.0.2  ovn-control-plane
+kube-system        kube-apiserver-ovn-control-plane          1/1   Running  0        2m56s  172.17.0.2  ovn-control-plane
+kube-system        kube-controller-manager-ovn-control-plane 1/1   Running  0        2m56s  172.17.0.2  ovn-control-plane
+kube-system        kube-scheduler-ovn-control-plane          1/1   Running  0        2m56s  172.17.0.2  ovn-control-plane
+local-path-storage local-path-provisioner-774f7f8fdb-msmd2   0/1   Pending  0        2m45s  &lt;none&gt;      &lt;none&gt;
+ovn-kubernetes     ovnkube-db-cf4cc89b7-8d4xq                2/2   Running  0        107s   172.17.0.2  ovn-control-plane
+ovn-kubernetes     ovnkube-master-87fb56d6d-7qmnb            3/3   Running  0        107s   172.17.0.2  ovn-control-plane
+ovn-kubernetes     ovnkube-node-278l9                        2/3   Running  0        107s   172.17.0.3  ovn-worker2
+ovn-kubernetes     ovnkube-node-bm7v6                        2/3   Running  0        107s   172.17.0.2  ovn-control-plane
+ovn-kubernetes     ovnkube-node-p4k4t                        2/3   Running  0        107s   172.17.0.4  ovn-worker
+</pre></div>
+</div>
+</div>
+<div class="section" id="known-issues">
+<h3>Known issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h3>
+<p>Some environments (Fedora32,31 on desktop), have problems when the cluster
+is deleted directly with kind <code class="docutils literal notranslate"><span class="pre">kind</span> <span class="pre">delete</span> <span class="pre">cluster</span> <span class="pre">--name</span> <span class="pre">ovn</span></code>, it restarts the host.
+The root cause is unknown, this also can not be reproduced in Ubuntu 20.04 or
+with Fedora32 Cloud, but it does not happen if we clean first the ovn-kubernetes resources.</p>
+<p>You can use the following command to delete the cluster:</p>
+<p><code class="docutils literal notranslate"><span class="pre">contrib/kind.sh</span> <span class="pre">--delete</span></code></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ovs_offload.html" class="btn btn-neutral float-right" title="OVS Hardware Offload" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hybrid-overlay.html" class="btn btn-neutral float-left" title="Hybrid Overlay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

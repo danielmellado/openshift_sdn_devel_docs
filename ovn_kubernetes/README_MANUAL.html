@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setup &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fedora 32 setup for KIND" href="kind.html" />
+    <link rel="prev" title="How to use Open Virtual Networking with Kubernetes" href="README.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openshift_sdn/index.html">OpenShift SDN</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">OVN-Kubernetes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README.html">How to use Open Virtual Networking with Kubernetes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kubernetes-networking-requirements">Kubernetes networking requirements:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#master-initialization">Master initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-initialization">Node initialization.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging">Debugging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overlay-mode-architecture-diagram">Overlay mode architecture diagram:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-kubernetes">Installing Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kind.html">Fedora 32 setup for KIND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.UBUNTU.html">Installing OVS and OVN on Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.SSL.html">Generating certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ci.html">CI Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html">Initial setup issues.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html#runtime-issues">Runtime issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/egress-firewall.html">EgressFirewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ha.html">OVN central database High-availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/hybrid-overlay.html">Hybrid Overlay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/kind.html">OVN kubernetes KIND Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ovs_offload.html">OVS Hardware Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">OVN-Kubernetes</a> &raquo;</li>
+        
+      <li>Setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/ovn_kubernetes/README_MANUAL.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p>w to use Open Virtual Networking with Kubernetes</p>
+<p>This document describes how to use Open Virtual Networking with Kubernetes
+1.8.0 or later.  This document assumes that you have installed Open
+vSwitch by following <a class="reference external" href="http://docs.openvswitch.org/en/latest/intro/install">INSTALL.rst</a> or by using the distribution packages
+such as .deb or.rpm.</p>
+<div class="section" id="setup">
+<h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
+<p>OVN provides network virtualization to containers.  In the “overlay” mode,
+OVN can create a logical network amongst containers running on multiple hosts.
+In this mode, OVN programs the Open vSwitch instances running inside your
+hosts.  These hosts can be bare-metal machines or vanilla VMs.</p>
+<p>Installing Open vSwitch is out of scope of this documentation.  You can read
+<a class="reference external" href="http://docs.openvswitch.org/en/latest/intro/install">INSTALL.rst</a> for that.  That documentation inturn links to platform specific
+installations.  If you use packages to install OVS, you should install both
+OVS and OVN related packages.  You can also read the following quick-start
+guide for Ubuntu that installs OVS and OVN from source and packages:
+<a class="reference internal" href="docs/INSTALL.UBUNTU.html"><span class="doc">INSTALL.UBUNTU.md</span></a>
+The following guide explains setting up an OVN overlay network on Openshift
+running on RHEL/Centos/Fedora: <a class="reference internal" href="docs/INSTALL.OPENSHIFT.html"><span class="doc">INSTALL.OPENSHIFT.md</span></a></p>
+<p>On each node, you should also install the ‘ovnkube’ utility that comes with
+this repository. To compile it, you will need golang installed.  You can
+install golang with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">nv</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dl</span><span class="o">.</span><span class="n">google</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">go</span><span class="o">/</span><span class="n">go1</span><span class="o">.</span><span class="mf">9.2</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">sudo</span> <span class="n">tar</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">go1</span><span class="o">.</span><span class="mf">9.2</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>You need to set your GOPATH, clone the ovn-kubernetes repo, compile and
+install it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export GOPATH=$HOME/work
+mkdir -p $GOPATH/github.com/ovn-org
+cd $GOPATH/github.com/ovn-org
+git clone https://github.com/ovn-org/ovn-kubernetes
+cd ovn-kubernetes/go-controller
+make
+sudo make install
+</pre></div>
+</div>
+<p>Note that, you need not do the above compilation on every host. You can copy
+over the compiled binaries to other hosts.  We will have the option to run
+OVN via kubernetes daemonsets soon.</p>
+<div class="section" id="kubernetes-networking-requirements">
+<h2>Kubernetes networking requirements:<a class="headerlink" href="#kubernetes-networking-requirements" title="Permalink to this headline">¶</a></h2>
+<p>OVN is a network virtualization solution.  It can create logical switches and
+routers.  One can then interconnect these switches and routers to create any
+network topologies.  Kubernetes (k8s) in its default mode has the following
+networking requirements.</p>
+<ol class="simple">
+<li><p>All containers should be able to communicate with each other over IP
+address.</p></li>
+</ol>
+<p>OVN is capable of having overlapping IP addresses (as part of different
+network topologies).  But with the k8s requirement that all containers
+should be able to talk over IP address, it makes sense to have a simple
+network topology with one logical switch created per k8s node and then
+inter-connect all those logical switches with a single logical router.
+Any containers created in these nodes get connected to the logical switch
+associated with that node as a logical port.</p>
+<ol class="simple">
+<li><p>All nodes should be able to communicate with the containers running inside
+that node over IP address.</p></li>
+</ol>
+<p>k8s has this requirement for health-checking.  To achieve this goal, we will
+create an additional logical port for the node (represented by a OVS
+internal interface).</p>
+<ol class="simple">
+<li><p>All containers should be able to communicate with the k8s daemons running
+on the master.</p></li>
+</ol>
+<p>This can be achieved by running OVN gateways on the nodes. With
+at least one OVN gateway, the pods can reach the k8s central daemons with
+NAT.</p>
+</div>
+<div class="section" id="master-initialization">
+<h2>Master initialization<a class="headerlink" href="#master-initialization" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Start the central components on a k8s master.</p></li>
+</ul>
+<p>OVN architecture has a central component which stores your networking intent
+in a database.  Start this central component on one of the hosts where you
+have started your k8s central daemons and which has an IP address of
+$CENTRAL_IP.  (For HA of the central component, please read <a class="reference internal" href="docs/ha.html"><span class="doc">HA.md</span></a>)</p>
+<p>Run the following commands to open up TCP port for OVN Northbound and Southbound
+ovsdb-server. The clients will connect to the respective database at its port.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ovn</span><span class="o">-</span><span class="n">nbctl</span> <span class="nb">set</span><span class="o">-</span><span class="n">connection</span> <span class="n">ptcp</span><span class="p">:</span><span class="mi">6641</span>
+<span class="n">ovn</span><span class="o">-</span><span class="n">sbctl</span> <span class="nb">set</span><span class="o">-</span><span class="n">connection</span> <span class="n">ptcp</span><span class="p">:</span><span class="mi">6642</span>
+</pre></div>
+</div>
+<p>Start ovn-northd daemon.  This daemon translates networking intent from k8s
+stored in the OVN_Northbound database to logical flows in OVN_Southbound
+database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">start_northd</span>
+</pre></div>
+</div>
+<p>Also start ovn-controller on this node.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">start_controller</span>
+</pre></div>
+</div>
+<p>Now start the ovnkube utility on the master</p>
+<p>The below command expects the user to provide</p>
+<ul class="simple">
+<li><p>A cluster wide private address range of $CLUSTER_IP_SUBNET
+(e.g: 192.168.0.0/16).  The pods are provided IP address from this range.</p></li>
+<li><p>$NODE_NAME should be the same as the one used by kubelet.  kubelet by default
+uses the hostname.  kubelet allows this name to be overridden with
+–hostname-override.</p></li>
+<li><p>$SERVICE_IP_SUBNET is the same as the one provided to k8s-apiserver via
+–service-cluster-ip-range option. An e.g is 172.16.1.0/24.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> nohup sudo ovnkube -k8s-kubeconfig kubeconfig.yaml \
+ -loglevel=4 \
+ -k8s-apiserver=&quot;http://$CENTRAL_IP:8080&quot; \
+ -logfile=&quot;/var/log/ovn-kubernetes/ovnkube.log&quot; \
+ -init-master=$NODE_NAME -init-node=$NODE_NAME \
+ -cluster-subnets=&quot;$CLUSTER_IP_SUBNET&quot; \
+ -k8s-service-cidr=$SERVICE_IP_SUBNET \
+ -nodeport \
+ -init-gateways -gateway-local \
+ -k8s-token=&quot;$TOKEN&quot; \
+ -nb-address=&quot;tcp:$CENTRAL_IP:6641&quot; \
+ -sb-address=&quot;tcp:$CENTRAL_IP:6642&quot; 2&gt;&amp;1 &amp;
+</pre></div>
+</div>
+<p>Note: Make sure to read /var/log/ovn-kubernetes/ovnkube.log to see that there were
+no obvious errors with argument passing.  Also, you should only pass
+“-init-node” argument if there is a kubelet running on the master too.</p>
+<p>If you want to use SSL instead of TCP for OVN databases, please read
+<a class="reference internal" href="docs/INSTALL.SSL.html"><span class="doc">INSTALL.SSL.md</span></a>.</p>
+</div>
+<div class="section" id="node-initialization">
+<h2>Node initialization.<a class="headerlink" href="#node-initialization" title="Permalink to this headline">¶</a></h2>
+<p>On each host, you will need to run the following command once.</p>
+<p>The below command expects the user to provide</p>
+<ul class="simple">
+<li><p>A cluster wide private address range of $CLUSTER_IP_SUBNET
+(e.g: 192.168.0.0/16).  The pods are provided IP address from this range.
+This value should be the same as the one provided to ovnkube in the master.</p></li>
+<li><p>$NODE_NAME should be the same as the one used by kubelet.  kubelet by default
+uses the hostname.  kubelet allows this name to be overridden with
+–hostname-override.</p></li>
+<li><p>$SERVICE_IP_SUBNET is the same as the one provided to k8s-apiserver via
+–service-cluster-ip-range option. An e.g is 172.16.1.0/24.</p></li>
+<li><p>If you are using ingress controllers with L7 load-balancing to enter into
+the k8s cluster, you can skip providing the ‘-nodeport’ option with the
+below command.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>nohup sudo ovnkube -k8s-kubeconfig kubeconfig.yaml -loglevel=4 \
+    -logfile=&quot;/var/log/ovn-kubernetes/ovnkube.log&quot; \
+    -k8s-apiserver=&quot;http://$CENTRAL_IP:8080&quot; \
+    -init-node=&quot;$NODE_NAME&quot;  \
+    -nodeport \
+    -nb-address=&quot;tcp:$CENTRAL_IP:6641&quot; \
+    -sb-address=&quot;tcp:$CENTRAL_IP:6642&quot; -k8s-token=&quot;$TOKEN&quot; \
+    -init-gateways \
+    -k8s-service-cidr=$SERVICE_IP_SUBNET \
+    -cluster-subnets=$CLUSTER_IP_SUBNET 2&gt;&amp;1 &amp;
+</pre></div>
+</div>
+<p>Note: Make sure to read /var/log/ovn-kubernetes/ovnkube.log to see that there were
+no obvious errors with argument passing.</p>
+<p>Notes on gateway nodes:</p>
+<ul class="simple">
+<li><p>Gateway nodes are needed for North-South connectivity in OVN.
+OVN has support for multiple gateway nodes. In the above command,
+since ‘-init-gateways’ has been provided as an option, a OVN
+gateway will be created on each node.</p></li>
+<li><p>Just providing ‘-init-gateways’, will make OVN choose the
+interface in your node via which the node default gateway
+is reached.</p></li>
+<li><p>If you want to chose the interface for your gateway, you should
+provide ‘-gateway-interface’ and ‘-gateway-nexthop’ as options. For e.g:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">init</span><span class="o">-</span><span class="n">gateways</span> <span class="o">-</span><span class="n">gateway</span><span class="o">-</span><span class="n">interface</span><span class="o">=</span><span class="n">enp0s9</span> <span class="o">-</span><span class="n">gateway</span><span class="o">-</span><span class="n">nexthop</span><span class="o">=</span><span class="s2">&quot;$NEXTHOP&quot;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>For both the above cases, ovnkube will create a OVS bridge on top of
+your physical interface and move the IP address and route informations
+from the physical interface to OVS bridge.  If you are using Ubuntu
+and OVS startup scripts are systemd (e.g: there is a file called
+/lib/systemd/system/ovsdb-server.service) , you will have to add the
+following line to /etc/default/openvswitch</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OPTIONS</span><span class="o">=--</span><span class="n">delete</span><span class="o">-</span><span class="n">transient</span><span class="o">-</span><span class="n">ports</span>
+</pre></div>
+</div>
+<p>For more control on the options to ovnkube, please read <a class="reference internal" href="docs/config.html"><span class="doc">config.md</span></a></p>
+</div>
+</div>
+<div class="section" id="debugging">
+<h1>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h1>
+<p>Please read <a class="reference internal" href="docs/debugging.html"><span class="doc">debugging.md</span></a>.</p>
+<div class="section" id="overlay-mode-architecture-diagram">
+<h2>Overlay mode architecture diagram:<a class="headerlink" href="#overlay-mode-architecture-diagram" title="Permalink to this headline">¶</a></h2>
+<p>The following digaram represents the internal architecture details
+of the overlay mode.</p>
+<p><img alt="alt text" src="https://i.imgur.com/i7sci9O.png" /></p>
+</div>
+</div>
+<div class="section" id="installing-kubernetes">
+<h1>Installing Kubernetes<a class="headerlink" href="#installing-kubernetes" title="Permalink to this headline">¶</a></h1>
+<p>Installing k8s is out of scope of this documentation.  You can read
+<a class="reference external" href="https://github.com/kubernetes/kubernetes/tree/master/docs">README.K8S.md</a> for that.  For a quick start, the vagrant in this repo,
+does install kubernetes in its simplest form.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kind.html" class="btn btn-neutral float-right" title="Fedora 32 setup for KIND" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="README.html" class="btn btn-neutral float-left" title="How to use Open Virtual Networking with Kubernetes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

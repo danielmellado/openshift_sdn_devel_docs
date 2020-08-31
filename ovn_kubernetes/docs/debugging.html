@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Initial setup issues. &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="EgressFirewall" href="egress-firewall.html" />
+    <link rel="prev" title="Config variables" href="config.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../openshift_sdn/index.html">OpenShift SDN</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">OVN-Kubernetes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../README.html">How to use Open Virtual Networking with Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#installing-kubernetes">Installing Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kind.html">Fedora 32 setup for KIND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.UBUNTU.html">Installing OVS and OVN on Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html">Generating certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html">CI Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Initial setup issues.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#each-host-should-have-unique-system-ids">Each host should have unique system-ids.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#all-nodes-should-register-with-ovn-sb-database">All nodes should register with OVN SB database.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#hosts-should-have-unique-node-names">Hosts should have unique node names.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#check-the-presence-of-geneve-or-stt-kernel-module">Check the presence of “geneve” or “stt” kernel module.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sanity-check-cross-host-ping">Sanity check cross host ping.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#firewall-blocking-overlay-networks">Firewall blocking overlay networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-ovn-northd-s-log-file">Check ovn-northd’s log file.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-issues">Runtime issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#check-the-watcher-s-log-file">Check the watcher’s log file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-the-ovn-cni-log-file">Check the OVN CNI log file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-the-kubelet-s-log-file">Check the kubelet’s log file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-ovn-controller-s-log-file">Check ovn-controller’s log file.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="egress-firewall.html">EgressFirewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ha.html">OVN central database High-availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid-overlay.html">Hybrid Overlay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kind.html">OVN kubernetes KIND Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ovs_offload.html">OVS Hardware Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">OVN-Kubernetes</a> &raquo;</li>
+        
+      <li>Initial setup issues.</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/ovn_kubernetes/docs/debugging.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="initial-setup-issues">
+<h1>Initial setup issues.<a class="headerlink" href="#initial-setup-issues" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="each-host-should-have-unique-system-ids">
+<h2>Each host should have unique system-ids.<a class="headerlink" href="#each-host-should-have-unique-system-ids" title="Permalink to this headline">¶</a></h2>
+<p>In a OVN cluster, each host should have a unique system-id.  This value
+is set in external-ids:system-id of the Open_vSwitch table of each host’s
+Open_vSwitch database.  You can fetch its value with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ovs</span><span class="o">-</span><span class="n">vsctl</span> <span class="n">get</span> <span class="n">Open_vSwitch</span> <span class="o">.</span> <span class="n">external</span><span class="o">-</span><span class="n">ids</span><span class="p">:</span><span class="n">system</span><span class="o">-</span><span class="nb">id</span>
+</pre></div>
+</div>
+<p>This is automatically set by OVS startup scripts (that come with packages).
+But if you installed OVS from source, and don’t use a startup script,
+this will be empty.  If you clone your VM, then you may endup with
+same system-id for all your VMs - which is a problem.</p>
+</div>
+<div class="section" id="all-nodes-should-register-with-ovn-sb-database">
+<h2>All nodes should register with OVN SB database.<a class="headerlink" href="#all-nodes-should-register-with-ovn-sb-database" title="Permalink to this headline">¶</a></h2>
+<p>On the master, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ovn</span><span class="o">-</span><span class="n">sbctl</span> <span class="nb">list</span> <span class="n">chassis</span>
+</pre></div>
+</div>
+<p>You should see as many records as the number of nodes in your cluster.  The
+“name” column in each record represents the system-id of each host and they
+should all be unique.</p>
+</div>
+</div>
+<div class="section" id="hosts-should-have-unique-node-names">
+<h1>Hosts should have unique node names.<a class="headerlink" href="#hosts-should-have-unique-node-names" title="Permalink to this headline">¶</a></h1>
+<p>When you run ‘ovnkube -init-node’ or ‘ovnkube -init-master’ commands, it will
+ask for node names. This should all be unique. This should also be the same as
+used by “kubelet” on each node.  So the names you see when you run the below
+command should be the same ones that you supply to ovnkube:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="n">get</span> <span class="n">nodes</span>
+</pre></div>
+</div>
+<div class="section" id="check-the-presence-of-geneve-or-stt-kernel-module">
+<h2>Check the presence of “geneve” or “stt” kernel module.<a class="headerlink" href="#check-the-presence-of-geneve-or-stt-kernel-module" title="Permalink to this headline">¶</a></h2>
+<p>If you cannot ping between pods in 2 nodes, make sure to check whether
+you have the OVS kernel modules correctly installed by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lsmod</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">openvswitch</span>
+<span class="n">lsmod</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">geneve</span>  <span class="c1"># Or &quot;stt&quot; if your encap type was chosen to be &quot;stt&quot;.</span>
+</pre></div>
+</div>
+<p>If you do not see the kernel module, modprobe them</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modprobe</span> <span class="n">openvswitch</span>
+<span class="n">modprobe</span> <span class="n">vport</span><span class="o">-</span><span class="n">geneve</span>  <span class="c1"># or vport-stt for &quot;stt&quot;.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sanity-check-cross-host-ping">
+<h2>Sanity check cross host ping.<a class="headerlink" href="#sanity-check-cross-host-ping" title="Permalink to this headline">¶</a></h2>
+<p>Since on each host, a OVS internal device named “k8s-$NODENAME” is created
+with the second IP address in the subnet assigned for that node, you should be
+able to check cross host connectivity by pinging these internal devices across
+hosts.</p>
+</div>
+<div class="section" id="firewall-blocking-overlay-networks">
+<h2>Firewall blocking overlay networks<a class="headerlink" href="#firewall-blocking-overlay-networks" title="Permalink to this headline">¶</a></h2>
+<p>If your host has a firewall blocking incoming connections as a default policy,
+you should open up ports to allow overlay networks.  If you use “geneve” as the
+encapsulation type, you should open up UDP port 6081.  If you use “stt” as the
+encapsulation type, you should open up TCP port 7471.</p>
+<p>You can use the following command to achieve it via iptables.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># To open up Geneve port.</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovs</span><span class="o">-</span><span class="n">ctl</span> <span class="o">--</span><span class="n">protocol</span><span class="o">=</span><span class="n">udp</span> \
+        <span class="o">--</span><span class="n">dport</span><span class="o">=</span><span class="mi">6081</span> <span class="n">enable</span><span class="o">-</span><span class="n">protocol</span>
+
+<span class="c1"># To open up STT port.</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovs</span><span class="o">-</span><span class="n">ctl</span> <span class="o">--</span><span class="n">protocol</span><span class="o">=</span><span class="n">tcp</span> \
+        <span class="o">--</span><span class="n">dport</span><span class="o">=</span><span class="mi">7471</span> <span class="n">enable</span><span class="o">-</span><span class="n">protocol</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-ovn-northd-s-log-file">
+<h2>Check ovn-northd’s log file.<a class="headerlink" href="#check-ovn-northd-s-log-file" title="Permalink to this headline">¶</a></h2>
+<p>On the master, look at /var/log/openvswitch/ovn-northd.log to see
+for any errors with the setup of the OVN central node.</p>
+</div>
+</div>
+<div class="section" id="runtime-issues">
+<h1>Runtime issues<a class="headerlink" href="#runtime-issues" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="check-the-watcher-s-log-file">
+<h2>Check the watcher’s log file.<a class="headerlink" href="#check-the-watcher-s-log-file" title="Permalink to this headline">¶</a></h2>
+<p>On the master, check whether ovnkube is running by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">ovnkube</span>
+</pre></div>
+</div>
+<p>Check the watcher’s log file at “/var/log/ovn-kubernetes/ovnkube.log”
+to see whether it is creating logical ports whenever a pod is created and
+for any obvious errors.</p>
+</div>
+<div class="section" id="check-the-ovn-cni-log-file">
+<h2>Check the OVN CNI log file.<a class="headerlink" href="#check-the-ovn-cni-log-file" title="Permalink to this headline">¶</a></h2>
+<p>When you create a pod and it gets scheduled on a particular host, the
+OVN CNI plugin on that host, tries to access the pod’s information from
+the K8s api server.  Specifically, it tries to get the IP address and
+mac address for that pod.  This information is logged in the OVN CNI log
+file on each node if you have specified a log file via
+“/etc/openvswitch/ovn_k8s.conf”. You can read how to provide a logfile
+by reading ‘man ovn_k8s.conf.5’.</p>
+</div>
+<div class="section" id="check-the-kubelet-s-log-file">
+<h2>Check the kubelet’s log file.<a class="headerlink" href="#check-the-kubelet-s-log-file" title="Permalink to this headline">¶</a></h2>
+<p>If there were any issues with downloading upstream CNI plugins, then
+kubelet will complain about them in its log file.</p>
+</div>
+<div class="section" id="check-ovn-controller-s-log-file">
+<h2>Check ovn-controller’s log file.<a class="headerlink" href="#check-ovn-controller-s-log-file" title="Permalink to this headline">¶</a></h2>
+<p>If you suspect issues on only one of the host, look at the log file of
+ovn-controller at /var/log/openvswitch/ovn-controller.log to see any
+obvious error messages.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="egress-firewall.html" class="btn btn-neutral float-right" title="EgressFirewall" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="config.html" class="btn btn-neutral float-left" title="Config variables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

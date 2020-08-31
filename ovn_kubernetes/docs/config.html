@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Config variables &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Initial setup issues." href="debugging.html" />
+    <link rel="prev" title="CI Tests" href="ci.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../openshift_sdn/index.html">OpenShift SDN</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">OVN-Kubernetes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../README.html">How to use Open Virtual Networking with Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#installing-kubernetes">Installing Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kind.html">Fedora 32 setup for KIND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.UBUNTU.html">Installing OVS and OVN on Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html">Generating certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html">CI Tests</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Config variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initial-setup">Initial setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-values">Config values</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#default-section">[default] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging-section">[logging] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cni-section">[cni] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kubernetes-section">[kubernetes] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ovnnorth-section">[ovnnorth] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ovnsouth-section">[ovnsouth] section</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Config variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initial-setup">Initial setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-values">Config values</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#default-section">[default] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging-section">[logging] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cni-section">[cni] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kubernetes-section">[kubernetes] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ovnnorth-section">[ovnnorth] section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ovnsouth-section">[ovnsouth] section</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Initial setup issues.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html#runtime-issues">Runtime issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="egress-firewall.html">EgressFirewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ha.html">OVN central database High-availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid-overlay.html">Hybrid Overlay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kind.html">OVN kubernetes KIND Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ovs_offload.html">OVS Hardware Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">OVN-Kubernetes</a> &raquo;</li>
+        
+      <li>Config variables</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/ovn_kubernetes/docs/config.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="config-variables">
+<h1>Config variables<a class="headerlink" href="#config-variables" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="initial-setup">
+<h2>Initial setup<a class="headerlink" href="#initial-setup" title="Permalink to this headline">¶</a></h2>
+<p>If you want to override the default values for some config options, then the
+file available in this repo (etc/ovn_k8s.conf) must be copied to the following
+locations:</p>
+<ul class="simple">
+<li><p>on Linux:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovn_k8s</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>The following command copies the config file if it is run from inside the repo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="n">etc</span><span class="o">/</span><span class="n">ovn_k8s</span><span class="o">.</span><span class="n">conf</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovn_k8s</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>on Windows:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">etc</span>\<span class="n">ovn_k8s</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>The following PowerShell command copies the config file if is run from inside
+the repo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Copy</span><span class="o">-</span><span class="n">Item</span> <span class="s2">&quot;.\etc\ovn_k8s.conf&quot;</span> <span class="o">-</span><span class="n">Destination</span> <span class="p">(</span><span class="n">New</span><span class="o">-</span><span class="n">Item</span> <span class="s2">&quot;C:\etc&quot;</span> <span class="o">-</span><span class="n">Type</span> <span class="n">container</span> <span class="o">-</span><span class="n">Force</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="config-values">
+<h2>Config values<a class="headerlink" href="#config-values" title="Permalink to this headline">¶</a></h2>
+<p>The config file contains common configuration options shared between the various
+ovn-kubernetes programs (ovnkube, ovn-k8s-cni-overlay, etc).  All configuration
+file options can also be specified as command-line arguments which override
+config file options; see the -help output of each program for more details.</p>
+<div class="section" id="default-section">
+<h3>[default] section<a class="headerlink" href="#default-section" title="Permalink to this headline">¶</a></h3>
+<p>The following config option represents the MTU value which should be used
+for the overlay networks.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mtu</span><span class="o">=</span><span class="mi">1400</span>
+</pre></div>
+</div>
+<p>The following option affects only the gateway nodes. This value is used to
+track connections that are initiated from the pods so that the reverse
+connections go back to the pods. This represents the conntrack zone used
+for the conntrack flow rules.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conntrack</span><span class="o">-</span><span class="n">zone</span><span class="o">=</span><span class="mi">64000</span>
+</pre></div>
+</div>
+<p>The following option only affects ovn-controller. This is the maximum number
+of milliseconds of idle time on connection to the server before sending an
+inactivity probe message.  As a client connects to the server over TCP, it
+may take a while for the kernel to figure out if the connection is
+broken.  But the client can overcome this by periodically sending probes over
+the TCP connection to make sure that the connection is up.  On the flip side,
+when there are hundreds of nodes, the server can get bogged down by client
+probe messages.</p>
+<p>The default value is set as 100000ms. But can be changed with this config
+option</p>
+<p>inactivity-probe=600000</p>
+</div>
+<div class="section" id="logging-section">
+<h3>[logging] section<a class="headerlink" href="#logging-section" title="Permalink to this headline">¶</a></h3>
+<p>The following config values control what verbosity level logging is written at
+and to what file (if any).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loglevel</span><span class="o">=</span><span class="mi">5</span>
+<span class="n">logfile</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">ovnkube</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cni-section">
+<h3>[cni] section<a class="headerlink" href="#cni-section" title="Permalink to this headline">¶</a></h3>
+<p>The following config values are used for the CNI plugin.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conf</span><span class="o">-</span><span class="nb">dir</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">cni</span><span class="o">/</span><span class="n">net</span><span class="o">.</span><span class="n">d</span>
+<span class="n">plugin</span><span class="o">=</span><span class="n">ovn</span><span class="o">-</span><span class="n">k8s</span><span class="o">-</span><span class="n">cni</span><span class="o">-</span><span class="n">overlay</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="kubernetes-section">
+<h3>[kubernetes] section<a class="headerlink" href="#kubernetes-section" title="Permalink to this headline">¶</a></h3>
+<p>Kubernetes API options are stored in the following section.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apiserver</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span><span class="p">:</span><span class="mi">6443</span>
+<span class="n">token</span><span class="o">=</span><span class="n">TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gQ3JhcyBhdCB1bHRyaWNpZXMgZWxpdC4gVXQgc2l0IGFtZXQgdm9sdXRwYXQgbnVuYy4K</span>
+<span class="n">cacert</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">kubernetes</span><span class="o">/</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ovnnorth-section">
+<h3>[ovnnorth] section<a class="headerlink" href="#ovnnorth-section" title="Permalink to this headline">¶</a></h3>
+<p>This section contains the address and (if the ‘ssl’ method is used) certificates
+needed to use the OVN northbound database API. Only the the ovn-kubernetes
+master needs to specify the ‘server’ options.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">address</span><span class="o">=</span><span class="n">ssl</span><span class="p">:</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span><span class="p">:</span><span class="mi">6641</span>
+<span class="n">client</span><span class="o">-</span><span class="n">privkey</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">private</span><span class="o">.</span><span class="n">key</span>
+<span class="n">client</span><span class="o">-</span><span class="n">cert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">client</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">client</span><span class="o">-</span><span class="n">cacert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">client</span><span class="o">-</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">server</span><span class="o">-</span><span class="n">privkey</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">private</span><span class="o">.</span><span class="n">key</span>
+<span class="n">server</span><span class="o">-</span><span class="n">cert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">server</span><span class="o">-</span><span class="n">cacert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">-</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ovnsouth-section">
+<h3>[ovnsouth] section<a class="headerlink" href="#ovnsouth-section" title="Permalink to this headline">¶</a></h3>
+<p>This section contains the address and (if the ‘ssl’ method is used) certificates
+needed to use the OVN southbound database API. Only the the ovn-kubernetes
+master needs to specify the ‘server’ options.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">address</span><span class="o">=</span><span class="n">ssl</span><span class="p">:</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span><span class="p">:</span><span class="mi">6642</span>
+<span class="n">client</span><span class="o">-</span><span class="n">privkey</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">private</span><span class="o">.</span><span class="n">key</span>
+<span class="n">client</span><span class="o">-</span><span class="n">cert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">client</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">client</span><span class="o">-</span><span class="n">cacert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">client</span><span class="o">-</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">server</span><span class="o">-</span><span class="n">privkey</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">private</span><span class="o">.</span><span class="n">key</span>
+<span class="n">server</span><span class="o">-</span><span class="n">cert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">server</span><span class="o">-</span><span class="n">cacert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">-</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="debugging.html" class="btn btn-neutral float-right" title="Initial setup issues." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ci.html" class="btn btn-neutral float-left" title="CI Tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

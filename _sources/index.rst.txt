@@ -13,8 +13,8 @@ Contents:
    :maxdepth: 2
 
    readme
-   contributor/index
-   openshift_sdn/index
    cno/index
+   openshift_sdn/index
+   ovn_kubernetes/index
    configuration/index
    user/index

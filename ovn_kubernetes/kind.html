@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fedora 32 setup for KIND &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Installing OVS and OVN on Ubuntu" href="docs/INSTALL.UBUNTU.html" />
+    <link rel="prev" title="Setup" href="README_MANUAL.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openshift_sdn/index.html">OpenShift SDN</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">OVN-Kubernetes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README.html">How to use Open Virtual Networking with Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README_MANUAL.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README_MANUAL.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README_MANUAL.html#installing-kubernetes">Installing Kubernetes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Fedora 32 setup for KIND</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#change-to-use-cgroupsv1-instead-of-cgroupsv2">Change to use cgroupsv1 instead of cgroupsv2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-systemd-unified-cgroup-hierarchy-0-in-kernel-command-line-it-will-look-like-below">Add ‘systemd.unified_cgroup_hierarchy=0’ in kernel command line. It will look like below</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-below-command-after-add-it-the-below-grub-cfg-location-is-only-of-uefi">Run below command after add it. The below ‘grub.cfg’ location is only of UEFI.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verify">Verify</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change-firewalld-to-use-iptables-instead-of-nftables">Change firewalld to use iptables instead of nftables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-go">Install go</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-gopath-in-bashrc">Set GOPATH in ~/.bashrc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-kind">Install KIND</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-kubectl">Install kubectl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-docker">Install docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-ovn-kubernetes">Install ovn-kubernetes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-kubernetes">Install kubernetes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-kubernetes-e2e-test-binary">Build kubernetes e2e.test binary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-kind-cluster">Start KIND cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#export-kubeconfig-home-admin-conf">export KUBECONFIG=$HOME/admin.conf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-all-network-policy-tests">Run all network policy tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-a-specific-network-policy-test">Run a specific network policy test</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.UBUNTU.html">Installing OVS and OVN on Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.SSL.html">Generating certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ci.html">CI Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html">Initial setup issues.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html#runtime-issues">Runtime issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/egress-firewall.html">EgressFirewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ha.html">OVN central database High-availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/hybrid-overlay.html">Hybrid Overlay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/kind.html">OVN kubernetes KIND Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ovs_offload.html">OVS Hardware Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">OVN-Kubernetes</a> &raquo;</li>
+        
+      <li>Fedora 32 setup for KIND</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/ovn_kubernetes/kind.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fedora-32-setup-for-kind">
+<h1>Fedora 32 setup for KIND<a class="headerlink" href="#fedora-32-setup-for-kind" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="change-to-use-cgroupsv1-instead-of-cgroupsv2">
+<h2>Change to use cgroupsv1 instead of cgroupsv2<a class="headerlink" href="#change-to-use-cgroupsv1-instead-of-cgroupsv2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gist.github.com/linuxkathirvel/ef6a368bf88946416319986e53628e43">https://gist.github.com/linuxkathirvel/ef6a368bf88946416319986e53628e43</a></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">default</span><span class="o">/</span><span class="n">grub</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-systemd-unified-cgroup-hierarchy-0-in-kernel-command-line-it-will-look-like-below">
+<h2>Add ‘systemd.unified_cgroup_hierarchy=0’ in kernel command line. It will look like below<a class="headerlink" href="#add-systemd-unified-cgroup-hierarchy-0-in-kernel-command-line-it-will-look-like-below" title="Permalink to this headline">¶</a></h2>
+<p><cite>GRUB_CMDLINE_LINUX=”resume=/dev/mapper/vv-swap rd.lvm.lv=vv/root rd.lvm.lv=vv/swap rhgb quiet intel_iommu=on systemd.unified_cgroup_hierarchy=0”</cite></p>
+</div>
+<div class="section" id="run-below-command-after-add-it-the-below-grub-cfg-location-is-only-of-uefi">
+<h2>Run below command after add it. The below ‘grub.cfg’ location is only of UEFI.<a class="headerlink" href="#run-below-command-after-add-it-the-below-grub-cfg-location-is-only-of-uefi" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Don’t use this for Legacy BIOS.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">grub2</span><span class="o">-</span><span class="n">mkconfig</span> <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">efi</span><span class="o">/</span><span class="n">EFI</span><span class="o">/</span><span class="n">fedora</span><span class="o">/</span><span class="n">grub</span><span class="o">.</span><span class="n">cfg</span>
+<span class="n">sudo</span> <span class="n">reboot</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="verify">
+<h2>Verify<a class="headerlink" href="#verify" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>run <cite>sudo virt-host-validate</cite> to check. If all the items are <cite>PASS</cite>, it is
+working fine. <cite>Fuse</cite> module may <cite>FAIL</cite>. It should be load manually.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">virt</span><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">validate</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">hardware</span> <span class="n">virtualization</span>                                 <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">kvm</span> <span class="n">exists</span>                                   <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">kvm</span> <span class="ow">is</span> <span class="n">accessible</span>                            <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vhost</span><span class="o">-</span><span class="n">net</span> <span class="n">exists</span>                             <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">tun</span> <span class="n">exists</span>                               <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpu&#39;</span> <span class="n">controller</span> <span class="n">support</span>                         <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpuacct&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpuset&#39;</span> <span class="n">controller</span> <span class="n">support</span>                      <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;memory&#39;</span> <span class="n">controller</span> <span class="n">support</span>                      <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;devices&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;blkio&#39;</span> <span class="n">controller</span> <span class="n">support</span>                       <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">device</span> <span class="n">assignment</span> <span class="n">IOMMU</span> <span class="n">support</span>                         <span class="p">:</span> <span class="n">PASS</span>
+  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">IOMMU</span> <span class="ow">is</span> <span class="n">enabled</span> <span class="n">by</span> <span class="n">kernel</span>                               <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">Linux</span> <span class="o">&gt;=</span> <span class="mf">2.6</span><span class="o">.</span><span class="mi">26</span>                                         <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">ipc</span>                                           <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">mnt</span>                                           <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">pid</span>                                           <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">uts</span>                                           <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">net</span>                                           <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">user</span>                                          <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpu&#39;</span> <span class="n">controller</span> <span class="n">support</span>                         <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpuacct&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpuset&#39;</span> <span class="n">controller</span> <span class="n">support</span>                      <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;memory&#39;</span> <span class="n">controller</span> <span class="n">support</span>                      <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;devices&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;freezer&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;blkio&#39;</span> <span class="n">controller</span> <span class="n">support</span>                       <span class="p">:</span> <span class="n">PASS</span>
+   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">fuse</span><span class="o">/</span><span class="n">connections</span> <span class="n">exists</span>                   <span class="p">:</span> <span class="n">PASS</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="change-firewalld-to-use-iptables-instead-of-nftables">
+<h2>Change firewalld to use iptables instead of nftables<a class="headerlink" href="#change-firewalld-to-use-iptables-instead-of-nftables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://kind.sigs.k8s.io/docs/user/known-issues/#fedora32-firewalld">https://kind.sigs.k8s.io/docs/user/known-issues/#fedora32-firewalld</a></p></li>
+</ul>
+<p>This sed script does not work, do it manually. Todo: fix the sed…</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">firewalld</span><span class="o">/</span><span class="n">firewalld</span><span class="o">.</span><span class="n">conf</span> <span class="s1">&#39;s/FirewallBackend=.*/FirewallBackend=iptables/&#39;</span>
+<span class="n">systemctl</span> <span class="n">restart</span> <span class="n">firewalld</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-go">
+<h2>Install go<a class="headerlink" href="#install-go" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">udhos</span><span class="o">/</span><span class="n">update</span><span class="o">-</span><span class="n">golang</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">update</span><span class="o">-</span><span class="n">golang</span>
+<span class="o">./</span><span class="n">update</span><span class="o">-</span><span class="n">golang</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-gopath-in-bashrc">
+<h2>Set GOPATH in ~/.bashrc<a class="headerlink" href="#set-gopath-in-bashrc" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$HOME/bin
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-kind">
+<h2>Install KIND<a class="headerlink" href="#install-kind" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://kind.sigs.k8s.io/docs/user/quick-start/">https://kind.sigs.k8s.io/docs/user/quick-start/</a></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> GO111MODULE=&quot;on&quot; go get sigs.k8s.io/kind@v0.8.1
+[or… git clone https://github.com/kubernetes-sigs/kind.git; make; cp bin/kind /usr/bin/kind]
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-kubectl">
+<h2>Install kubectl<a class="headerlink" href="#install-kubectl" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">https://kubernetes.io/docs/tasks/tools/install-kubectl/</a></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">LO</span> <span class="s2">&quot;https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-docker">
+<h2>Install docker<a class="headerlink" href="#install-docker" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://fedoramagazine.org/docker-and-fedora-32/">https://fedoramagazine.org/docker-and-fedora-32/</a></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">permanent</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">trusted</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">interface</span><span class="o">=</span><span class="n">docker0</span>
+<span class="n">sudo</span> <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">permanent</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">FedoraWorkstation</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">masquerade</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">moby</span><span class="o">-</span><span class="n">engine</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">docker</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-ovn-kubernetes">
+<h2>Install ovn-kubernetes<a class="headerlink" href="#install-ovn-kubernetes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">org</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-kubernetes">
+<h2>Install kubernetes<a class="headerlink" href="#install-kubernetes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $GOPATH
+mkdir k8s.io; cd k8s.io
+git clone https://github.com/kubernetes/kubernetes.git
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-kubernetes-e2e-test-binary">
+<h2>Build kubernetes e2e.test binary<a class="headerlink" href="#build-kubernetes-e2e-test-binary" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">GOPATH</span><span class="o">/</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">k8s</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">kubernetes</span>
+<span class="n">make</span> <span class="n">WHAT</span><span class="o">=</span><span class="s2">&quot;test/e2e/e2e.test vendor/github.com/onsi/ginkgo/ginkgo&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-kind-cluster">
+<h2>Start KIND cluster<a class="headerlink" href="#start-kind-cluster" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $GOPATH/github.com/ovn-org/ovn-kubernetes/contrib
+./kind.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="export-kubeconfig-home-admin-conf">
+<h2>export KUBECONFIG=$HOME/admin.conf<a class="headerlink" href="#export-kubeconfig-home-admin-conf" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="n">get</span> <span class="n">nodes</span> <span class="o">-</span><span class="n">A</span> <span class="o">-</span><span class="n">o</span> <span class="n">wide</span>
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@nfvsdn</span><span class="o">-</span><span class="mi">06</span> <span class="n">contrib</span><span class="p">]</span><span class="c1"># kubectl get nodes -o wide</span>
+<span class="n">NAME</span>                <span class="n">STATUS</span>   <span class="n">ROLES</span>    <span class="n">AGE</span>     <span class="n">VERSION</span>   <span class="n">INTERNAL</span><span class="o">-</span><span class="n">IP</span>   <span class="n">EXTERNAL</span><span class="o">-</span><span class="n">IP</span>   <span class="n">OS</span><span class="o">-</span><span class="n">IMAGE</span>           <span class="n">KERNEL</span><span class="o">-</span><span class="n">VERSION</span>           <span class="n">CONTAINER</span><span class="o">-</span><span class="n">RUNTIME</span>
+<span class="n">ovn</span><span class="o">-</span><span class="n">control</span><span class="o">-</span><span class="n">plane</span>   <span class="n">Ready</span>    <span class="n">master</span>   <span class="mi">5</span><span class="n">m58s</span>   <span class="n">v1</span><span class="o">.</span><span class="mf">18.2</span>   <span class="mf">172.18</span><span class="o">.</span><span class="mf">0.4</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>        <span class="n">Ubuntu</span> <span class="mf">20.04</span> <span class="n">LTS</span>   <span class="mf">5.7</span><span class="o">.</span><span class="mi">17</span><span class="o">-</span><span class="mf">200.</span><span class="n">fc32</span><span class="o">.</span><span class="n">x86_64</span>   <span class="n">containerd</span><span class="p">:</span><span class="o">//</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">g449e9269</span>
+<span class="n">ovn</span><span class="o">-</span><span class="n">worker</span>          <span class="n">Ready</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>   <span class="mi">5</span><span class="n">m22s</span>   <span class="n">v1</span><span class="o">.</span><span class="mf">18.2</span>   <span class="mf">172.18</span><span class="o">.</span><span class="mf">0.3</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>        <span class="n">Ubuntu</span> <span class="mf">20.04</span> <span class="n">LTS</span>   <span class="mf">5.7</span><span class="o">.</span><span class="mi">17</span><span class="o">-</span><span class="mf">200.</span><span class="n">fc32</span><span class="o">.</span><span class="n">x86_64</span>   <span class="n">containerd</span><span class="p">:</span><span class="o">//</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">g449e9269</span>
+<span class="n">ovn</span><span class="o">-</span><span class="n">worker2</span>         <span class="n">Ready</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>   <span class="mi">5</span><span class="n">m25s</span>   <span class="n">v1</span><span class="o">.</span><span class="mf">18.2</span>   <span class="mf">172.18</span><span class="o">.</span><span class="mf">0.2</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>        <span class="n">Ubuntu</span> <span class="mf">20.04</span> <span class="n">LTS</span>   <span class="mf">5.7</span><span class="o">.</span><span class="mi">17</span><span class="o">-</span><span class="mf">200.</span><span class="n">fc32</span><span class="o">.</span><span class="n">x86_64</span>   <span class="n">containerd</span><span class="p">:</span><span class="o">//</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">g449e9269</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-all-network-policy-tests">
+<h2>Run all network policy tests<a class="headerlink" href="#run-all-network-policy-tests" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $GOPATH/k8s.io./kubernetes
+./_output/local/go/bin/e2e.test -kubeconfig  $HOME/admin.conf -ginkgo.focus=&quot;\[sig-network\].*Policy&quot; -num-nodes 2
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-a-specific-network-policy-test">
+<h2>Run a specific network policy test<a class="headerlink" href="#run-a-specific-network-policy-test" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $GOPATH/k8s.io./kubernetes
+./_output/local/go/bin/e2e.test -kubeconfig  $HOME/admin.conf -ginkgo.focus=&quot;should stop enforcing policies after they are deleted&quot;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="docs/INSTALL.UBUNTU.html" class="btn btn-neutral float-right" title="Installing OVS and OVN on Ubuntu" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="README_MANUAL.html" class="btn btn-neutral float-left" title="Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

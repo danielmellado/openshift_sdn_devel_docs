@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How to use Open Virtual Networking with Kubernetes &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Setup" href="README_MANUAL.html" />
+    <link rel="prev" title="OVN-Kubernetes" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openshift_sdn/index.html">OpenShift SDN</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">OVN-Kubernetes</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to use Open Virtual Networking with Kubernetes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-open-vswitch-kernel-modules-on-all-hosts">Install Open vSwitch kernel modules on all hosts.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-daemonset-and-deployment">Run DaemonSet and Deployment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="README_MANUAL.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README_MANUAL.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README_MANUAL.html#installing-kubernetes">Installing Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kind.html">Fedora 32 setup for KIND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.UBUNTU.html">Installing OVS and OVN on Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.SSL.html">Generating certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ci.html">CI Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html">Initial setup issues.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/debugging.html#runtime-issues">Runtime issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/egress-firewall.html">EgressFirewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ha.html">OVN central database High-availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/hybrid-overlay.html">Hybrid Overlay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/kind.html">OVN kubernetes KIND Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ovs_offload.html">OVS Hardware Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">OVN-Kubernetes</a> &raquo;</li>
+        
+      <li>How to use Open Virtual Networking with Kubernetes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/ovn_kubernetes/README.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-to-use-open-virtual-networking-with-kubernetes">
+<h1>How to use Open Virtual Networking with Kubernetes<a class="headerlink" href="#how-to-use-open-virtual-networking-with-kubernetes" title="Permalink to this headline">¶</a></h1>
+<p>On Linux, the easiest way to get started is to use OVN DaemonSet and Deployments.</p>
+<div class="section" id="install-open-vswitch-kernel-modules-on-all-hosts">
+<h2>Install Open vSwitch kernel modules on all hosts.<a class="headerlink" href="#install-open-vswitch-kernel-modules-on-all-hosts" title="Permalink to this headline">¶</a></h2>
+<p>Most Linux distributions come with Open vSwitch kernel module by default.  You
+can check its existence with <code class="docutils literal notranslate"><span class="pre">modinfo</span> <span class="pre">openvswitch</span></code>.  The features that OVN
+needs are only available in kernel 4.6 and greater. But, you can also install
+Open vSwitch kernel module from the Open vSwitch repository to get all the
+features OVN needs (and any possible bug fixes) for any kernel.</p>
+<p>To install Open vSwitch kernel module from Open vSwitch repo manually, please
+read [INSTALL.rst].  For a quick start on Ubuntu,  you can install
+the kernel module package by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span>
+<span class="n">echo</span> <span class="s2">&quot;deb http://3.19.28.122/openvswitch/stable /&quot;</span> <span class="o">|</span>  <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">.</span><span class="n">list</span>
+<span class="n">wget</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">3.19</span><span class="o">.</span><span class="mf">28.122</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">keyFile</span> <span class="o">|</span>  <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">build</span><span class="o">-</span><span class="n">dep</span> <span class="n">dkms</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">openvswitch</span><span class="o">-</span><span class="n">datapath</span><span class="o">-</span><span class="n">dkms</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-daemonset-and-deployment">
+<h2>Run DaemonSet and Deployment<a class="headerlink" href="#run-daemonset-and-deployment" title="Permalink to this headline">¶</a></h2>
+<p>Create OVN StatefulSet, DaemonSet and Deployment yamls from templates by running the commands below:
+(The $MASTER_IP below is the IP address of the machine where kube-apiserver is
+running).</p>
+<p><strong>Note:</strong> when specifying the pod CIDR to the command below, daemonset.sh will
+generate a /24 subnet prefix to create per-node CIDRs. Ensure your pod subnet is has a
+prefix less than 24, or edit the generated ovn-setup.yaml and specify a host subnet
+prefix. For example, providing a net-cidr of “129.168.1.0/24” would require modifying
+ovn-setup.yaml with a host subnet prefix as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">:</span>
+  <span class="n">net_cidr</span><span class="p">:</span>      <span class="s2">&quot;192.168.1.0/24/25&quot;</span>
+</pre></div>
+</div>
+<p>Where “/25” is just chosen for this example, but may be any legitimate prefix value greater
+than 24.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Clone ovn-kubernetes repo
+mkdir -p $HOME/work/src/github.com/ovn-org
+cd $HOME/work/src/github.com/ovn-org
+git clone https://github.com/ovn-org/ovn-kubernetes
+cd $HOME/work/src/github.com/ovn-org/ovn-kubernetes/dist/images
+./daemonset.sh --image=docker.io/ovnkube/ovn-daemonset-u:latest \
+    --net-cidr=192.168.0.0/16 --svc-cidr=172.16.1.0/24 \
+    --gateway-mode=&quot;local&quot; \
+    --k8s-apiserver=https://$MASTER_IP:6443
+</pre></div>
+</div>
+<p>To set specific logging level for OVN components, pass the related parameter from the below mentioned
+list to the above command. Set values are the default values.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">--</span><span class="n">master</span><span class="o">-</span><span class="n">loglevel</span><span class="o">=</span><span class="s2">&quot;5&quot;</span> \\<span class="n">Log</span> <span class="n">level</span> <span class="k">for</span> <span class="n">ovnkube</span> <span class="p">(</span><span class="n">master</span><span class="p">)</span>
+    <span class="o">--</span><span class="n">node</span><span class="o">-</span><span class="n">loglevel</span><span class="o">=</span><span class="s2">&quot;5&quot;</span> \\ <span class="n">Log</span> <span class="n">level</span> <span class="k">for</span> <span class="n">ovnkube</span> <span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="o">--</span><span class="n">ovn</span><span class="o">-</span><span class="n">loglevel</span><span class="o">-</span><span class="n">northd</span><span class="o">=</span><span class="s2">&quot;-vconsole:info -vfile:info&quot;</span> \\ <span class="n">Log</span> <span class="n">config</span> <span class="k">for</span> <span class="n">ovn</span> <span class="n">northd</span>
+    <span class="o">--</span><span class="n">ovn</span><span class="o">-</span><span class="n">loglevel</span><span class="o">-</span><span class="n">nb</span><span class="o">=</span><span class="s2">&quot;-vconsole:info -vfile:info&quot;</span> \\ <span class="n">Log</span> <span class="n">config</span> <span class="k">for</span> <span class="n">northbound</span> <span class="n">db</span>
+    <span class="o">--</span><span class="n">ovn</span><span class="o">-</span><span class="n">loglevel</span><span class="o">-</span><span class="n">sb</span><span class="o">=</span><span class="s2">&quot;-vconsole:info -vfile:info&quot;</span> \\ <span class="n">Log</span> <span class="n">config</span> <span class="k">for</span> <span class="n">southboudn</span> <span class="n">db</span>
+    <span class="o">--</span><span class="n">ovn</span><span class="o">-</span><span class="n">loglevel</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;-vconsole:info&quot;</span> \\ <span class="n">Log</span> <span class="n">config</span> <span class="k">for</span> <span class="n">ovn</span><span class="o">-</span><span class="n">controller</span>
+    <span class="o">--</span><span class="n">ovn</span><span class="o">-</span><span class="n">loglevel</span><span class="o">-</span><span class="n">nbctld</span><span class="o">=</span><span class="s2">&quot;-vconsole:info&quot;</span> \\ <span class="n">Log</span> <span class="n">config</span> <span class="k">for</span> <span class="n">nbctl</span> <span class="n">daemon</span>
+</pre></div>
+</div>
+<p>Apply OVN DaemonSet and Deployment yamls.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Create OVN namespace, service accounts, ovnkube-db headless service, configmap, and policies
+kubectl create -f $HOME/work/src/github.com/ovn-org/ovn-kubernetes/dist/yaml/ovn-setup.yaml
+
+# Run ovnkube-db deployment.
+kubectl create -f $HOME/work/src/github.com/ovn-org/ovn-kubernetes/dist/yaml/ovnkube-db.yaml
+
+# Run ovnkube-master deployment.
+kubectl create -f $HOME/work/src/github.com/ovn-org/ovn-kubernetes/dist/yaml/ovnkube-master.yaml
+
+# Run ovnkube daemonset for nodes
+kubectl create -f $HOME/work/src/github.com/ovn-org/ovn-kubernetes/dist/yaml/ovnkube-node.yaml
+</pre></div>
+</div>
+<p>NOTE: You don’t need kube-proxy for OVN to work. You can delete that from your
+cluster.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="README_MANUAL.html" class="btn btn-neutral float-right" title="Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="OVN-Kubernetes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

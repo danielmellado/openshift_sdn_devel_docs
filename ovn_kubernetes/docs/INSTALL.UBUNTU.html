@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installing OVS and OVN on Ubuntu &mdash; OpenShift SDN Docs  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Generating certificates" href="INSTALL.SSL.html" />
+    <link rel="prev" title="Fedora 32 setup for KIND" href="../kind.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">OpenShift SDN devel docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cno/index.html">Cluster Network Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../openshift_sdn/index.html">OpenShift SDN</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">OVN-Kubernetes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../README.html">How to use Open Virtual Networking with Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#debugging">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../README_MANUAL.html#installing-kubernetes">Installing Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kind.html">Fedora 32 setup for KIND</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Installing OVS and OVN on Ubuntu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-ovs-and-ovn-from-packages">Installing OVS and OVN from packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-ovs-and-ovn-from-sources">Installing OVS and OVN from sources</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html">Generating certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ci.html">CI Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Initial setup issues.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html#runtime-issues">Runtime issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="egress-firewall.html">EgressFirewall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ha.html">OVN central database High-availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid-overlay.html">Hybrid Overlay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kind.html">OVN kubernetes KIND Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ovs_offload.html">OVS Hardware Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">Users guide</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OpenShift SDN Docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">OVN-Kubernetes</a> &raquo;</li>
+        
+      <li>Installing OVS and OVN on Ubuntu</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/ovn_kubernetes/docs/INSTALL.UBUNTU.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installing-ovs-and-ovn-on-ubuntu">
+<h1>Installing OVS and OVN on Ubuntu<a class="headerlink" href="#installing-ovs-and-ovn-on-ubuntu" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installing-ovs-and-ovn-from-packages">
+<h2>Installing OVS and OVN from packages<a class="headerlink" href="#installing-ovs-and-ovn-from-packages" title="Permalink to this headline">¶</a></h2>
+<p>For testing and POCs, we maintain OVS and OVN packages in a AWS VM.
+(For production, it is recommended that you build your own OVS packages.)
+To install packages from there, you can run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span>
+<span class="n">echo</span> <span class="s2">&quot;deb http://3.19.28.122/openvswitch/stable /&quot;</span> <span class="o">|</span>  <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">.</span><span class="n">list</span>
+<span class="n">wget</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">3.19</span><span class="o">.</span><span class="mf">28.122</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">keyFile</span> <span class="o">|</span>  <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+</pre></div>
+</div>
+<p>To install OVS bits on all nodes, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">build</span><span class="o">-</span><span class="n">dep</span> <span class="n">dkms</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">six</span> <span class="n">openssl</span> <span class="o">-</span><span class="n">y</span>
+
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">openvswitch</span><span class="o">-</span><span class="n">datapath</span><span class="o">-</span><span class="n">dkms</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">openvswitch</span><span class="o">-</span><span class="n">switch</span> <span class="n">openvswitch</span><span class="o">-</span><span class="n">common</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>On the master, where you intend to start OVN’s central components,
+run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">ovn</span><span class="o">-</span><span class="n">central</span> <span class="n">ovn</span><span class="o">-</span><span class="n">common</span> <span class="n">ovn</span><span class="o">-</span><span class="n">host</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>On the agent nodes, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">ovn</span><span class="o">-</span><span class="n">host</span> <span class="n">ovn</span><span class="o">-</span><span class="n">common</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-ovs-and-ovn-from-sources">
+<h2>Installing OVS and OVN from sources<a class="headerlink" href="#installing-ovs-and-ovn-from-sources" title="Permalink to this headline">¶</a></h2>
+<p>Install a few pre-requisite packages.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>apt-get update
+apt-get install -y build-essential fakeroot debhelper \
+                    autoconf automake libssl-dev \
+                    openssl python-all \
+                    python-setuptools \
+                    python-six \
+                    libtool git dh-autoreconf \
+                    linux-headers-$(uname -r)
+</pre></div>
+</div>
+<p>Clone the OVS repo.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">ovs</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">ovs</span>
+</pre></div>
+</div>
+<p>Configure and compile the sources</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./boot.sh
+./configure --prefix=/usr --localstatedir=/var  --sysconfdir=/etc --enable-ssl --with-linux=/lib/modules/`uname -r`/build
+make -j3
+</pre></div>
+</div>
+<p>Install the executables</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">install</span>
+<span class="n">make</span> <span class="n">modules_install</span>
+</pre></div>
+</div>
+<p>Create a depmod.d file to use OVS kernel modules from this repo instead of
+upstream linux.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">depmod</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">.</span><span class="n">conf</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">override</span> <span class="n">openvswitch</span> <span class="o">*</span> <span class="n">extra</span>
+<span class="n">override</span> <span class="n">vport</span><span class="o">-</span><span class="n">geneve</span> <span class="o">*</span> <span class="n">extra</span>
+<span class="n">override</span> <span class="n">vport</span><span class="o">-</span><span class="n">stt</span> <span class="o">*</span> <span class="n">extra</span>
+<span class="n">override</span> <span class="n">vport</span><span class="o">-*</span> <span class="o">*</span> <span class="n">extra</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Copy a startup script and start OVS</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">depmod</span> <span class="o">-</span><span class="n">a</span>
+<span class="n">cp</span> <span class="n">debian</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">-</span><span class="n">switch</span><span class="o">.</span><span class="n">init</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">-</span><span class="n">switch</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">-</span><span class="n">switch</span> <span class="n">force</span><span class="o">-</span><span class="n">reload</span><span class="o">-</span><span class="n">kmod</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="INSTALL.SSL.html" class="btn btn-neutral float-right" title="Generating certificates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../kind.html" class="btn btn-neutral float-left" title="Fedora 32 setup for KIND" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, OpenShift SDN Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
