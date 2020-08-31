@@ -21,7 +21,7 @@ Run below command after add it. The below `grub.cfg` location is only of UEFI.
 .. warning::
    Don't use this for Legacy BIOS.
 
-.. code-block::
+.. code-block:: shell-session
 
    sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
    sudo reboot
@@ -32,7 +32,7 @@ Verify
 * run `sudo virt-host-validate` to check. If all the items are `PASS`, it is
   working fine. `Fuse` module may `FAIL`. It should be load manually.
 
-.. code-block::
+.. code-block:: shell-session
 
   sudo virt-host-validate
     QEMU: Checking for hardware virtualization                                 : PASS
@@ -72,7 +72,7 @@ Change firewalld to use iptables instead of nftables
 
 This sed script does not work, do it manually. Todo: fix the sed…
 
-.. code-block::
+.. code-block:: shell-session
 
   sed -i /etc/firewalld/firewalld.conf 's/FirewallBackend=.*/FirewallBackend=iptables/'
   systemctl restart firewalld
@@ -80,7 +80,7 @@ This sed script does not work, do it manually. Todo: fix the sed…
 Install go
 ~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   git clone https://github.com/udhos/update-golang.git
   cd update-golang
@@ -89,7 +89,7 @@ Install go
 Set GOPATH in ~/.bashrc
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   export GOPATH=$HOME/go
   export PATH=$PATH:$GOPATH/bin
@@ -101,7 +101,7 @@ Install KIND
 
 * https://kind.sigs.k8s.io/docs/user/quick-start/
 
-.. code-block::
+.. code-block:: shell-session
 
    GO111MODULE="on" go get sigs.k8s.io/kind@v0.8.1
   [or… git clone https://github.com/kubernetes-sigs/kind.git; make; cp bin/kind /usr/bin/kind]
@@ -111,7 +111,7 @@ Install kubectl
 
 * https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
-.. code-block::
+.. code-block:: shell-session
 
   curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 
@@ -120,7 +120,7 @@ Install docker
 
 * https://fedoramagazine.org/docker-and-fedora-32/
 
-.. code-block::
+.. code-block:: shell-session
 
   sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
   sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-masquerade
@@ -130,14 +130,14 @@ Install docker
 Install ovn-kubernetes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   git clone https://github.com/ovn-org/ovn-kubernetes.git
 
 Install kubernetes
 ~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   cd $GOPATH
   mkdir k8s.io; cd k8s.io
@@ -146,7 +146,7 @@ Install kubernetes
 Build kubernetes e2e.test binary
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   cd GOPATH/github.com/k8s.io/kubernetes
   make WHAT="test/e2e/e2e.test vendor/github.com/onsi/ginkgo/ginkgo"
@@ -154,7 +154,7 @@ Build kubernetes e2e.test binary
 Start KIND cluster
 ~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   cd $GOPATH/github.com/ovn-org/ovn-kubernetes/contrib
   ./kind.sh
@@ -162,7 +162,7 @@ Start KIND cluster
 export KUBECONFIG=$HOME/admin.conf
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   kubectl get nodes -A -o wide
 
@@ -175,7 +175,7 @@ export KUBECONFIG=$HOME/admin.conf
 Run all network policy tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   cd $GOPATH/k8s.io./kubernetes
   ./_output/local/go/bin/e2e.test -kubeconfig  $HOME/admin.conf -ginkgo.focus="\[sig-network\].*Policy" -num-nodes 2
@@ -183,7 +183,7 @@ Run all network policy tests
 Run a specific network policy test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell-session
 
   cd $GOPATH/k8s.io./kubernetes
   ./_output/local/go/bin/e2e.test -kubeconfig  $HOME/admin.conf -ginkgo.focus="should stop enforcing policies after they are deleted"

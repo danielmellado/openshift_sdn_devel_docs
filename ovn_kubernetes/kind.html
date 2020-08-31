@@ -220,8 +220,8 @@
 <p class="admonition-title">Warning</p>
 <p>Don’t use this for Legacy BIOS.</p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">grub2</span><span class="o">-</span><span class="n">mkconfig</span> <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">efi</span><span class="o">/</span><span class="n">EFI</span><span class="o">/</span><span class="n">fedora</span><span class="o">/</span><span class="n">grub</span><span class="o">.</span><span class="n">cfg</span>
-<span class="n">sudo</span> <span class="n">reboot</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</span>
+<span class="go">sudo reboot</span>
 </pre></div>
 </div>
 </div>
@@ -231,35 +231,35 @@
 <li><p>run <cite>sudo virt-host-validate</cite> to check. If all the items are <cite>PASS</cite>, it is
 working fine. <cite>Fuse</cite> module may <cite>FAIL</cite>. It should be load manually.</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">virt</span><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">validate</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">hardware</span> <span class="n">virtualization</span>                                 <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">kvm</span> <span class="n">exists</span>                                   <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">kvm</span> <span class="ow">is</span> <span class="n">accessible</span>                            <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vhost</span><span class="o">-</span><span class="n">net</span> <span class="n">exists</span>                             <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">tun</span> <span class="n">exists</span>                               <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpu&#39;</span> <span class="n">controller</span> <span class="n">support</span>                         <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpuacct&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpuset&#39;</span> <span class="n">controller</span> <span class="n">support</span>                      <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;memory&#39;</span> <span class="n">controller</span> <span class="n">support</span>                      <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;devices&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;blkio&#39;</span> <span class="n">controller</span> <span class="n">support</span>                       <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">device</span> <span class="n">assignment</span> <span class="n">IOMMU</span> <span class="n">support</span>                         <span class="p">:</span> <span class="n">PASS</span>
-  <span class="n">QEMU</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">IOMMU</span> <span class="ow">is</span> <span class="n">enabled</span> <span class="n">by</span> <span class="n">kernel</span>                               <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">Linux</span> <span class="o">&gt;=</span> <span class="mf">2.6</span><span class="o">.</span><span class="mi">26</span>                                         <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">ipc</span>                                           <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">mnt</span>                                           <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">pid</span>                                           <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">uts</span>                                           <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">net</span>                                           <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">namespace</span> <span class="n">user</span>                                          <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpu&#39;</span> <span class="n">controller</span> <span class="n">support</span>                         <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpuacct&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;cpuset&#39;</span> <span class="n">controller</span> <span class="n">support</span>                      <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;memory&#39;</span> <span class="n">controller</span> <span class="n">support</span>                      <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;devices&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;freezer&#39;</span> <span class="n">controller</span> <span class="n">support</span>                     <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">for</span> <span class="n">cgroup</span> <span class="s1">&#39;blkio&#39;</span> <span class="n">controller</span> <span class="n">support</span>                       <span class="p">:</span> <span class="n">PASS</span>
-   <span class="n">LXC</span><span class="p">:</span> <span class="n">Checking</span> <span class="k">if</span> <span class="n">device</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">fuse</span><span class="o">/</span><span class="n">connections</span> <span class="n">exists</span>                   <span class="p">:</span> <span class="n">PASS</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">sudo virt-host-validate</span>
+<span class="go">  QEMU: Checking for hardware virtualization                                 : PASS</span>
+<span class="go">  QEMU: Checking if device /dev/kvm exists                                   : PASS</span>
+<span class="go">  QEMU: Checking if device /dev/kvm is accessible                            : PASS</span>
+<span class="go">  QEMU: Checking if device /dev/vhost-net exists                             : PASS</span>
+<span class="go">  QEMU: Checking if device /dev/net/tun exists                               : PASS</span>
+<span class="go">  QEMU: Checking for cgroup &#39;cpu&#39; controller support                         : PASS</span>
+<span class="go">  QEMU: Checking for cgroup &#39;cpuacct&#39; controller support                     : PASS</span>
+<span class="go">  QEMU: Checking for cgroup &#39;cpuset&#39; controller support                      : PASS</span>
+<span class="go">  QEMU: Checking for cgroup &#39;memory&#39; controller support                      : PASS</span>
+<span class="go">  QEMU: Checking for cgroup &#39;devices&#39; controller support                     : PASS</span>
+<span class="go">  QEMU: Checking for cgroup &#39;blkio&#39; controller support                       : PASS</span>
+<span class="go">  QEMU: Checking for device assignment IOMMU support                         : PASS</span>
+<span class="go">  QEMU: Checking if IOMMU is enabled by kernel                               : PASS</span>
+<span class="go">   LXC: Checking for Linux &gt;= 2.6.26                                         : PASS</span>
+<span class="go">   LXC: Checking for namespace ipc                                           : PASS</span>
+<span class="go">   LXC: Checking for namespace mnt                                           : PASS</span>
+<span class="go">   LXC: Checking for namespace pid                                           : PASS</span>
+<span class="go">   LXC: Checking for namespace uts                                           : PASS</span>
+<span class="go">   LXC: Checking for namespace net                                           : PASS</span>
+<span class="go">   LXC: Checking for namespace user                                          : PASS</span>
+<span class="go">   LXC: Checking for cgroup &#39;cpu&#39; controller support                         : PASS</span>
+<span class="go">   LXC: Checking for cgroup &#39;cpuacct&#39; controller support                     : PASS</span>
+<span class="go">   LXC: Checking for cgroup &#39;cpuset&#39; controller support                      : PASS</span>
+<span class="go">   LXC: Checking for cgroup &#39;memory&#39; controller support                      : PASS</span>
+<span class="go">   LXC: Checking for cgroup &#39;devices&#39; controller support                     : PASS</span>
+<span class="go">   LXC: Checking for cgroup &#39;freezer&#39; controller support                     : PASS</span>
+<span class="go">   LXC: Checking for cgroup &#39;blkio&#39; controller support                       : PASS</span>
+<span class="go">   LXC: Checking if device /sys/fs/fuse/connections exists                   : PASS</span>
 </pre></div>
 </div>
 </div>
@@ -269,25 +269,25 @@ working fine. <cite>Fuse</cite> module may <cite>FAIL</cite>. It should be load 
 <li><p><a class="reference external" href="https://kind.sigs.k8s.io/docs/user/known-issues/#fedora32-firewalld">https://kind.sigs.k8s.io/docs/user/known-issues/#fedora32-firewalld</a></p></li>
 </ul>
 <p>This sed script does not work, do it manually. Todo: fix the sed…</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">firewalld</span><span class="o">/</span><span class="n">firewalld</span><span class="o">.</span><span class="n">conf</span> <span class="s1">&#39;s/FirewallBackend=.*/FirewallBackend=iptables/&#39;</span>
-<span class="n">systemctl</span> <span class="n">restart</span> <span class="n">firewalld</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">sed -i /etc/firewalld/firewalld.conf &#39;s/FirewallBackend=.*/FirewallBackend=iptables/&#39;</span>
+<span class="go">systemctl restart firewalld</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="install-go">
 <h2>Install go<a class="headerlink" href="#install-go" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">udhos</span><span class="o">/</span><span class="n">update</span><span class="o">-</span><span class="n">golang</span><span class="o">.</span><span class="n">git</span>
-<span class="n">cd</span> <span class="n">update</span><span class="o">-</span><span class="n">golang</span>
-<span class="o">./</span><span class="n">update</span><span class="o">-</span><span class="n">golang</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/udhos/update-golang.git</span>
+<span class="go">cd update-golang</span>
+<span class="go">./update-golang</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="set-gopath-in-bashrc">
 <h2>Set GOPATH in ~/.bashrc<a class="headerlink" href="#set-gopath-in-bashrc" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:$HOME/bin
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">export GOPATH=$HOME/go</span>
+<span class="go">export PATH=$PATH:$GOPATH/bin</span>
+<span class="go">export PATH=$PATH:/usr/local/go/bin</span>
+<span class="go">export PATH=$PATH:$HOME/bin</span>
 </pre></div>
 </div>
 </div>
@@ -296,8 +296,8 @@ export PATH=$PATH:$HOME/bin
 <ul class="simple">
 <li><p><a class="reference external" href="https://kind.sigs.k8s.io/docs/user/quick-start/">https://kind.sigs.k8s.io/docs/user/quick-start/</a></p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> GO111MODULE=&quot;on&quot; go get sigs.k8s.io/kind@v0.8.1
-[or… git clone https://github.com/kubernetes-sigs/kind.git; make; cp bin/kind /usr/bin/kind]
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go"> GO111MODULE=&quot;on&quot; go get sigs.k8s.io/kind@v0.8.1</span>
+<span class="go">[or… git clone https://github.com/kubernetes-sigs/kind.git; make; cp bin/kind /usr/bin/kind]</span>
 </pre></div>
 </div>
 </div>
@@ -306,7 +306,7 @@ export PATH=$PATH:$HOME/bin
 <ul class="simple">
 <li><p><a class="reference external" href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">https://kubernetes.io/docs/tasks/tools/install-kubectl/</a></p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">LO</span> <span class="s2">&quot;https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl&quot;</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">curl -LO &quot;https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -315,64 +315,64 @@ export PATH=$PATH:$HOME/bin
 <ul class="simple">
 <li><p><a class="reference external" href="https://fedoramagazine.org/docker-and-fedora-32/">https://fedoramagazine.org/docker-and-fedora-32/</a></p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">permanent</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">trusted</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">interface</span><span class="o">=</span><span class="n">docker0</span>
-<span class="n">sudo</span> <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">permanent</span> <span class="o">--</span><span class="n">zone</span><span class="o">=</span><span class="n">FedoraWorkstation</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">masquerade</span>
-<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">moby</span><span class="o">-</span><span class="n">engine</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
-<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">docker</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0</span>
+<span class="go">sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-masquerade</span>
+<span class="go">sudo dnf install moby-engine docker-compose</span>
+<span class="go">sudo systemctl enable docker</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="install-ovn-kubernetes">
 <h2>Install ovn-kubernetes<a class="headerlink" href="#install-ovn-kubernetes" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">org</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">git</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/ovn-org/ovn-kubernetes.git</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="install-kubernetes">
 <h2>Install kubernetes<a class="headerlink" href="#install-kubernetes" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $GOPATH
-mkdir k8s.io; cd k8s.io
-git clone https://github.com/kubernetes/kubernetes.git
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">cd $GOPATH</span>
+<span class="go">mkdir k8s.io; cd k8s.io</span>
+<span class="go">git clone https://github.com/kubernetes/kubernetes.git</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="build-kubernetes-e2e-test-binary">
 <h2>Build kubernetes e2e.test binary<a class="headerlink" href="#build-kubernetes-e2e-test-binary" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">GOPATH</span><span class="o">/</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">k8s</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">kubernetes</span>
-<span class="n">make</span> <span class="n">WHAT</span><span class="o">=</span><span class="s2">&quot;test/e2e/e2e.test vendor/github.com/onsi/ginkgo/ginkgo&quot;</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">cd GOPATH/github.com/k8s.io/kubernetes</span>
+<span class="go">make WHAT=&quot;test/e2e/e2e.test vendor/github.com/onsi/ginkgo/ginkgo&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="start-kind-cluster">
 <h2>Start KIND cluster<a class="headerlink" href="#start-kind-cluster" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $GOPATH/github.com/ovn-org/ovn-kubernetes/contrib
-./kind.sh
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">cd $GOPATH/github.com/ovn-org/ovn-kubernetes/contrib</span>
+<span class="go">./kind.sh</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="export-kubeconfig-home-admin-conf">
 <h2>export KUBECONFIG=$HOME/admin.conf<a class="headerlink" href="#export-kubeconfig-home-admin-conf" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="n">get</span> <span class="n">nodes</span> <span class="o">-</span><span class="n">A</span> <span class="o">-</span><span class="n">o</span> <span class="n">wide</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get nodes -A -o wide</span>
 
-<span class="p">[</span><span class="n">root</span><span class="nd">@nfvsdn</span><span class="o">-</span><span class="mi">06</span> <span class="n">contrib</span><span class="p">]</span><span class="c1"># kubectl get nodes -o wide</span>
-<span class="n">NAME</span>                <span class="n">STATUS</span>   <span class="n">ROLES</span>    <span class="n">AGE</span>     <span class="n">VERSION</span>   <span class="n">INTERNAL</span><span class="o">-</span><span class="n">IP</span>   <span class="n">EXTERNAL</span><span class="o">-</span><span class="n">IP</span>   <span class="n">OS</span><span class="o">-</span><span class="n">IMAGE</span>           <span class="n">KERNEL</span><span class="o">-</span><span class="n">VERSION</span>           <span class="n">CONTAINER</span><span class="o">-</span><span class="n">RUNTIME</span>
-<span class="n">ovn</span><span class="o">-</span><span class="n">control</span><span class="o">-</span><span class="n">plane</span>   <span class="n">Ready</span>    <span class="n">master</span>   <span class="mi">5</span><span class="n">m58s</span>   <span class="n">v1</span><span class="o">.</span><span class="mf">18.2</span>   <span class="mf">172.18</span><span class="o">.</span><span class="mf">0.4</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>        <span class="n">Ubuntu</span> <span class="mf">20.04</span> <span class="n">LTS</span>   <span class="mf">5.7</span><span class="o">.</span><span class="mi">17</span><span class="o">-</span><span class="mf">200.</span><span class="n">fc32</span><span class="o">.</span><span class="n">x86_64</span>   <span class="n">containerd</span><span class="p">:</span><span class="o">//</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">g449e9269</span>
-<span class="n">ovn</span><span class="o">-</span><span class="n">worker</span>          <span class="n">Ready</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>   <span class="mi">5</span><span class="n">m22s</span>   <span class="n">v1</span><span class="o">.</span><span class="mf">18.2</span>   <span class="mf">172.18</span><span class="o">.</span><span class="mf">0.3</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>        <span class="n">Ubuntu</span> <span class="mf">20.04</span> <span class="n">LTS</span>   <span class="mf">5.7</span><span class="o">.</span><span class="mi">17</span><span class="o">-</span><span class="mf">200.</span><span class="n">fc32</span><span class="o">.</span><span class="n">x86_64</span>   <span class="n">containerd</span><span class="p">:</span><span class="o">//</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">g449e9269</span>
-<span class="n">ovn</span><span class="o">-</span><span class="n">worker2</span>         <span class="n">Ready</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>   <span class="mi">5</span><span class="n">m25s</span>   <span class="n">v1</span><span class="o">.</span><span class="mf">18.2</span>   <span class="mf">172.18</span><span class="o">.</span><span class="mf">0.2</span>    <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>        <span class="n">Ubuntu</span> <span class="mf">20.04</span> <span class="n">LTS</span>   <span class="mf">5.7</span><span class="o">.</span><span class="mi">17</span><span class="o">-</span><span class="mf">200.</span><span class="n">fc32</span><span class="o">.</span><span class="n">x86_64</span>   <span class="n">containerd</span><span class="p">:</span><span class="o">//</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">g449e9269</span>
+<span class="gp">[root@nfvsdn-06 contrib]#</span> kubectl get nodes -o wide
+<span class="go">NAME                STATUS   ROLES    AGE     VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE           KERNEL-VERSION           CONTAINER-RUNTIME</span>
+<span class="go">ovn-control-plane   Ready    master   5m58s   v1.18.2   172.18.0.4    &lt;none&gt;        Ubuntu 20.04 LTS   5.7.17-200.fc32.x86_64   containerd://1.3.3-14-g449e9269</span>
+<span class="go">ovn-worker          Ready    &lt;none&gt;   5m22s   v1.18.2   172.18.0.3    &lt;none&gt;        Ubuntu 20.04 LTS   5.7.17-200.fc32.x86_64   containerd://1.3.3-14-g449e9269</span>
+<span class="go">ovn-worker2         Ready    &lt;none&gt;   5m25s   v1.18.2   172.18.0.2    &lt;none&gt;        Ubuntu 20.04 LTS   5.7.17-200.fc32.x86_64   containerd://1.3.3-14-g449e9269</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="run-all-network-policy-tests">
 <h2>Run all network policy tests<a class="headerlink" href="#run-all-network-policy-tests" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $GOPATH/k8s.io./kubernetes
-./_output/local/go/bin/e2e.test -kubeconfig  $HOME/admin.conf -ginkgo.focus=&quot;\[sig-network\].*Policy&quot; -num-nodes 2
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">cd $GOPATH/k8s.io./kubernetes</span>
+<span class="go">./_output/local/go/bin/e2e.test -kubeconfig  $HOME/admin.conf -ginkgo.focus=&quot;\[sig-network\].*Policy&quot; -num-nodes 2</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="run-a-specific-network-policy-test">
 <h2>Run a specific network policy test<a class="headerlink" href="#run-a-specific-network-policy-test" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd $GOPATH/k8s.io./kubernetes
-./_output/local/go/bin/e2e.test -kubeconfig  $HOME/admin.conf -ginkgo.focus=&quot;should stop enforcing policies after they are deleted&quot;
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">cd $GOPATH/k8s.io./kubernetes</span>
+<span class="go">./_output/local/go/bin/e2e.test -kubeconfig  $HOME/admin.conf -ginkgo.focus=&quot;should stop enforcing policies after they are deleted&quot;</span>
 </pre></div>
 </div>
 </div>
