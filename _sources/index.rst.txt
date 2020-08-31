@@ -16,5 +16,3 @@ Contents:
    cno/index
    openshift_sdn/index
    ovn_kubernetes/index
-   configuration/index
-   user/index
