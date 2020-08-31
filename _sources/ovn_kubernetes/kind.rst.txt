@@ -10,12 +10,12 @@ Change to use cgroupsv1 instead of cgroupsv2
 
    sudo vim /etc/default/grub
 
-Add 'systemd.unified_cgroup_hierarchy=0' in kernel command line. It will look like below
+Add `systemd.unified_cgroup_hierarchy=0` in kernel command line. It will look like below
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `GRUB_CMDLINE_LINUX="resume=/dev/mapper/vv-swap rd.lvm.lv=vv/root rd.lvm.lv=vv/swap rhgb quiet intel_iommu=on systemd.unified_cgroup_hierarchy=0"`
 
-Run below command after add it. The below 'grub.cfg' location is only of UEFI.
+Run below command after add it. The below `grub.cfg` location is only of UEFI.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. warning::

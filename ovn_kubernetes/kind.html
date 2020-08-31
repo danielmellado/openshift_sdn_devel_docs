@@ -93,8 +93,8 @@
 <li class="toctree-l2"><a class="reference internal" href="README_MANUAL.html#installing-kubernetes">Installing Kubernetes</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Fedora 32 setup for KIND</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#change-to-use-cgroupsv1-instead-of-cgroupsv2">Change to use cgroupsv1 instead of cgroupsv2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-systemd-unified-cgroup-hierarchy-0-in-kernel-command-line-it-will-look-like-below">Add ‘systemd.unified_cgroup_hierarchy=0’ in kernel command line. It will look like below</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#run-below-command-after-add-it-the-below-grub-cfg-location-is-only-of-uefi">Run below command after add it. The below ‘grub.cfg’ location is only of UEFI.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-systemd-unified-cgroup-hierarchy-0-in-kernel-command-line-it-will-look-like-below">Add <cite>systemd.unified_cgroup_hierarchy=0</cite> in kernel command line. It will look like below</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-below-command-after-add-it-the-below-grub-cfg-location-is-only-of-uefi">Run below command after add it. The below <cite>grub.cfg</cite> location is only of UEFI.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#verify">Verify</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#change-firewalld-to-use-iptables-instead-of-nftables">Change firewalld to use iptables instead of nftables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-go">Install go</a></li>
@@ -211,11 +211,11 @@
 </div>
 </div>
 <div class="section" id="add-systemd-unified-cgroup-hierarchy-0-in-kernel-command-line-it-will-look-like-below">
-<h2>Add ‘systemd.unified_cgroup_hierarchy=0’ in kernel command line. It will look like below<a class="headerlink" href="#add-systemd-unified-cgroup-hierarchy-0-in-kernel-command-line-it-will-look-like-below" title="Permalink to this headline">¶</a></h2>
+<h2>Add <cite>systemd.unified_cgroup_hierarchy=0</cite> in kernel command line. It will look like below<a class="headerlink" href="#add-systemd-unified-cgroup-hierarchy-0-in-kernel-command-line-it-will-look-like-below" title="Permalink to this headline">¶</a></h2>
 <p><cite>GRUB_CMDLINE_LINUX=”resume=/dev/mapper/vv-swap rd.lvm.lv=vv/root rd.lvm.lv=vv/swap rhgb quiet intel_iommu=on systemd.unified_cgroup_hierarchy=0”</cite></p>
 </div>
 <div class="section" id="run-below-command-after-add-it-the-below-grub-cfg-location-is-only-of-uefi">
-<h2>Run below command after add it. The below ‘grub.cfg’ location is only of UEFI.<a class="headerlink" href="#run-below-command-after-add-it-the-below-grub-cfg-location-is-only-of-uefi" title="Permalink to this headline">¶</a></h2>
+<h2>Run below command after add it. The below <cite>grub.cfg</cite> location is only of UEFI.<a class="headerlink" href="#run-below-command-after-add-it-the-below-grub-cfg-location-is-only-of-uefi" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Don’t use this for Legacy BIOS.</p>
