@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -32,6 +36,8 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script src="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+        <script src="_static/sphinx_tabs/tabs.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -159,9 +165,38 @@
 <p>Developer documentation for OpenShift SDN team</p>
 <p>This document intends to be a quick devref and guide for new developers. It’ll
 be a WIP covering details such as how to build, run, configure and test features.</p>
-<ul class="simple">
-<li><p>Free software: Apache license</p></li>
-</ul>
+<p>This mainly covers three different repos:</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-0-0 docutils container">
+<div class="docutils container">
+<p>Cluster Network Operator</p>
+</div>
+</div>
+<div class="item sphinx-data-tab-0-1 docutils container">
+<div class="docutils container">
+<p>OpenShift SDN</p>
+</div>
+</div>
+<div class="item sphinx-data-tab-0-2 docutils container">
+<div class="docutils container">
+<p>OVN-Kubernetes</p>
+</div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-0 active docutils container">
+<p>The Cluster Network Operator installs and upgrades the networking
+components on an OpenShift Kubernetes cluster.</p>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-1 docutils container">
+<p>OpenShift SDN is the default network plugin for OpenShift. It uses Open
+vSwitch to connect pods locally, with VXLAN tunnels to connect different nodes.</p>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-2 docutils container">
+<p>Kubernetes integration for OVN (Open Virtual Network) is a system to
+support virtual network abstraction.</p>
+</div>
+</div>
 </div>
 
 
