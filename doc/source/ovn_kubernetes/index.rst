@@ -22,3 +22,4 @@
    docs/kind.md
    docs/ovs_offload.md
    docs/design/shared_gw_dgp.md
+   docs/ovn-kubernetes-basics.md
