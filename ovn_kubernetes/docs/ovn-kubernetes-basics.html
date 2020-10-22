@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Generate signed certificates for OVN Northd &mdash; OpenShift SDN Docs  documentation</title>
+  <title>OVN Kubernetes Basics &mdash; OpenShift SDN Docs  documentation</title>
   
 
   
@@ -42,8 +42,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="CI Tests" href="ci.html" />
-    <link rel="prev" title="OVN overlay network on Openshift" href="INSTALL.OPENSHIFT.html" /> 
+    <link rel="prev" title="Enable Node-Local Services Access in Shared Gateway Mode" href="design/shared_gw_dgp.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -102,7 +101,7 @@
 <li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html">Generating certificates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="INSTALL.SSL.html#one-time-setup">One time setup.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Generate signed certificates for OVN Northd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ci.html">CI Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
@@ -115,7 +114,7 @@
 <li class="toctree-l2"><a class="reference internal" href="kind.html">OVN kubernetes KIND Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ovs_offload.html">OVS Hardware Offload</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design/shared_gw_dgp.html">Enable Node-Local Services Access in Shared Gateway Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ovn-kubernetes-basics.html">OVN Kubernetes Basics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">OVN Kubernetes Basics</a></li>
 </ul>
 </li>
 </ul>
@@ -166,13 +165,13 @@
         
           <li><a href="../index.html">OVN-Kubernetes</a> &raquo;</li>
         
-      <li>Generate signed certificates for OVN Northd</li>
+      <li>OVN Kubernetes Basics</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/ovn_kubernetes/docs/OVN-NORTHD.SSL.md.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/ovn_kubernetes/docs/ovn-kubernetes-basics.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -185,39 +184,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p>If the ovn-northd instance is not running on the same node as OVN NB
-and OVN SB database, then you will need to follow the steps below to
-secure the communication between ovn-northd and NB/SB databases.</p>
-<div class="section" id="generate-signed-certificates-for-ovn-northd">
-<h1>Generate signed certificates for OVN Northd<a class="headerlink" href="#generate-signed-certificates-for-ovn-northd" title="Permalink to this headline">¶</a></h1>
-<p>On the node running ovn-northd daemon, run the following commands.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openvswitch</span>
-<span class="n">ovs</span><span class="o">-</span><span class="n">pki</span> <span class="n">req</span> <span class="n">ovnnorthd</span>
-</pre></div>
-</div>
-<p>The above command will generate a private key “ovnnorthd-privkey.pem”
-and a corresponding certificate request named “ovnnorthd-req.pem”. Copy over
-the ovnnorthd-req.pem to the secure machine’s (where you have installed the
-ovs-pki utility) /var/lib/openvswitch/pki folder to sign it using the
-command below.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ovs</span><span class="o">-</span><span class="n">pki</span> <span class="o">-</span><span class="n">b</span> <span class="n">sign</span> <span class="n">ovnnorthd</span>
-</pre></div>
-</div>
-<p>The above command will generate ovnnorthd-cert.pem. Copy over this file back
-to the ovn-northd node’s /etc/openvswitch foler. The ovnnorthd-privkey.pem and
-ovnnorthd-cert.pem will be used by the ovn-northd to communicate with OVN NB
-and SB database.</p>
-<p>Now run the following command to ask ovn-northd to use these
-certificates.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cat &gt; /etc/openvswitch/ovn-northd-db-params.conf &lt;&lt; EOF
---ovnnb-db=ssl:$CENTRAL_IP:6641 --ovnsb-db=ssl:$CENTRAL_IP:6642 \
--p /etc/openvswitch/ovnnorthd-privkey.pem -c /etc/openvswitch/ovnnorthd-cert.pem \
--C /etc/openvswitch/cacert.pem
-EOF
-
-/usr/share/openvswitch/scripts/ovn-ctl restart_northd
-</pre></div>
-</div>
+  <div class="section" id="ovn-kubernetes-basics">
+<h1>OVN Kubernetes Basics<a class="headerlink" href="#ovn-kubernetes-basics" title="Permalink to this headline">¶</a></h1>
+<p>A good resource to get started with understanding <code class="docutils literal notranslate"><span class="pre">ovn-kubernetes</span></code> is the following recording and slides, which run through the basic architecture and functionality of the system.</p>
+<p><a class="reference external" href="https://docs.google.com/presentation/d/1vlEjEqqVz02P4_oubt_FmMSHrvpS8ewmHWNuEl4lKDI/edit?usp=sharing">slides</a></p>
+<p><a class="reference external" href="https://drive.google.com/file/d/1FogbqRgT-yIA8UKfcAQNXNQrcq5Hz0z9/view?usp=sharing">recording</a></p>
 </div>
 
 
@@ -228,10 +199,8 @@ EOF
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ci.html" class="btn btn-neutral float-right" title="CI Tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="INSTALL.OPENSHIFT.html" class="btn btn-neutral float-left" title="OVN overlay network on Openshift" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="design/shared_gw_dgp.html" class="btn btn-neutral float-left" title="Enable Node-Local Services Access in Shared Gateway Mode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
