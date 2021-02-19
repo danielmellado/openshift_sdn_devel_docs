@@ -1,6 +1,3 @@
-
-w to use Open Virtual Networking with Kubernetes
-
 This document describes how to use Open Virtual Networking with Kubernetes
 1.8.0 or later.  This document assumes that you have installed Open
 vSwitch by following [INSTALL.rst] or by using the distribution packages
