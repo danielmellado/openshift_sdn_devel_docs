@@ -14,7 +14,7 @@ In this mode, OVN programs the Open vSwitch instances running inside your
 hosts.  These hosts can be bare-metal machines or vanilla VMs.
 
 Installing Open vSwitch is out of scope of this documentation.  You can read
-[INSTALL.rst] for that.  That documentation inturn links to platform specific
+[INSTALL.rst] for that.  That documentation in turn links to platform specific
 installations.  If you use packages to install OVS, you should install both
 OVS and OVN related packages.  You can also read the following quick-start
 guide for Ubuntu that installs OVS and OVN from source and packages:
@@ -23,7 +23,7 @@ The following guide explains setting up an OVN overlay network on Openshift
 running on RHEL/Centos/Fedora: [INSTALL.OPENSHIFT.md](docs/INSTALL.OPENSHIFT.md)
 
 On each node, you should also install the 'ovnkube' utility that comes with
-this repository. To compile it, you will need golang installed.  You can
+the [ovn-org/ovn-kubernetes repo]. To compile it, you will need golang installed.  You can
 install golang with:
 
 ```
@@ -89,7 +89,7 @@ in a database.  Start this central component on one of the hosts where you
 have started your k8s central daemons and which has an IP address of
 $CENTRAL_IP.  (For HA of the central component, please read [HA.md])
 
-Run the following commands to open up TCP port for OVN Northbound and Southbound
+Run the following commands to open up the TCP ports for OVN Northbound and Southbound
 ovsdb-server. The clients will connect to the respective database at its port.
 
 ```
@@ -111,11 +111,11 @@ Also start ovn-controller on this node.
 /usr/share/openvswitch/scripts/ovn-ctl start_controller
 ```
 
-Now start the ovnkube utility on the master
+Now start the ovnkube utility on the master.
 
 The below command expects the user to provide
 * A cluster wide private address range of $CLUSTER_IP_SUBNET
-(e.g: 192.168.0.0/16).  The pods are provided IP address from this range.
+(e.g: 192.168.0.0/16).  The pods are provided IP addresses from this range.
 
 * $NODE_NAME should be the same as the one used by kubelet.  kubelet by default
 uses the hostname.  kubelet allows this name to be overridden with
@@ -150,21 +150,9 @@ If you want to use SSL instead of TCP for OVN databases, please read
 
 On each host, you will need to run the following command once.
 
-The below command expects the user to provide
-* A cluster wide private address range of $CLUSTER_IP_SUBNET
-(e.g: 192.168.0.0/16).  The pods are provided IP address from this range.
-This value should be the same as the one provided to ovnkube in the master.
-
-* $NODE_NAME should be the same as the one used by kubelet.  kubelet by default
-uses the hostname.  kubelet allows this name to be overridden with
---hostname-override.
-
-* $SERVICE_IP_SUBNET is the same as the one provided to k8s-apiserver via
---service-cluster-ip-range option. An e.g is 172.16.1.0/24.
-
-* If you are using ingress controllers with L7 load-balancing to enter into
-the k8s cluster, you can skip providing the '-nodeport' option with the
-below command.
+In addition to the same variables explained in the previous step, if you are using
+ingress controllers with L7 load-balancing to enter into the k8s cluster, you can
+skip providing the '-nodeport' option with the below command.
 
 ```
 nohup sudo ovnkube -k8s-kubeconfig kubeconfig.yaml -loglevel=4 \
@@ -200,11 +188,11 @@ provide '-gateway-interface' and '-gateway-nexthop' as options. For e.g:
 -init-gateways -gateway-interface=enp0s9 -gateway-nexthop="$NEXTHOP"
 ```
 
-* For both the above cases, ovnkube will create a OVS bridge on top of
-your physical interface and move the IP address and route informations
-from the physical interface to OVS bridge.  If you are using Ubuntu
-and OVS startup scripts are systemd (e.g: there is a file called
-/lib/systemd/system/ovsdb-server.service) , you will have to add the
+For both master and node initializations above, ovnkube will create an
+OVS bridge on top of your physical interface and move the IP address
+and route information from the physical interface to OVS bridge.  If you
+are using Ubuntu and OVS startup scripts are systemd (e.g: there is a file
+called /lib/systemd/system/ovsdb-server.service) , you will have to add the
 following line to /etc/default/openvswitch
 
 ```
@@ -239,3 +227,4 @@ does install kubernetes in its simplest form.
 [INSTALL.SSL.md]: docs/INSTALL.SSL.md
 [config.md]: docs/config.md
 [HA.md]: docs/ha.md
+[ovn-org/ovn-kubernetes repo]: https://github.com/ovn-org/ovn-kubernetes
