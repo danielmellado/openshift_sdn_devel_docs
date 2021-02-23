@@ -5,7 +5,7 @@ OpenShift SDN devel docs
 Developer documentation for OpenShift SDN team
 
 This document intends to be a quick devref and guide for new developers. It'll
-be a WIP covering details such as how to build, run, configure and test features.
+be a WIP covering details such as how to build, run, configure, and test features.
 
 This mainly covers three different repos:
 
@@ -18,10 +18,14 @@ This mainly covers three different repos:
 
   .. tab :: OpenShift SDN
 
-    OpenShift SDN is the default network plugin for OpenShift. It uses Open
-    vSwitch to connect pods locally, with VXLAN tunnels to connect different nodes.
+    OpenShift SDN is the default network plug-in for OpenShift. It uses Open
+    vSwitch (OVS) to connect pods locally and uses VXLAN tunnels to connect different nodes.
 
   .. tab :: OVN-Kubernetes
 
-    Kubernetes integration for OVN (Open Virtual Network) is a system to
-    support virtual network abstraction.
+    OVN-Kubernetes is a network plug-in for Kubernetes clusters and is not
+    unique to OpenShift. This network plug-in provides Kubernetes integration
+    for Open Virtual Network (OVN). OVN provides virtual network abstraction
+    and uses OVS on each host to connect pods locally. Generic Network
+    Virtualization Encapsulation (Geneve) provides network tunneling to
+    connect different nodes.
