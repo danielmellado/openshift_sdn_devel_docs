@@ -164,15 +164,19 @@
 <h1>OpenShift SDN devel docs<a class="headerlink" href="#openshift-sdn-devel-docs" title="Permalink to this headline">¶</a></h1>
 <p>Developer documentation for OpenShift SDN team</p>
 <p>This document intends to be a quick devref and guide for new developers. It’ll
-be a WIP covering details such as how to build, run, configure and test features.</p>
+be a WIP covering details such as how to build, run, configure, and test features.</p>
 <p>This mainly covers three different repos:</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Cluster Network Operator</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">OpenShift SDN</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">OVN-Kubernetes</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>The Cluster Network Operator installs and upgrades the networking
 components on an OpenShift Kubernetes cluster.</p>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>OpenShift SDN is the default network plugin for OpenShift. It uses Open
-vSwitch to connect pods locally, with VXLAN tunnels to connect different nodes.</p>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>Kubernetes integration for OVN (Open Virtual Network) is a system to
-support virtual network abstraction.</p>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>OpenShift SDN is the default network plug-in for OpenShift. It uses Open
+vSwitch (OVS) to connect pods locally and uses VXLAN tunnels to connect different nodes.</p>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>OVN-Kubernetes is a network plug-in for Kubernetes clusters and is not
+unique to OpenShift. This network plug-in provides Kubernetes integration
+for Open Virtual Network (OVN). OVN provides virtual network abstraction
+and uses OVS on each host to connect pods locally. Generic Network
+Virtualization Encapsulation (Geneve) provides network tunneling to
+connect different nodes.</p>
 </div></div>
 </div>
 
