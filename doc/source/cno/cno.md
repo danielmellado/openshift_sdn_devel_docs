@@ -22,24 +22,29 @@ Assuming you are working with the [upstream ovn-kubernetes git repo](https://git
 4. `docker push docker.io/(docker hub username)/ovn-kubernetes:latest`
 
 ### Using Downstream/OpenShift ovn-kubernetes with podman
-1. Create your combined pull secrets as described below
-2. Make your changes to your local openshift/ovn-kubernetes repo
-3. Push your changes to a new PR
-4. Click the 'details' link on the prow/images CI job in your PR
-5. Refresh until the build log appears, and look for the line `Tagged shared images from ocp/4.4:${component}, images will be pullable from registry.svc.ci.openshift.org/XXXXXXX/stable:${component}`
-6. Run `sudo podman pull --authfile /path/to/combined-pull-secrets registry.svc.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes` substituting the right `ci-op-xxxx` namespace from step 5.
-7. Push the image to dockerhub with `sudo podman push`
+1. Make your changes to your local openshift/ovn-kubernetes repo
+2. Push your changes to a new PR
+3. Click the 'details' link on the prow/images CI job in your PR
+4. Refresh until the build log appears, and look for the line `Tagged shared images from ocp/4.7:${component}, images will be pullable from registry.buildXX.ci.openshift.org/XXXXXXX/stable:${component}`
+5. Login into build cluster console: e.g. https://console.buildXX.ci.openshift.org/ where 'XX' is the cluster number.
+6. Click on the question mark on the upper-left portion of the screen and select 'Commmand Line Tools' and 'Copy Login Command'to get the `oc login` command and token.
+7. Run the command you got from the previous step: e.g. `oc login --token=<token> --server=https://api.build02.gcp.ci.openshift.org:6443`
+8. Run `oc registry login --to /path/to/secret`
+9. Run `sudo podman pull --authfile /path/to/secret registry.buildXX.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes` substituting the right `ci-op-xxxx` namespace from step 5.
+10. Push the image to dockerhub with `sudo podman push`
 
 ### Using Downstream/OpenShift ovn-kubernetes with docker
-1. Create your combined pull secrets as described below
-2. Make your changes to your local openshift/ovn-kubernetes repo
-3. Push your changes to a new PR
-4. Click the 'details' link on the prow/images CI job in your PR
-5. Refresh until the build log appears, and look for the line `Tagged shared images from ocp/4.4:${component}, images will be pullable from registry.svc.ci.openshift.org/XXXXXXX/stable:${component}`
-6. Run `oc registry login`
-7. Run `docker login --username $(oc whoami) --password $(oc whoami -t) registry.svc.ci.openshift.org`
-6. Run `docker pull registry.svc.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes` substituting the right `ci-op-xxxx` namespace from step 5.
-7. Push the image to dockerhub with `docker push`
+1. Make your changes to your local openshift/ovn-kubernetes repo
+2. Push your changes to a new PR
+3. Click the 'details' link on the prow/images CI job in your PR
+4. Refresh until the build log appears, and look for the line `Tagged shared images from ocp/4.7:${component}, images will be pullable from registry.buildXX.ci.openshift.org/XXXXXXX/stable:${component}`
+5. Login into build cluster console: e.g. https://console.buildXX.ci.openshift.org/ where 'XX' is the cluster number.
+6. Click on the question mark on the upper-left portion of the screen and select 'Commmand Line Tools' and 'Copy Login Command'to get the `oc login` command and token.
+7. Run the command you got from the previous step: e.g. `oc login --token=<token> --server=https://api.build02.gcp.ci.openshift.org:6443`
+8. Run `oc registry login`
+9. Run `docker login --username $(oc whoami) --password $(oc whoami -t) registry.buildXX.ci.openshift.org` where 'XX' is the build cluster number
+10. Run `docker pull registry.buildXX.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes` substituting the right `ci-op-xxxx` namespace from step 4 and the build cluster number.
+11. Push the image to dockerhub with `docker push`
 
 ## Download the OpenShift Installer
 The installer handles cluster creation in AWS, gcp, Azure and more.
