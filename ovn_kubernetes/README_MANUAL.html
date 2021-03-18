@@ -206,7 +206,7 @@ OVN can create a logical network amongst containers running on multiple hosts.
 In this mode, OVN programs the Open vSwitch instances running inside your
 hosts.  These hosts can be bare-metal machines or vanilla VMs.</p>
 <p>Installing Open vSwitch is out of scope of this documentation.  You can read
-<a class="reference external" href="http://docs.openvswitch.org/en/latest/intro/install">INSTALL.rst</a> for that.  That documentation inturn links to platform specific
+<a class="reference external" href="http://docs.openvswitch.org/en/latest/intro/install">INSTALL.rst</a> for that.  That documentation in turn links to platform specific
 installations.  If you use packages to install OVS, you should install both
 OVS and OVN related packages.  You can also read the following quick-start
 guide for Ubuntu that installs OVS and OVN from source and packages:
@@ -214,7 +214,7 @@ guide for Ubuntu that installs OVS and OVN from source and packages:
 The following guide explains setting up an OVN overlay network on Openshift
 running on RHEL/Centos/Fedora: <a class="reference internal" href="docs/INSTALL.OPENSHIFT.html"><span class="doc">INSTALL.OPENSHIFT.md</span></a></p>
 <p>On each node, you should also install the ‘ovnkube’ utility that comes with
-this repository. To compile it, you will need golang installed.  You can
+the <a class="reference external" href="https://github.com/ovn-org/ovn-kubernetes">ovn-org/ovn-kubernetes repo</a>. To compile it, you will need golang installed.  You can
 install golang with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">nv</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dl</span><span class="o">.</span><span class="n">google</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">go</span><span class="o">/</span><span class="n">go1</span><span class="o">.</span><span class="mf">9.2</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
 <span class="n">sudo</span> <span class="n">tar</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">go1</span><span class="o">.</span><span class="mf">9.2</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
@@ -275,7 +275,7 @@ NAT.</p>
 in a database.  Start this central component on one of the hosts where you
 have started your k8s central daemons and which has an IP address of
 $CENTRAL_IP.  (For HA of the central component, please read <a class="reference internal" href="docs/ha.html"><span class="doc">HA.md</span></a>)</p>
-<p>Run the following commands to open up TCP port for OVN Northbound and Southbound
+<p>Run the following commands to open up the TCP ports for OVN Northbound and Southbound
 ovsdb-server. The clients will connect to the respective database at its port.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ovn</span><span class="o">-</span><span class="n">nbctl</span> <span class="nb">set</span><span class="o">-</span><span class="n">connection</span> <span class="n">ptcp</span><span class="p">:</span><span class="mi">6641</span>
 <span class="n">ovn</span><span class="o">-</span><span class="n">sbctl</span> <span class="nb">set</span><span class="o">-</span><span class="n">connection</span> <span class="n">ptcp</span><span class="p">:</span><span class="mi">6642</span>
@@ -291,11 +291,11 @@ database.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">ovn</span><span class="o">-</span><span class="n">ctl</span> <span class="n">start_controller</span>
 </pre></div>
 </div>
-<p>Now start the ovnkube utility on the master</p>
+<p>Now start the ovnkube utility on the master.</p>
 <p>The below command expects the user to provide</p>
 <ul class="simple">
 <li><p>A cluster wide private address range of $CLUSTER_IP_SUBNET
-(e.g: 192.168.0.0/16).  The pods are provided IP address from this range.</p></li>
+(e.g: 192.168.0.0/16).  The pods are provided IP addresses from this range.</p></li>
 <li><p>$NODE_NAME should be the same as the one used by kubelet.  kubelet by default
 uses the hostname.  kubelet allows this name to be overridden with
 –hostname-override.</p></li>
@@ -325,20 +325,9 @@ no obvious errors with argument passing.  Also, you should only pass
 <div class="section" id="node-initialization">
 <h2>Node initialization.<a class="headerlink" href="#node-initialization" title="Permalink to this headline">¶</a></h2>
 <p>On each host, you will need to run the following command once.</p>
-<p>The below command expects the user to provide</p>
-<ul class="simple">
-<li><p>A cluster wide private address range of $CLUSTER_IP_SUBNET
-(e.g: 192.168.0.0/16).  The pods are provided IP address from this range.
-This value should be the same as the one provided to ovnkube in the master.</p></li>
-<li><p>$NODE_NAME should be the same as the one used by kubelet.  kubelet by default
-uses the hostname.  kubelet allows this name to be overridden with
-–hostname-override.</p></li>
-<li><p>$SERVICE_IP_SUBNET is the same as the one provided to k8s-apiserver via
-–service-cluster-ip-range option. An e.g is 172.16.1.0/24.</p></li>
-<li><p>If you are using ingress controllers with L7 load-balancing to enter into
-the k8s cluster, you can skip providing the ‘-nodeport’ option with the
-below command.</p></li>
-</ul>
+<p>In addition to the same variables explained in the previous step, if you are using
+ingress controllers with L7 load-balancing to enter into the k8s cluster, you can
+skip providing the ‘-nodeport’ option with the below command.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>nohup sudo ovnkube -k8s-kubeconfig kubeconfig.yaml -loglevel=4 \
     -logfile=&quot;/var/log/ovn-kubernetes/ovnkube.log&quot; \
     -k8s-apiserver=&quot;http://$CENTRAL_IP:8080&quot; \
@@ -368,14 +357,12 @@ provide ‘-gateway-interface’ and ‘-gateway-nexthop’ as options. For e.g:
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">init</span><span class="o">-</span><span class="n">gateways</span> <span class="o">-</span><span class="n">gateway</span><span class="o">-</span><span class="n">interface</span><span class="o">=</span><span class="n">enp0s9</span> <span class="o">-</span><span class="n">gateway</span><span class="o">-</span><span class="n">nexthop</span><span class="o">=</span><span class="s2">&quot;$NEXTHOP&quot;</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>For both the above cases, ovnkube will create a OVS bridge on top of
-your physical interface and move the IP address and route informations
-from the physical interface to OVS bridge.  If you are using Ubuntu
-and OVS startup scripts are systemd (e.g: there is a file called
-/lib/systemd/system/ovsdb-server.service) , you will have to add the
-following line to /etc/default/openvswitch</p></li>
-</ul>
+<p>For both master and node initializations above, ovnkube will create an
+OVS bridge on top of your physical interface and move the IP address
+and route information from the physical interface to OVS bridge.  If you
+are using Ubuntu and OVS startup scripts are systemd (e.g: there is a file
+called /lib/systemd/system/ovsdb-server.service) , you will have to add the
+following line to /etc/default/openvswitch</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OPTIONS</span><span class="o">=--</span><span class="n">delete</span><span class="o">-</span><span class="n">transient</span><span class="o">-</span><span class="n">ports</span>
 </pre></div>
 </div>
