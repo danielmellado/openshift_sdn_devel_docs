@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Running a local cluster network operator for plugin development &mdash; OpenShift SDN Docs  documentation</title>
   
@@ -13,16 +13,16 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="../_static/favicon.png"/>
   
+
   
+  
+
   
 
   
@@ -35,7 +35,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -57,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+            <a href="../index.html" class="icon icon-home"> OpenShift SDN Docs
           
 
           
@@ -169,6 +168,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -182,7 +183,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/cno/cno.md.txt" rel="nofollow"> View page source</a>
           
         
@@ -230,26 +231,31 @@
 <div class="section" id="using-downstream-openshift-ovn-kubernetes-with-podman">
 <h3>Using Downstream/OpenShift ovn-kubernetes with podman<a class="headerlink" href="#using-downstream-openshift-ovn-kubernetes-with-podman" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
-<li><p>Create your combined pull secrets as described below</p></li>
 <li><p>Make your changes to your local openshift/ovn-kubernetes repo</p></li>
 <li><p>Push your changes to a new PR</p></li>
 <li><p>Click the ‘details’ link on the prow/images CI job in your PR</p></li>
-<li><p>Refresh until the build log appears, and look for the line <code class="docutils literal notranslate"><span class="pre">Tagged</span> <span class="pre">shared</span> <span class="pre">images</span> <span class="pre">from</span> <span class="pre">ocp/4.4:${component},</span> <span class="pre">images</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">pullable</span> <span class="pre">from</span> <span class="pre">registry.svc.ci.openshift.org/XXXXXXX/stable:${component}</span></code></p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">podman</span> <span class="pre">pull</span> <span class="pre">--authfile</span> <span class="pre">/path/to/combined-pull-secrets</span> <span class="pre">registry.svc.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes</span></code> substituting the right <code class="docutils literal notranslate"><span class="pre">ci-op-xxxx</span></code> namespace from step 5.</p></li>
+<li><p>Refresh until the build log appears, and look for the line <code class="docutils literal notranslate"><span class="pre">Tagged</span> <span class="pre">shared</span> <span class="pre">images</span> <span class="pre">from</span> <span class="pre">ocp/4.7:${component},</span> <span class="pre">images</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">pullable</span> <span class="pre">from</span> <span class="pre">registry.buildXX.ci.openshift.org/XXXXXXX/stable:${component}</span></code></p></li>
+<li><p>Login into build cluster console: e.g. https://console.buildXX.ci.openshift.org/ where ‘XX’ is the cluster number.</p></li>
+<li><p>Click on the question mark on the upper-left portion of the screen and select ‘Commmand Line Tools’ and ‘Copy Login Command’to get the <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">login</span></code> command and token.</p></li>
+<li><p>Run the command you got from the previous step: e.g. <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">login</span> <span class="pre">--token=&lt;token&gt;</span> <span class="pre">--server=https://api.build02.gcp.ci.openshift.org:6443</span></code></p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">registry</span> <span class="pre">login</span> <span class="pre">--to</span> <span class="pre">/path/to/secret</span></code></p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">podman</span> <span class="pre">pull</span> <span class="pre">--authfile</span> <span class="pre">/path/to/secret</span> <span class="pre">registry.buildXX.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes</span></code> substituting the right <code class="docutils literal notranslate"><span class="pre">ci-op-xxxx</span></code> namespace from step 5.</p></li>
 <li><p>Push the image to dockerhub with <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">podman</span> <span class="pre">push</span></code></p></li>
 </ol>
 </div>
 <div class="section" id="using-downstream-openshift-ovn-kubernetes-with-docker">
 <h3>Using Downstream/OpenShift ovn-kubernetes with docker<a class="headerlink" href="#using-downstream-openshift-ovn-kubernetes-with-docker" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
-<li><p>Create your combined pull secrets as described below</p></li>
 <li><p>Make your changes to your local openshift/ovn-kubernetes repo</p></li>
 <li><p>Push your changes to a new PR</p></li>
 <li><p>Click the ‘details’ link on the prow/images CI job in your PR</p></li>
-<li><p>Refresh until the build log appears, and look for the line <code class="docutils literal notranslate"><span class="pre">Tagged</span> <span class="pre">shared</span> <span class="pre">images</span> <span class="pre">from</span> <span class="pre">ocp/4.4:${component},</span> <span class="pre">images</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">pullable</span> <span class="pre">from</span> <span class="pre">registry.svc.ci.openshift.org/XXXXXXX/stable:${component}</span></code></p></li>
+<li><p>Refresh until the build log appears, and look for the line <code class="docutils literal notranslate"><span class="pre">Tagged</span> <span class="pre">shared</span> <span class="pre">images</span> <span class="pre">from</span> <span class="pre">ocp/4.7:${component},</span> <span class="pre">images</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">pullable</span> <span class="pre">from</span> <span class="pre">registry.buildXX.ci.openshift.org/XXXXXXX/stable:${component}</span></code></p></li>
+<li><p>Login into build cluster console: e.g. https://console.buildXX.ci.openshift.org/ where ‘XX’ is the cluster number.</p></li>
+<li><p>Click on the question mark on the upper-left portion of the screen and select ‘Commmand Line Tools’ and ‘Copy Login Command’to get the <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">login</span></code> command and token.</p></li>
+<li><p>Run the command you got from the previous step: e.g. <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">login</span> <span class="pre">--token=&lt;token&gt;</span> <span class="pre">--server=https://api.build02.gcp.ci.openshift.org:6443</span></code></p></li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">registry</span> <span class="pre">login</span></code></p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">login</span> <span class="pre">--username</span> <span class="pre">$(oc</span> <span class="pre">whoami)</span> <span class="pre">--password</span> <span class="pre">$(oc</span> <span class="pre">whoami</span> <span class="pre">-t)</span> <span class="pre">registry.svc.ci.openshift.org</span></code></p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">registry.svc.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes</span></code> substituting the right <code class="docutils literal notranslate"><span class="pre">ci-op-xxxx</span></code> namespace from step 5.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">login</span> <span class="pre">--username</span> <span class="pre">$(oc</span> <span class="pre">whoami)</span> <span class="pre">--password</span> <span class="pre">$(oc</span> <span class="pre">whoami</span> <span class="pre">-t)</span> <span class="pre">registry.buildXX.ci.openshift.org</span></code> where ‘XX’ is the build cluster number</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">registry.buildXX.ci.openshift.org/XXXXXXX/stable:ovn-kubernetes</span></code> substituting the right <code class="docutils literal notranslate"><span class="pre">ci-op-xxxx</span></code> namespace from step 4 and the build cluster number.</p></li>
 <li><p>Push the image to dockerhub with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">push</span></code></p></li>
 </ol>
 </div>
@@ -372,37 +378,29 @@ From the bootstrap node you can ssh into the master nodes <code class="docutils 
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="baremetal.html" class="btn btn-neutral float-right" title="Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="test_sdn_ovn_openshift.html" class="btn btn-neutral float-left" title="How to test SDN OVN development on a Openshift cluster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="baremetal.html" class="btn btn-neutral float-right" title="Information about Deploying Bare Metal Clusters for Kubernetes, Open Shift and k OVN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="test_sdn_ovn_openshift.html" class="btn btn-neutral float-left" title="How to test SDN OVN development on a Openshift cluster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, OpenShift SDN Team
+        &#169; Copyright 2020, OpenShift SDN Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

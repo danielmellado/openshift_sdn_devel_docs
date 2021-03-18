@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Development Workflow &mdash; OpenShift SDN Docs  documentation</title>
   
@@ -13,16 +13,16 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="../_static/favicon.png"/>
   
+
   
+  
+
   
 
   
@@ -35,7 +35,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -57,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> OpenShift SDN Docs
+            <a href="../index.html" class="icon icon-home"> OpenShift SDN Docs
           
 
           
@@ -156,6 +155,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -169,7 +170,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/openshift_sdn/workflow.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -187,8 +188,8 @@
 <h1>Development Workflow<a class="headerlink" href="#development-workflow" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="get-the-code">
 <h2>Get the code<a class="headerlink" href="#get-the-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/openshift/openshift-sdn.git
-<span class="gp">$</span> git clone https://github.com/openshift/cluster-network-operator.git
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/openshift/openshift-sdn.git
+<span class="gp">$ </span>git clone https://github.com/openshift/cluster-network-operator.git
 </pre></div>
 </div>
 </div>
@@ -197,7 +198,7 @@
 </div>
 <div class="section" id="create-the-image">
 <h2>Create the image<a class="headerlink" href="#create-the-image" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make build-image-sdn-test
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make build-image-sdn-test
 </pre></div>
 </div>
 <p>This will call podman under the hood and it’ll create an image with your
@@ -205,7 +206,7 @@ changes for openshift/sdn</p>
 </div>
 <div class="section" id="push-your-image-to-quay-io">
 <h2>Push your image to quay.io<a class="headerlink" href="#push-your-image-to-quay-io" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> podman push sdn-test quay.io/&lt;your_quay_user&gt;/sdn-test:latest
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>podman push sdn-test quay.io/&lt;your_quay_user&gt;/sdn-test:latest
 <span class="go">Getting image source signatures</span>
 <span class="go">Copying blob 5d372c8d2def done</span>
 <span class="go">Copying blob f8c626b0e778 done</span>
@@ -236,7 +237,7 @@ changes for openshift/sdn</p>
 <li><p>Create a directory for your deployment</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir /tmp/deployment
+<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir /tmp/deployment
 </pre></div>
 </div>
 </div></blockquote>
@@ -246,7 +247,7 @@ changes for openshift/sdn</p>
 <li><p>Run hack/run-locally</p></li>
 </ol>
 <blockquote>
-<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> hack/run-locally.sh -i &lt;your_openshift_install_path&gt; -c &lt;your_install_directory&gt; -n &lt;sdn<span class="p">|</span>ovn&gt; -m &lt;your_quay_image_path&gt;
+<div><div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>hack/run-locally.sh -i &lt;your_openshift_install_path&gt; -c &lt;your_install_directory&gt; -n &lt;sdn<span class="p">|</span>ovn&gt; -m &lt;your_quay_image_path&gt;
 </pre></div>
 </div>
 </div></blockquote>
@@ -282,7 +283,7 @@ CoreOS Slack channel.</p>
 <h2>Destroying your cluster once you’re done<a class="headerlink" href="#destroying-your-cluster-once-you-re-done" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="using-openshift-installer">
 <h3>Using Openshift Installer<a class="headerlink" href="#using-openshift-installer" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> openshift-install destroy cluster --dir &lt;your_install_directory&gt;
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>openshift-install destroy cluster --dir &lt;your_install_directory&gt;
 </pre></div>
 </div>
 </div>
@@ -300,37 +301,29 @@ CoreOS Slack channel.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../ovn_kubernetes/index.html" class="btn btn-neutral float-right" title="OVN-Kubernetes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="README.html" class="btn btn-neutral float-left" title="OpenShift SDN Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="../ovn_kubernetes/index.html" class="btn btn-neutral float-right" title="OVN-Kubernetes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="README.html" class="btn btn-neutral float-left" title="OpenShift SDN Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, OpenShift SDN Team
+        &#169; Copyright 2020, OpenShift SDN Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
