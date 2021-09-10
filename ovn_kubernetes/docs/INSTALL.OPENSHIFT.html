@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -32,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -109,7 +112,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ci.html">CI Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Config variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debugging.html">Initial setup issues.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
@@ -358,11 +360,11 @@ that is needed for ovn to access the cluster apiserver.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># oc get configmap ovn-config -o yaml</span>
 <span class="n">apiVersion</span><span class="p">:</span> <span class="n">v1</span>
 <span class="n">data</span><span class="p">:</span>
-  <span class="n">OvnNorth</span><span class="p">:</span> <span class="n">tcp</span><span class="p">:</span><span class="mf">10.19</span><span class="o">.</span><span class="mf">188.22</span><span class="p">:</span><span class="mi">6641</span>
-  <span class="n">OvnSouth</span><span class="p">:</span> <span class="n">tcp</span><span class="p">:</span><span class="mf">10.19</span><span class="o">.</span><span class="mf">188.22</span><span class="p">:</span><span class="mi">6642</span>
+  <span class="n">OvnNorth</span><span class="p">:</span> <span class="n">tcp</span><span class="p">:</span><span class="mf">10.19.188.22</span><span class="p">:</span><span class="mi">6641</span>
+  <span class="n">OvnSouth</span><span class="p">:</span> <span class="n">tcp</span><span class="p">:</span><span class="mf">10.19.188.22</span><span class="p">:</span><span class="mi">6642</span>
   <span class="n">k8s_apiserver</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">wsfd</span><span class="o">-</span><span class="n">netdev22</span><span class="o">.</span><span class="n">ntdv</span><span class="o">.</span><span class="n">lab</span><span class="o">.</span><span class="n">eng</span><span class="o">.</span><span class="n">bos</span><span class="o">.</span><span class="n">redhat</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">8443</span>
-  <span class="n">net_cidr</span><span class="p">:</span> <span class="mf">10.128</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">14</span>
-  <span class="n">svc_cidr</span><span class="p">:</span> <span class="mf">172.30</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">16</span>
+  <span class="n">net_cidr</span><span class="p">:</span> <span class="mf">10.128.0.0</span><span class="o">/</span><span class="mi">14</span>
+  <span class="n">svc_cidr</span><span class="p">:</span> <span class="mf">172.30.0.0</span><span class="o">/</span><span class="mi">16</span>
 <span class="n">kind</span><span class="p">:</span> <span class="n">ConfigMap</span>
 </pre></div>
 </div>

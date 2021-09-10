@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -32,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -103,19 +106,6 @@
 <li class="toctree-l2"><a class="reference internal" href="INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
 <li class="toctree-l2"><a class="reference internal" href="OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ci.html">CI Tests</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Config variables</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#initial-setup">Initial setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#config-values">Config values</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#default-section">[default] section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#logging-section">[logging] section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cni-section">[cni] section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#kubernetes-section">[kubernetes] section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ovnnorth-section">[ovnnorth] section</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ovnsouth-section">[ovnsouth] section</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Config variables</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#initial-setup">Initial setup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#config-values">Config values</a><ul>
@@ -291,7 +281,7 @@ and to what file (if any).</p>
 <div class="section" id="kubernetes-section">
 <h3>[kubernetes] section<a class="headerlink" href="#kubernetes-section" title="Permalink to this headline">¶</a></h3>
 <p>Kubernetes API options are stored in the following section.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apiserver</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span><span class="p">:</span><span class="mi">6443</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apiserver</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="mf">1.2.3.4</span><span class="p">:</span><span class="mi">6443</span>
 <span class="n">token</span><span class="o">=</span><span class="n">TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gQ3JhcyBhdCB1bHRyaWNpZXMgZWxpdC4gVXQgc2l0IGFtZXQgdm9sdXRwYXQgbnVuYy4K</span>
 <span class="n">cacert</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">kubernetes</span><span class="o">/</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span>
 </pre></div>
@@ -302,7 +292,7 @@ and to what file (if any).</p>
 <p>This section contains the address and (if the ‘ssl’ method is used) certificates
 needed to use the OVN northbound database API. Only the the ovn-kubernetes
 master needs to specify the ‘server’ options.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">address</span><span class="o">=</span><span class="n">ssl</span><span class="p">:</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span><span class="p">:</span><span class="mi">6641</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">address</span><span class="o">=</span><span class="n">ssl</span><span class="p">:</span><span class="mf">1.2.3.4</span><span class="p">:</span><span class="mi">6641</span>
 <span class="n">client</span><span class="o">-</span><span class="n">privkey</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">private</span><span class="o">.</span><span class="n">key</span>
 <span class="n">client</span><span class="o">-</span><span class="n">cert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">client</span><span class="o">.</span><span class="n">crt</span>
 <span class="n">client</span><span class="o">-</span><span class="n">cacert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">client</span><span class="o">-</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span>
@@ -317,7 +307,7 @@ master needs to specify the ‘server’ options.</p>
 <p>This section contains the address and (if the ‘ssl’ method is used) certificates
 needed to use the OVN southbound database API. Only the the ovn-kubernetes
 master needs to specify the ‘server’ options.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">address</span><span class="o">=</span><span class="n">ssl</span><span class="p">:</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span><span class="p">:</span><span class="mi">6642</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">address</span><span class="o">=</span><span class="n">ssl</span><span class="p">:</span><span class="mf">1.2.3.4</span><span class="p">:</span><span class="mi">6642</span>
 <span class="n">client</span><span class="o">-</span><span class="n">privkey</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">private</span><span class="o">.</span><span class="n">key</span>
 <span class="n">client</span><span class="o">-</span><span class="n">cert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">client</span><span class="o">.</span><span class="n">crt</span>
 <span class="n">client</span><span class="o">-</span><span class="n">cacert</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">client</span><span class="o">-</span><span class="n">ca</span><span class="o">.</span><span class="n">crt</span>

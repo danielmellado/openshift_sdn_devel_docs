@@ -14,7 +14,6 @@
    docs/OVN-NORTHD.SSL.md
    docs/ci.md
    docs/config.md
-   docs/config.md
    docs/debugging.md
    docs/egress-firewall.md
    docs/ha.md

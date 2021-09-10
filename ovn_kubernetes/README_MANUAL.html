@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
@@ -32,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -111,7 +114,6 @@
 <li class="toctree-l2"><a class="reference internal" href="docs/INSTALL.OPENSHIFT.html">OVN overlay network on Openshift</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs/OVN-NORTHD.SSL.html">Generate signed certificates for OVN Northd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs/ci.html">CI Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="docs/config.html">Config variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs/config.html">Config variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs/debugging.html">Initial setup issues.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs/debugging.html#hosts-should-have-unique-node-names">Hosts should have unique node names.</a></li>
@@ -215,8 +217,8 @@ running on RHEL/Centos/Fedora: <a class="reference internal" href="docs/INSTALL.
 <p>On each node, you should also install the ‘ovnkube’ utility that comes with
 the <a class="reference external" href="https://github.com/ovn-org/ovn-kubernetes">ovn-org/ovn-kubernetes repo</a>. To compile it, you will need golang installed.  You can
 install golang with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">nv</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dl</span><span class="o">.</span><span class="n">google</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">go</span><span class="o">/</span><span class="n">go1</span><span class="o">.</span><span class="mf">9.2</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
-<span class="n">sudo</span> <span class="n">tar</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">go1</span><span class="o">.</span><span class="mf">9.2</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">nv</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dl</span><span class="o">.</span><span class="n">google</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">go</span><span class="o">/</span><span class="n">go1</span><span class="mf">.9.2</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">sudo</span> <span class="n">tar</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">go1</span><span class="mf">.9.2</span><span class="o">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
 <p>You need to set your GOPATH, clone the ovn-kubernetes repo, compile and
